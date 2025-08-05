@@ -1,0 +1,283 @@
+/* === Booking Section === */
+#booking {
+  padding: 60px 20px;
+  background: #000;
+  text-align: center;
+}
+
+#booking h2 {
+  margin-bottom: 30px;
+}
+
+#booking-form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#booking-form label {
+  text-align: left;
+  font-size: 0.95rem;
+  color: #ccc;
+  margin-top: 10px;
+}
+
+#booking-form input,
+#booking-form textarea {
+  padding: 12px;
+  border-radius: 5px;
+  border: none;
+  font-size: 1rem;
+  background: #222;
+  color: white;
+}
+
+#booking-form input[type="text"]#event-date,
+#booking-form input[type="text"]#start-time,
+#booking-form input[type="text"]#end-time,
+#booking-form input[type="text"]#event-date-time-display {
+  background: #222;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+
+#cost-estimate {
+  font-size: 1rem;
+  color: #981b1b;
+  margin-top: 10px;
+  text-align: left;
+}
+
+#booking-form button {
+  background: #981b1b;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+#booking-form button:hover {
+  background: #981b1b;
+}
+
+/* === Flatpickr Overrides === */
+.flatpickr-calendar {
+  background: #222 !important;
+  border: none !important;
+  color: white !important;
+}
+
+.flatpickr-day:hover,
+.flatpickr-day.today,
+.flatpickr-day.selected {
+  background: #981b1b !important;
+  color: white !important;
+  border-radius: 5px !important;
+}
+
+.flatpickr-time input,
+.flatpickr-time .flatpickr-time-separator {
+  background: #222 !important;
+  color: white !important;
+  border: none !important;
+}
+
+/* === Start Time & Duration Buttons Containers === */
+#start-time-container,
+#duration-container {
+  margin-top: 20px;
+}
+
+/* Grid layout for buttons */
+#start-time-grid,
+#duration-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+/* === Buttons Styling === */
+.time-button,
+.duration-button {
+  background-color: #981b1b; /* deeper red */
+  border: none;
+  border-radius: 6px;
+  padding: 12px 0;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  user-select: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.time-button:hover,
+.duration-button:hover {
+  background-color: #981b1b;
+}
+
+.time-button.selected,
+.duration-button.selected {
+  background-color: #981b1b;
+  box-shadow: 0 0 12px #981b1b;
+  font-weight: 700;
+}
+
+/* === Back Button Container and Style === */
+.back-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+
+.show-more-button {
+  background: #333 !important; /* charcoal */
+  color: white;
+  border: 1px solid #222 !important;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  user-select: none;
+  display: inline-block;
+  margin-top: 12px;
+  text-decoration: none;
+}
+
+.show-more-button:hover {
+  background: #444 !important;
+  color: white;
+}
+
+.back-button {
+  background: #333 !important;      /* charcoal */
+  color: white !important;
+  border: 1px solid #222 !important;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  user-select: none;
+  box-shadow: none !important;
+}
+
+.back-button:hover {
+  background: #444 !important;
+  color: white !important;
+}
+
+.date-nav-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.corner-button {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 6px;
+  color: white;
+}
+
+.corner-button:hover {
+  background-color: #555;
+}
+
+.confirmation-message {
+  background: #222;
+  color: #981b1b;
+  padding: 30px 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-align: center;
+}
+.breadcrumbs {
+  margin: 1rem 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-weight: 500;
+  color: #777;
+  font-size: 0.95rem;
+}
+
+.crumb {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #ffffff;
+}
+
+.crumb.active {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.divider {
+  color: #aaa;
+}
+
+
+.confirm-button:hover {
+  background: #981b1b;
+}
+
+.event-summary {
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #981b1b;
+}
+
+.new-booking-button {
+  margin-top: 2rem;
+}
+.clickable-label {
+  color: #981b1b;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  user-select: none;
+}
+
+.read-only-input {
+  background: #222;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+}
+
+.clickable-summary {
+  color: #981b1b;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}

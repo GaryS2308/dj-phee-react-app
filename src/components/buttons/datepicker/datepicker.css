@@ -1,0 +1,51 @@
+/* === DJ Phee Custom DatePicker Theme === */
+
+/* Base day styling: available days */
+.react-datepicker__day {
+  color: #ccc !important;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+  border-radius: 0;
+}
+
+/* Disabled (past) days */
+.react-datepicker__day--disabled {
+  color: black !important;
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* TODAY — styled like a normal day (no special background or red) */
+.react-datepicker__day--today {
+  font-weight: bold;
+  color: #ccc;
+  background-color: transparent;
+}
+
+/* Selected date */
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #981b1b !important;
+  color: white;
+  border-radius: 4px;
+}
+
+/* Hover on selectable days */
+.react-datepicker__day:hover:not(.react-datepicker__day--disabled):not(.react-datepicker__day--selected) {
+  background-color: #950000;
+  color: white;
+  border-radius: 4px;
+}
+
+/* Optional: header text color */
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: #ccc;
+}
+
+/* Optional: month container background */
+.react-datepicker__month-container {
+  background-color: #1c1c1c;
+  border-radius: 8px;
+}
+

@@ -1,0 +1,28 @@
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.social-links a {
+  font-size: 2rem;
+  color: white;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.social-links a:hover {
+  transform: scale(1.2);
+}
+
+.social-links a[title="Instagram"] {
+  color: #E4405F; /* Instagram pink */
+}
+
+.social-links a[title="Email"] {
+  color: #0099ff; /* Light blue for email */
+}
+
+.social-links a[title="SoundCloud"] {
+  color: #FF5500; /* SoundCloud orange */
+}

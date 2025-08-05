@@ -1,0 +1,155 @@
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Box */
+.modal {
+  background: #111;
+  padding: 30px 30px 40px 30px;
+  border-radius: 14px;
+  width: 420px;
+  max-width: 95vw;
+  color: #eee;
+  text-align: center;
+  box-shadow: 0 0 20px #981b1b;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Headings */
+.modal h3 {
+  margin-bottom: 15px;
+  margin-top: 15px;;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.modal h4.slider-label {
+  margin-top: 18px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #ffffff;
+}
+
+/* DatePicker calendar custom background */
+.custom-calendar {
+  background-color: #5f5f5f !important;
+  border-radius: 8px !important;
+  color: #eee !important;
+}
+
+/* Slider time display text */
+.slider-time-display {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* React Slider */
+.time-slider {
+  width: 100%;
+  height: 8px;
+  margin-bottom: 8px;
+  background: #333;
+  border-radius: 5px;
+  position: relative;
+}
+
+/* Track between thumbs */
+.time-track {
+  background: #605c5c;
+  height: 100%;
+  border-radius: 5px;
+}
+
+/* Thumbs */
+.time-thumb {
+  height: 20px;
+  width: 20px;
+  background: #ffffff;
+  border-radius: 50%;
+  cursor: grab;
+  box-shadow: 0 0 4px #981b1b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 7px;
+  color: #272727;
+  user-select: none;
+  font-weight: 700;
+}
+
+/* Thumb active grab */
+.time-thumb:active {
+  cursor: grabbing;
+}
+
+/* Slider labels under the slider */
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #ccc;
+  padding: 0 8px;
+  margin-bottom: 18px;
+  margin-top: 20px;;
+}
+
+/* Modal buttons container */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch; /* <- ensures same height */
+  gap: 12px;
+}
+
+.cancel-button,
+.confirm-button {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  height: 48px; /* force them to same height */
+  box-sizing: border-box;
+}
+
+
+/* Cancel button colors */
+.cancel-button {
+  background-color: #ffffff;
+  color: #981b1b;
+}
+.cancel-button:hover {
+  background-color: #981b1b;
+  color: #fff;
+}
+
+/* Confirm button colors */
+.confirm-button {
+  background-color: #ffffff;
+  color: #981b1b;
+}
+.confirm-button:hover {
+  background-color: #981b1b;
+  color: #fff;
+}
+

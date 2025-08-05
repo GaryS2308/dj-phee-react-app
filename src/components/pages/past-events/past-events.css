@@ -1,0 +1,45 @@
+/* === Past Events Slider (#vibe) === */
+#past-events {
+  padding: 60px 20px;
+  background: #000;
+  text-align: center;
+}
+
+.swiper {
+  width: 100%;
+  padding: 40px 0;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+.swiper-slide img {
+  height: 100%;
+  width: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255,255,255,0.2);
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.swiper-slide img:hover {
+  transform: scale(1.05);
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: rgba(0, 0, 0, 0.7);
+}

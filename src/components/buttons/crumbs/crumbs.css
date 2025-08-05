@@ -1,0 +1,32 @@
+.crumbs-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.crumb-button {
+  background-color: black;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.crumb-button.active {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+
+.crumb-button:hover {
+  opacity: 0.85;
+}
+.crumb-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
