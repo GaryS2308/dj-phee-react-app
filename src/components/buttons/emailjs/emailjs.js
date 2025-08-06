@@ -8,7 +8,7 @@ init("0fqk3GFHeuZ3SHdGz");
 const mockBookings = {
   abcd1234: {
     name: 'Lebo Mo',
-    email: 'lebo@example.com',
+    email: 'garyjohnstrybis@gmail.com',
     event: 'Wedding',
     location: 'Cape Town',
     event_date: '5 August 2025',
