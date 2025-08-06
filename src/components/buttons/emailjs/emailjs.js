@@ -31,9 +31,16 @@ export const sendResponseEmail = async (token, type) => {
   const total_amount = parseDurationToHours(booking.duration) * rate_per_hour;
 
   const templateParams = {
-    ...booking,
-    rate_per_hour,
-    total_amount,
+      name: booking.name,
+      email: booking.email,
+      event_date: booking.event_date,
+      start_time: booking.start_time,
+      end_time: booking.end_time,
+      duration: booking.duration,
+      event: booking.event,
+      location: booking.location,
+      rate_per_hour: 1000,
+      total_amount: parseDurationToHours(booking.duration) * 1000,
   };
 
   // 📧 Send confirmation email to client
