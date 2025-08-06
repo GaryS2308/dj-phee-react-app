@@ -41,3 +41,10 @@
     gap: 16px;
   }
 }
+
+h2 {
+  color: #fff;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font: poppins, sans-serif;
+}
