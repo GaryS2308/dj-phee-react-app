@@ -1,7 +1,7 @@
 // src/pages/BookingResponse.jsx
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { sendResponseEmail } from '../components/buttons/emailjs/emailjs';
+import { sendResponseEmail } from '../../buttons/emailjs/emailjs';
 
 const BookingResponse = () => {
   const [searchParams] = useSearchParams();
