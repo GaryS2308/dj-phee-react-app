@@ -1,6 +1,6 @@
 // src/components/buttons/emailjs/emailjs.js
 import { send } from '@emailjs/browser';
-import { db } from '../../../firebase'; // adjust as needed
+import { db } from '../../../firebase'; // adjust as needed src/firebase.js
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export const sendResponseEmail = async (token, type) => {
