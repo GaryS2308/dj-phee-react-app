@@ -6,7 +6,7 @@ import HeroSection from './components/pages/home/HeroSection';
 import PastEvents from './components/pages/past-events/past-events';
 import AboutPhee from './components/pages/about-phee/about-phee';
 import BookingForm from './components/pages/booking-form/BookingForm';
-import BookingResponse from './pages/BookingResponse'; // make sure this path is correct
+import BookingResponse from './components/pages/booking-response/booking-response'; // make sure this path is correct
 import './styles/styles.css';
 
 const HomePage = () => (
