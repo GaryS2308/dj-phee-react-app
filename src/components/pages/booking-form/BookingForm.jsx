@@ -84,11 +84,15 @@ const BookingForm = () => {
 
   // Handle form submission with EmailJS
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.eventDate || !formData.startTime || !formData.duration) {
-      setConfirmationMessage('❌ Please select date, time and duration before submitting.');
-      return;
-    }
+  e.preventDefault();
+
+  // ⛔ Check for required fields
+  if (!formData.eventDate || !formData.startTime || !formData.duration) {
+    setConfirmationMessage('❌ Please select date, time and duration before submitting.');
+    return;
+  }
+
+  try {
     const durationHours = parseDurationToHours(formData.duration);
     const endTime = addHoursToTime(formData.startTime, durationHours);
     const token = Math.random().toString(36).substring(2, 12);
@@ -104,33 +108,35 @@ const BookingForm = () => {
       start_time: formData.startTime,
       end_time: endTime,
       duration: formData.duration,
-      token: token
+      token: token,
     };
+
     // 🔥 Save booking to Firestore
-  await addDoc(collection(db, 'bookings'), {
-  ...templateParams,
-  token: token,
-  timestamp: new Date(),
+    await addDoc(collection(db, 'bookings'), {
+      ...templateParams,
+      timestamp: new Date(),
     });
 
+    // 📧 Send to EmailJS (to DJ)
+    await send('service_qekby5l', 'template_b27p846', templateParams);
 
-    send('service_qekby5l', 'template_b27p846', templateParams)
-      .then(() => {
-        setConfirmationMessage('✅ Booking request received by Phee. You’ll hear back shortly!');
-        setFormSubmitted(true);
-        setFormData({
-          name: '', email: '', phone: '', event: '', location: '',
-          details: '', eventDate: null, startTime: '', duration: ''
-        });
-        setDateConfirmed(false);
-        setHasConfirmedOnce(false);
-        setCostEstimate('Estimated Cost: R0');
-      })
-      .catch((error) => {
-        console.error('EmailJS Error:', error);
-        setConfirmationMessage('❌ Booking failed. Please try again.');
-      });
-  };
+    // ✅ Success state
+    setConfirmationMessage('✅ Booking request received by Phee. You’ll hear back shortly!');
+    setFormSubmitted(true);
+    setFormData({
+      name: '', email: '', phone: '', event: '', location: '',
+      details: '', eventDate: null, startTime: '', duration: ''
+    });
+    setDateConfirmed(false);
+    setHasConfirmedOnce(false);
+    setCostEstimate('Estimated Cost: R0');
+
+  } catch (error) {
+    console.error('Booking Error:', error);
+    setConfirmationMessage('❌ Booking failed. Please try again.');
+  }
+};
+
 
   const handleNewBookingClick = () => {
     setFormSubmitted(false);
