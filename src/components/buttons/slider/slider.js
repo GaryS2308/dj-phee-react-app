@@ -123,6 +123,7 @@ const TimeSliderModal = ({
           <span>18:00</span>
           <span>24:00</span>
         </div>
+        
         <div className="modal-buttons">
           <button onClick={onCancel} className="cancel-button">Cancel</button>
           <button onClick={handleConfirm} className="confirm-button">Confirm</button>

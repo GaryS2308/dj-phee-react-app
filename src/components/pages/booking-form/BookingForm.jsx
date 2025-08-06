@@ -74,10 +74,10 @@ const BookingForm = () => {
   }, [formData.duration]);
 
   // Handle input changes for form fields
-  const handleChange = (e) => {
+  function handleChange(e) {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  }
 
   // Handle form submission with EmailJS
   const handleSubmit = (e) => {
