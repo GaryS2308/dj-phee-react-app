@@ -8,6 +8,9 @@ import SocialLinks from '../../buttons/social-links/social-links';
 import Crumbs from '../../buttons/crumbs/crumbs'; // you can remove if unused
 import TimeSliderModal from '../../buttons/slider/slider';
 import '../../buttons/slider/slider.css'; // import your slider styles here
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../../firebase'; // Adjust if your firebase.js path is different
+
 
 const BookingForm = () => {
   useEffect(() => {
@@ -80,7 +83,7 @@ const BookingForm = () => {
   }
 
   // Handle form submission with EmailJS
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.eventDate || !formData.startTime || !formData.duration) {
       setConfirmationMessage('❌ Please select date, time and duration before submitting.');
@@ -103,6 +106,13 @@ const BookingForm = () => {
       duration: formData.duration,
       token: token
     };
+    // 🔥 Save booking to Firestore
+  await addDoc(collection(db, 'bookings'), {
+  ...templateParams,
+  token: token,
+  timestamp: new Date(),
+    });
+
 
     send('service_qekby5l', 'template_b27p846', templateParams)
       .then(() => {
