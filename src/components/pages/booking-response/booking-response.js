@@ -9,6 +9,7 @@ const BookingResponse = () => {
   const [status, setStatus] = useState('pending');
 
   const handleClick = (type) => {
+    console.log("📦 handleClick called with type:", type); 
     setStatus('sending');
 
     sendResponseEmail(token, type)
