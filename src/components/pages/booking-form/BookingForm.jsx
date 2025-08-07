@@ -8,9 +8,9 @@ import SocialLinks from '../../buttons/social-links/social-links';
 import Crumbs from '../../buttons/crumbs/crumbs'; // you can remove if unused
 import TimeSliderModal from '../../buttons/slider/slider';
 import '../../buttons/slider/slider.css'; // import your slider styles here
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase'; // Adjust if your firebase.js path is different
-import {getDocs, collection} from 'firebase/firestore';
+
 
 
 const BookingForm = () => {
