@@ -27,14 +27,9 @@
 
 @keyframes scroll-left {
   0% {
-    transform: translateX(50%);
+    transform: translateX(70%);
   }
   100% {
-    transform: translateX(-80%);
+    transform: translateX(-30%);
   }
-}
-.marquee-item:hover {
-  color: #840000;
-  cursor: pointer;
-  
 }
