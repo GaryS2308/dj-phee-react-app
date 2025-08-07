@@ -31,17 +31,17 @@ export const sendResponseEmail = async (token, type) => {
   const total_amount = parseDurationToHours(booking.duration) * rate_per_hour;
 
   const templateParams = {
-      name: booking.name,
-      email: booking.email,
-      event_date: booking.event_date,
-      start_time: booking.start_time,
-      end_time: booking.end_time,
-      duration: booking.duration,
-      event: booking.event,
-      location: booking.location,
-      rate_per_hour: 1000,
-      total_amount: parseDurationToHours(booking.duration) * 1000,
-  };
+  name: booking.name,
+  to_email: booking.email, // ✅ THIS IS CRUCIAL
+  event_date: booking.event_date,
+  start_time: booking.start_time,
+  end_time: booking.end_time,
+  duration: booking.duration,
+  event: booking.event,
+  location: booking.location,
+  rate_per_hour,
+  total_amount,
+};
 
   // 📧 Send confirmation email to client
   return send('service_qekby5l', 'template_kedes7q', templateParams);
