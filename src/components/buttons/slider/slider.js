@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ReactSlider from 'react-slider';
-import { format, addMinutes } from 'date-fns';
+import { format } from 'date-fns';
 import './slider.css';
 import { getDatabase, ref, onValue } from 'firebase/database';
 
@@ -13,6 +13,9 @@ const TimeSliderModal = ({
   onCancel, 
   onConfirm 
 }) => {
+  // State to hold booked time ranges for selected date
+  const [bookedRanges, setBookedRanges] = useState([]);
+
   // Convert HH:mm to minutes since midnight
   const timeStrToMinutes = (timeStr) => {
     const [h, m] = timeStr.split(':').map(Number);
@@ -54,90 +57,89 @@ const TimeSliderModal = ({
   const [date, setDate] = useState(selectedDate || new Date());
 
   useEffect(() => {
-  const db = getDatabase();
-  const dateStr = format(date, 'yyyy-MM-dd'); // match stored date format
-  const bookingsRef = ref(db, 'bookings');
+    const db = getDatabase();
+    const dateStr = format(date, 'yyyy-MM-dd'); // match stored date format
+    const bookingsRef = ref(db, 'bookings');
 
-  const unsubscribe = onValue(bookingsRef, (snapshot) => {
-    const bookings = snapshot.val();
-    const ranges = [];
+    const unsubscribe = onValue(bookingsRef, (snapshot) => {
+      const bookings = snapshot.val() || {};
+      const ranges = [];
 
-    for (const key in bookings) {
-      const booking = bookings[key];
-      if (booking.event_date === dateStr) {
-        const startMins = timeStrToMinutes(booking.start_time);
-        const durMins = durationStrToMinutes(booking.duration);
-        const endMins = startMins + durMins;
-        ranges.push([startMins, endMins]);
+      for (const key in bookings) {
+        const booking = bookings[key];
+        if (booking.event_date === dateStr) {
+          const startMins = timeStrToMinutes(booking.start_time);
+          const durMins = durationStrToMinutes(booking.duration);
+          const endMins = startMins + durMins;
+          ranges.push([startMins, endMins]);
+        }
       }
-    }
 
-    setBookedRanges(ranges);
-  });
+      setBookedRanges(ranges);
+    });
 
-  return () => unsubscribe();
-}, [date]);
-
+    return () => unsubscribe();
+  }, [date]);
 
   const minDuration = 60; // min 1 hour
   const step = 30; // 30 min steps
   const dayMax = 24 * 60; // minutes in a day
 
-  // Ensure range[1] - range[0] >= minDuration
+  // Check overlaps for slider dragging — only accept if no overlap, valid duration, in future
   const onRangeChange = (vals) => {
-  const [newStart, newEnd] = vals;
-  const now = new Date();
-  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    const [newStart, newEnd] = vals;
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-  const overlaps = bookedRanges.some(([bookedStart, bookedEnd]) => {
-    return newStart < bookedEnd && newEnd > bookedStart;
-  });
+    const overlaps = bookedRanges.some(([bookedStart, bookedEnd]) => {
+      return newStart < bookedEnd && newEnd > bookedStart;
+    });
 
-  const isToday = (someDate) => {
-    return (
-      someDate.getDate() === now.getDate() &&
-      someDate.getMonth() === now.getMonth() &&
-      someDate.getFullYear() === now.getFullYear()
-    );
+    const isToday = (someDate) => {
+      return (
+        someDate.getDate() === now.getDate() &&
+        someDate.getMonth() === now.getMonth() &&
+        someDate.getFullYear() === now.getFullYear()
+      );
+    };
+
+    const isValidDuration = newEnd - newStart >= minDuration;
+    const isInFuture = !isToday(date) || newStart >= currentMinutes;
+
+    if (isValidDuration && !overlaps && newEnd <= dayMax && isInFuture) {
+      setRange(vals);
+    }
   };
 
-  const isValidDuration = newEnd - newStart >= minDuration;
-  const isInFuture = !isToday(date) || newStart >= currentMinutes;
+  // On confirm, double-check overlap & notify user if conflict
+  const handleConfirm = () => {
+    const selectedStart = range[0];
+    const selectedEnd = range[1];
 
-  if (isValidDuration && !overlaps && newEnd <= dayMax && isInFuture) {
-    setRange(vals);
-  }
-};
+    const overlaps = bookedRanges.find(([bookedStart, bookedEnd]) => {
+      return selectedStart < bookedEnd && selectedEnd > bookedStart;
+    });
+
+    if (overlaps) {
+      const [conflictStart, conflictEnd] = overlaps;
+      const startStr = minutesToTimeStr(conflictStart);
+      const endStr = minutesToTimeStr(conflictEnd);
+      alert(`❌ Booked from ${startStr} to ${endStr}. Please choose another time.`);
+      return;
+    }
+
+    onConfirm({
+      date,
+      startTime: minutesToTimeStr(selectedStart),
+      duration: formatDurationStr(selectedEnd - selectedStart),
+    });
+  };
 
   // Format times for display
   const startTimeStr = minutesToTimeStr(range[0]);
   const endTimeStr = minutesToTimeStr(range[1]);
   const durationMins = range[1] - range[0];
   const durationStr = formatDurationStr(durationMins);
-
-  // Handle confirm click
-  const handleConfirm = () => {
-  const selectedStart = range[0];
-  const selectedEnd = range[1];
-
-  const overlaps = bookedRanges.find(([bookedStart, bookedEnd]) => {
-    return selectedStart < bookedEnd && selectedEnd > bookedStart;
-  });
-
-  if (overlaps) {
-    const [conflictStart, conflictEnd] = overlaps;
-    const startStr = minutesToTimeStr(conflictStart);
-    const endStr = minutesToTimeStr(conflictEnd);
-    alert(`❌ Booked from ${startStr} to ${endStr}. Please choose another time.`);
-    return;
-  }
-
-  onConfirm({
-    date,
-    startTime: minutesToTimeStr(selectedStart),
-    duration: formatDurationStr(selectedEnd - selectedStart),
-  });
-};
 
   return (
     <div className="modal-overlay">
@@ -166,13 +168,13 @@ const TimeSliderModal = ({
           pearling
           minDistance={minDuration}
           renderThumb={(props, state) => {
-  const { key, ...propsWithoutKey } = props; // destructure to remove `key`
-  return (
-    <div key={state.index} {...propsWithoutKey}>
-      {state.valueNow === range[0] ? 'Start' : 'End'}
-    </div>
-  );
-}}
+            const { key, ...propsWithoutKey } = props; // remove key prop to avoid React warning
+            return (
+              <div key={state.index} {...propsWithoutKey}>
+                {state.valueNow === range[0] ? 'Start' : 'End'}
+              </div>
+            );
+          }}
         />
         <div className="slider-labels">
           <span>00:00</span>
@@ -181,7 +183,7 @@ const TimeSliderModal = ({
           <span>18:00</span>
           <span>24:00</span>
         </div>
-        
+
         <div className="modal-buttons">
           <button onClick={onCancel} className="cancel-button">Cancel</button>
           <button onClick={handleConfirm} className="confirm-button">Confirm</button>
