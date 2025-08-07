@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ReactSlider from 'react-slider';
 import { format, addMinutes } from 'date-fns';
 import './slider.css';
+import { getDatabase, ref, onValue } from 'firebase/database';
 
 const TimeSliderModal = ({ 
   selectedDate, 
@@ -52,19 +53,61 @@ const TimeSliderModal = ({
   const [range, setRange] = useState(initialRange);
   const [date, setDate] = useState(selectedDate || new Date());
 
+  useEffect(() => {
+  const db = getDatabase();
+  const dateStr = format(date, 'yyyy-MM-dd'); // match stored date format
+  const bookingsRef = ref(db, 'bookings');
+
+  const unsubscribe = onValue(bookingsRef, (snapshot) => {
+    const bookings = snapshot.val();
+    const ranges = [];
+
+    for (const key in bookings) {
+      const booking = bookings[key];
+      if (booking.event_date === dateStr) {
+        const startMins = timeStrToMinutes(booking.start_time);
+        const durMins = durationStrToMinutes(booking.duration);
+        const endMins = startMins + durMins;
+        ranges.push([startMins, endMins]);
+      }
+    }
+
+    setBookedRanges(ranges);
+  });
+
+  return () => unsubscribe();
+}, [date]);
+
+
   const minDuration = 60; // min 1 hour
   const step = 30; // 30 min steps
   const dayMax = 24 * 60; // minutes in a day
 
   // Ensure range[1] - range[0] >= minDuration
   const onRangeChange = (vals) => {
-    if (vals[1] - vals[0] >= minDuration) {
-      // Keep slider within day max
-      if (vals[1] <= dayMax) {
-        setRange(vals);
-      }
-    }
+  const [newStart, newEnd] = vals;
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  const overlaps = bookedRanges.some(([bookedStart, bookedEnd]) => {
+    return newStart < bookedEnd && newEnd > bookedStart;
+  });
+
+  const isToday = (someDate) => {
+    return (
+      someDate.getDate() === now.getDate() &&
+      someDate.getMonth() === now.getMonth() &&
+      someDate.getFullYear() === now.getFullYear()
+    );
   };
+
+  const isValidDuration = newEnd - newStart >= minDuration;
+  const isInFuture = !isToday(date) || newStart >= currentMinutes;
+
+  if (isValidDuration && !overlaps && newEnd <= dayMax && isInFuture) {
+    setRange(vals);
+  }
+};
 
   // Format times for display
   const startTimeStr = minutesToTimeStr(range[0]);
