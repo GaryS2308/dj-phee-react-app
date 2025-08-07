@@ -22,15 +22,16 @@
   text-transform: uppercase;
   margin-right: 4rem;
   white-space: nowrap;
-  font-family: 'Anton', sans-serif;
+  font-family: 'poppins', sans-serif;
+  font-weight: 600;
   letter-spacing: 0.05rem;
 }
 
 @keyframes scroll-left {
   0% {
-    transform: translateX(90%);
+    transform: translateX(80%);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-80%);
   }
 }
