@@ -50,7 +50,7 @@ export const sendResponseEmail = async (token, type) => {
 
   console.log("📤 Sending email with params:", templateParams);
 
-  return send('service_qekby5l', 'template_kedes7q', templateParams)
+  return send('service_qekby5l', 'template_kedes7q', templateParams, '0fqk3GFHeuZ3SHdGz')
     .then((res) => {
       console.log("✅ Email sent successfully:", res);
     })
