@@ -9,7 +9,8 @@
 
 .marquee-track {
   display: flex;
-  animation: scroll-left 5s linear infinite;
+  animation: scroll-left 40s linear infinite;
+  
   width: max-content;
 
 }
@@ -24,14 +25,14 @@
 
 @keyframes scroll-left {
   0% {
-    transform: translateX(100%);
+    transform: translateX(50%);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-80%);
   }
 }
 .marquee-item:hover {
-  color: #ffcc00;
+  color: #840000;
   cursor: pointer;
-  size-adjust: 1.2;
+  
 }
