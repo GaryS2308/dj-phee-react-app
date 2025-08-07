@@ -3,18 +3,16 @@ import '../../buttons/marquee-banner/marquee-banner.css';
 
 const MarqueeBanner = () => {
   const places = [
-    'Johannesburg',
-    'Cape Town',
-    'Durban',
-    'Stellenbosch',
-    'Pretoria',
-    'London',
-    'Ibiza',
-    'Berlin',
-    'Soweto',
-    'Ballito',
-    'Gqeberha',
-    'Lisbon',
+    'HALO NIGHTCLUB',
+    'MODULAR',
+    'DEUS EX MACHINA',
+    'CAPRICE',
+    'RITAS',
+    'THE VILLAGE IDIOT',
+    'ARCADE',
+    'FOOLS GOLD',
+    'DESTINY',
+    'RED BULL',
   ];
 
   return (
