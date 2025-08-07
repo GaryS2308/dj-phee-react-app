@@ -18,11 +18,11 @@ const MarqueeBanner = () => {
   return (
     <div className="marquee-container">
       <div className="marquee-track">
-        {places.map((place, index) => (
-          <div className="marquee-item" key={index}>
-            📍 {place}
-          </div>
-        ))}
+        {[...places, ...places].map((place, index) => (
+  <div className="marquee-item" key={index}>
+    📍 {place}
+  </div>
+))}
       </div>
     </div>
   );

@@ -28,10 +28,10 @@
 }
 
 @keyframes scroll-left {
-  0% {
-    transform: translateX(80%);
+   from{
+    transform: translateX(0%);
   }
-  100% {
-    transform: translateX(-80%);
+  to {
+    transform: translateX(-50%);
   }
 }
