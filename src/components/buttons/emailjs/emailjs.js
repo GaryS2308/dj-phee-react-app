@@ -1,6 +1,6 @@
 // src/components/buttons/emailjs/emailjs.js
 import { send } from '@emailjs/browser';
-import { db } from '../../../firebase'; // adjust as needed src/firebase.js
+import { db } from '../../../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export const sendResponseEmail = async (token, type) => {
@@ -12,7 +12,6 @@ export const sendResponseEmail = async (token, type) => {
   }
 
   console.log("🔍 Querying Firestore for token...");
-
   const q = query(collection(db, 'bookings'), where('token', '==', token));
   const snapshot = await getDocs(q);
 
@@ -35,9 +34,27 @@ export const sendResponseEmail = async (token, type) => {
 
   const total_amount = parseDurationToHours(booking.duration) * rate_per_hour;
 
+  // Convert "13 August 2025" + "19:00" into ISO UTC format for Google Calendar
+  const parseToISO = (dateStr, timeStr) => {
+    const [day, monthName, year] = dateStr.split(' ');
+    const months = {
+      January: '01', February: '02', March: '03', April: '04',
+      May: '05', June: '06', July: '07', August: '08',
+      September: '09', October: '10', November: '11', December: '12'
+    };
+    const month = months[monthName];
+    const [hour, minute] = timeStr.split(':');
+    return `${year}${month}${day.padStart(2, '0')}T${hour}${minute}00Z`;
+  };
+
+  const startISO = parseToISO(booking.event_date, booking.start_time);
+  const endISO = parseToISO(booking.event_date, booking.end_time);
+
+  const calendar_url = `https://www.google.com/calendar/render?action=TEMPLATE&text=DJ+Phee+at+${encodeURIComponent(booking.event)}&dates=${startISO}/${endISO}&details=${encodeURIComponent('Booking confirmed: ' + booking.details)}&location=${encodeURIComponent(booking.location)}`;
+
   const templateParams = {
     name: booking.name,
-    to_email: booking.email, // must match EmailJS "to" variable
+    to_email: booking.email,
     event_date: booking.event_date,
     start_time: booking.start_time,
     end_time: booking.end_time,
@@ -46,6 +63,7 @@ export const sendResponseEmail = async (token, type) => {
     location: booking.location,
     rate_per_hour,
     total_amount,
+    calendar_url, // 👈 This is the new value for your EmailJS template
   };
 
   console.log("📤 Sending email with params:", templateParams);
