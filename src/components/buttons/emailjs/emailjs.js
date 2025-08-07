@@ -4,21 +4,26 @@ import { db } from '../../../firebase'; // adjust as needed src/firebase.js
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export const sendResponseEmail = async (token, type) => {
+  console.log("📨 sendResponseEmail called with token:", token, "type:", type);
+
   if (type !== 'accept') {
+    console.error("❌ Unsupported type:", type);
     throw new Error('Only accept responses are supported at this time.');
   }
 
-  // 🔍 Find the booking by token
+  console.log("🔍 Querying Firestore for token...");
+
   const q = query(collection(db, 'bookings'), where('token', '==', token));
   const snapshot = await getDocs(q);
 
   if (snapshot.empty) {
+    console.error("❌ No booking found for token:", token);
     throw new Error('Booking not found for this token.');
   }
 
   const booking = snapshot.docs[0].data();
+  console.log("✅ Booking found:", booking);
 
-  // 🧮 Calculate amount
   const rate_per_hour = 1000;
   const parseDurationToHours = (duration) => {
     let totalHours = 0;
@@ -31,18 +36,26 @@ export const sendResponseEmail = async (token, type) => {
   const total_amount = parseDurationToHours(booking.duration) * rate_per_hour;
 
   const templateParams = {
-  name: booking.name,
-  to_email: booking.email, // ✅ THIS IS CRUCIAL
-  event_date: booking.event_date,
-  start_time: booking.start_time,
-  end_time: booking.end_time,
-  duration: booking.duration,
-  event: booking.event,
-  location: booking.location,
-  rate_per_hour,
-  total_amount,
-};
+    name: booking.name,
+    to_email: booking.email, // must match EmailJS "to" variable
+    event_date: booking.event_date,
+    start_time: booking.start_time,
+    end_time: booking.end_time,
+    duration: booking.duration,
+    event: booking.event,
+    location: booking.location,
+    rate_per_hour,
+    total_amount,
+  };
 
-  // 📧 Send confirmation email to client
-  return send('service_qekby5l', 'template_kedes7q', templateParams);
+  console.log("📤 Sending email with params:", templateParams);
+
+  return send('service_qekby5l', 'template_kedes7q', templateParams)
+    .then((res) => {
+      console.log("✅ Email sent successfully:", res);
+    })
+    .catch((err) => {
+      console.error("❌ Email sending failed:", err);
+      throw err;
+    });
 };
