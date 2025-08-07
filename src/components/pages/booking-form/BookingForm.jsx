@@ -97,6 +97,26 @@ const BookingForm = () => {
     const endTime = addHoursToTime(formData.startTime, durationHours);
     const token = Math.random().toString(36).substring(2, 12);
 
+    // Calendar URL generation
+const pad = (n) => n.toString().padStart(2, '0');
+
+const toISODateTime = (dateObj, timeStr) => {
+  const [hour, minute] = timeStr.split(':').map(Number);
+  const year = dateObj.getFullYear();
+  const month = pad(dateObj.getMonth() + 1);
+  const day = pad(dateObj.getDate());
+  return `${year}${month}${day}T${pad(hour)}${pad(minute)}00Z`;
+};
+
+const startISO = toISODateTime(formData.eventDate, formData.startTime);
+const endISO = toISODateTime(formData.eventDate, endTime);
+
+const eventTitle = `DJ Phee at ${formData.event}`;
+const eventDescription = `Booking request: ${formData.details || 'No additional details'}`;
+const location = formData.location;
+
+const calendar_url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${startISO}%2F${endISO}&details=${encodeURIComponent(eventDescription)}&location=${encodeURIComponent(location)}`;
+
     const templateParams = {
       name: formData.name,
       email: formData.email,
@@ -109,6 +129,7 @@ const BookingForm = () => {
       end_time: endTime,
       duration: formData.duration,
       token: token,
+      calendar_url,
     };
 
     // 🔥 Save booking to Firestore
