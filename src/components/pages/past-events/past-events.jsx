@@ -28,7 +28,6 @@ function PastEvents() {
   return (
     <section id="past-events">
       <h2>Past Events</h2>
-      <MarqueeBanner />
       <Swiper
         modules={[Navigation, Pagination, Mousewheel, FreeMode]}
         navigation
@@ -48,6 +47,7 @@ function PastEvents() {
           </SwiperSlide>
         ))}
       </Swiper>
+      <MarqueeBanner />
     </section>
   );
 }
