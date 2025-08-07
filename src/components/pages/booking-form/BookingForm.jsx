@@ -16,7 +16,7 @@ import {getdocs} from 'firebase/firestore';
 const BookingForm = () => {
   useEffect(() => {
     init("0fqk3GFHeuZ3SHdGz");
-    
+    useEffect(() => {
   const fetchBookings = async () => {
     try {
       const snapshot = await getDocs(collection(db, 'bookings'));
