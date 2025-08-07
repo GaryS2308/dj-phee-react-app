@@ -9,7 +9,7 @@
 
 .marquee-track {
   display: flex;
-  animation: scroll-left 30s linear infinite;
+  animation: scroll-left 25s linear infinite;
   
   width: max-content;
 
@@ -21,6 +21,8 @@
   text-transform: uppercase;
   margin-right: 4rem;
   white-space: nowrap;
+  font-style: bold;
+  font-family: 'Poppins', sans-serif;
 }
 
 @keyframes scroll-left {
