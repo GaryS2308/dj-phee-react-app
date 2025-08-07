@@ -10,11 +10,44 @@ import TimeSliderModal from '../../buttons/slider/slider';
 import '../../buttons/slider/slider.css'; // import your slider styles here
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../firebase'; // Adjust if your firebase.js path is different
+import {getdocs} from 'firebase/firestore';
 
 
 const BookingForm = () => {
   useEffect(() => {
     init("0fqk3GFHeuZ3SHdGz");
+    useEffect(() => {
+  const fetchBookings = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, 'bookings'));
+      const ranges = snapshot.docs.map(doc => {
+        const data = doc.data();
+        const dateParts = data.event_date?.split(' ');
+        if (!dateParts || dateParts.length < 3) return null;
+
+        const day = parseInt(dateParts[0]);
+        const month = new Date(`${dateParts[1]} 1, 2000`).getMonth(); // month name to number
+        const year = parseInt(dateParts[2]);
+
+        const startTimeParts = data.start_time?.split(':');
+        const endTimeParts = data.end_time?.split(':');
+        if (!startTimeParts || !endTimeParts) return null;
+
+        const start = new Date(year, month, day, startTimeParts[0], startTimeParts[1]);
+        const end = new Date(year, month, day, endTimeParts[0], endTimeParts[1]);
+
+        return { start, end };
+      }).filter(Boolean);
+
+      setBookedRanges(ranges);
+    } catch (err) {
+      console.error('Failed to fetch bookings:', err);
+    }
+  };
+
+  fetchBookings();
+}, []);
+
   }, []);
 
   const [formData, setFormData] = useState({
@@ -40,6 +73,9 @@ const BookingForm = () => {
 
   // New state to toggle slider modal
   const [showSliderModal, setShowSliderModal] = useState(false);
+
+  const [bookedRanges, setBookedRanges] = useState([]);
+
 
   // Helper to parse duration string to hours (e.g. "1hr 30min")
   const parseDurationToHours = (duration) => {
@@ -221,6 +257,7 @@ const calendar_url = `https://www.google.com/calendar/render?action=TEMPLATE&tex
           selectedDate={formData.eventDate || new Date()}
           initialStartTime={formData.startTime || '19:00'}
           initialDuration={formData.duration || '1hr'}
+          bookedRanges={bookedRanges} 
           onCancel={() => setShowSliderModal(false)}
           onConfirm={({ date, startTime, duration }) => {
             setFormData(prev => ({

@@ -117,12 +117,27 @@ const TimeSliderModal = ({
 
   // Handle confirm click
   const handleConfirm = () => {
-    onConfirm({
-      date,
-      startTime: startTimeStr,
-      duration: durationStr,
-    });
-  };
+  const selectedStart = range[0];
+  const selectedEnd = range[1];
+
+  const overlaps = bookedRanges.find(([bookedStart, bookedEnd]) => {
+    return selectedStart < bookedEnd && selectedEnd > bookedStart;
+  });
+
+  if (overlaps) {
+    const [conflictStart, conflictEnd] = overlaps;
+    const startStr = minutesToTimeStr(conflictStart);
+    const endStr = minutesToTimeStr(conflictEnd);
+    alert(`❌ Booked from ${startStr} to ${endStr}. Please choose another time.`);
+    return;
+  }
+
+  onConfirm({
+    date,
+    startTime: minutesToTimeStr(selectedStart),
+    duration: formatDurationStr(selectedEnd - selectedStart),
+  });
+};
 
   return (
     <div className="modal-overlay">
