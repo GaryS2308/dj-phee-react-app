@@ -19,6 +19,7 @@
   max-width: 1200px;
   margin: 40px auto;
   padding: 0 20px;
+  height: 500px;
 }
 
 .phee-gallery img {
@@ -32,7 +33,7 @@
 }
 
 .phee-gallery img:hover {
-  transform: scale(1.2);
+  transform: scale(1.15);
 }
 @media (max-width: 700px) {
   .phee-gallery {
