@@ -17,12 +17,12 @@
 
 .marquee-item {
   color: white;
-  font-size: 1rem;
+  font-size: 1.5rem;
   text-transform: uppercase;
   margin-right: 4rem;
   white-space: nowrap;
-  font-style: bold;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 0.05rem;
 }
 
 @keyframes scroll-left {
