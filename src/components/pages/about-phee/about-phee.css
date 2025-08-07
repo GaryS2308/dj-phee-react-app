@@ -28,17 +28,16 @@
   border-radius: 12px;
   object-fit: cover;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease;
   display: block;
 }
 
 .phee-gallery img:hover {
-  transform: scale(1.02);
+  transform: scale(1.2);
 }
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .phee-gallery {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 12px;
   }
 }
 
