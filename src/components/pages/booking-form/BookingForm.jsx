@@ -10,13 +10,16 @@ import TimeSliderModal from '../../buttons/slider/slider';
 import '../../buttons/slider/slider.css'; // import your slider styles here
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../firebase'; // Adjust if your firebase.js path is different
-import {getdocs} from 'firebase/firestore';
+import {getDocs, collection} from 'firebase/firestore';
 
 
 const BookingForm = () => {
   useEffect(() => {
-    init("0fqk3GFHeuZ3SHdGz");
-    useEffect(() => {
+  // Initialize EmailJS once
+  init("0fqk3GFHeuZ3SHdGz");
+}, []);
+
+useEffect(() => {
   const fetchBookings = async () => {
     try {
       const snapshot = await getDocs(collection(db, 'bookings'));
@@ -26,7 +29,7 @@ const BookingForm = () => {
         if (!dateParts || dateParts.length < 3) return null;
 
         const day = parseInt(dateParts[0]);
-        const month = new Date(`${dateParts[1]} 1, 2000`).getMonth(); // month name to number
+        const month = new Date(`${dateParts[1]} 1, 2000`).getMonth();
         const year = parseInt(dateParts[2]);
 
         const startTimeParts = data.start_time?.split(':');
@@ -41,14 +44,12 @@ const BookingForm = () => {
 
       setBookedRanges(ranges);
     } catch (err) {
-      console.error('Failed to fetch bookings:', err);
+      console.error('❌ Failed to fetch bookings from Firebase:', err);
     }
   };
 
   fetchBookings();
 }, []);
-
-  }, []);
 
   const [formData, setFormData] = useState({
     name: '',
