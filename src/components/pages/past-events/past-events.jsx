@@ -1,6 +1,7 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Mousewheel, FreeMode } from 'swiper/modules';
+import MarqueeBanner from '../../buttons/marquee-banner/marquee-banner';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -27,6 +28,7 @@ function PastEvents() {
   return (
     <section id="past-events">
       <h2>Past Events</h2>
+      <MarqueeBanner />
       <Swiper
         modules={[Navigation, Pagination, Mousewheel, FreeMode]}
         navigation
