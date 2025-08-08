@@ -10,7 +10,8 @@ const HeroSection = () => {
         Your browser does not support video.
       </video>
       <div className="overlay">
-        <h1>Phee sets the vibe for clubs, weddings, coffee shops & more</h1>
+        <h1>PHEE </h1>
+        <h2>clubs, events, dances, weddings, coffee shops, anywhere with a speaker</h2>
         <a href="#booking" className="cta-button">Book Now</a>
         
       

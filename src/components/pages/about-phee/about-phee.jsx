@@ -4,7 +4,7 @@ import './about-phee.css';
 const AboutPhee = () => {
   return (
     <section id="about-phee">
-      <h2>About Phee</h2>
+      <h2>ABOUT PHEE</h2>
       <p>
         Phee is a versatile DJ rooted in the pulsating rhythms of Afrotech. With an ear for energy and a talent for reading any room, he brings unforgettable vibes to clubs, weddings, coffee shops, and festivals, effortlessly blending genres to suit every crowd.
       </p>
