@@ -25,9 +25,6 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="footer-bio">
-          'clubs, events, dances, weddings, coffee shops, anywhere with a speaker'
-        </div>
       </footer>
 
       {/* Privacy Policy Modal */}
