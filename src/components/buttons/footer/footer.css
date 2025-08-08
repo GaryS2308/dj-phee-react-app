@@ -21,10 +21,11 @@
 }
 
 .footer-brand {
-  font-weight: 900;
-  font-size: 3rem;
+  font-weight: 1000;
+  font-size: 2.8rem;
   user-select: text;
-  margin-top: 10px;
+  margin-top: 17px;
+  line-height: 0.5;
 }
 
 .footer-link {
