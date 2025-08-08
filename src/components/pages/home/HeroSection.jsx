@@ -11,7 +11,7 @@ const HeroSection = () => {
       </video>
       <div className="overlay">
         <h1>PHEE </h1>
-        <h2>clubs, events, dances, weddings, coffee shops, anywhere with a speaker</h2>
+        <h2>clubs, events, dances, weddings, coffee shops, anywhere with a</h2>
         <a href="#booking" className="cta-button">Book Now</a>
         
       
