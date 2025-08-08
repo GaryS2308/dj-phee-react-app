@@ -10,6 +10,7 @@ import TimeSliderModal from '../../buttons/slider/slider';
 import '../../buttons/slider/slider.css'; // import your slider styles here
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../firebase'; // Adjust if your firebase.js path is different
+import Footer from '../../buttons/footer/footer'; // Import the Footer component
 
 
 const BookingForm = () => {
