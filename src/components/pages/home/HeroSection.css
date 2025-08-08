@@ -22,8 +22,8 @@
 }
 
 .overlay h1 {
-  font-size: 3rem;
-  margin-bottom: 20px;
+  font-size: 10rem;
+  margin-bottom: 5px;
   color: white;
   font-family: 'poppins', sans-serif;
   font-weight: bold;
@@ -32,7 +32,7 @@
   
 }
 .overlay h2 {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #ccc;
   margin-bottom: 20px;
   font-family: 'poppins', sans-serif;
