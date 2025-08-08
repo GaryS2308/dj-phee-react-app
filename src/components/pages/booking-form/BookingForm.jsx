@@ -236,7 +236,7 @@ const calendar_url = `https://www.google.com/calendar/render?action=TEMPLATE&tex
         />
       )}
 
-      <SocialLinks />
+      <Footer />
     </section>
   );
 };
