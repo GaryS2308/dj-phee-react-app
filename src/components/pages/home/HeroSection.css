@@ -29,6 +29,7 @@
   font-weight: bold;
   color : #eaeaea;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  padding-bottom: 0%;
  
 }
 .overlay h2 {
@@ -38,6 +39,7 @@
   font-family: 'poppins', sans-serif;
   font-weight: normal;
   margin-top: 0px;
+  padding-top: 0%;
 }
 
 .cta-button {
