@@ -27,7 +27,7 @@ function PastEvents() {
 
   return (
     <section id="past-events">
-      <h2>Past Events</h2>
+      <h2>PAST EVENTS</h2>
       <Swiper
         modules={[Navigation, Pagination, Mousewheel, FreeMode]}
         navigation

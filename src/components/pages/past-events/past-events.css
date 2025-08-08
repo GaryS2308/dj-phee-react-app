@@ -43,3 +43,11 @@
 .swiper-button-prev:hover {
   background: rgba(0, 0, 0, 0.7);
 }
+
+h2 {
+  font-family: 'poppins', sans-serif;
+  font-weight: bold;
+  font-size: 2rem;
+  color : #eaeaea;
+  
+}
