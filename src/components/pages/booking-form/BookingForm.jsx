@@ -173,7 +173,7 @@ const calendar_url = `https://www.google.com/calendar/render?action=TEMPLATE&tex
 
   return (
     <section id="booking">
-      <h2>Book DJ Phee</h2>
+      <h2>Book DJ PHEE</h2>
 
       {formSubmitted ? (
         <div className="confirmation-section">
