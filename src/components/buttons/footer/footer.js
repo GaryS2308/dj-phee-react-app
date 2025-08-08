@@ -26,7 +26,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bio">
-          Let’s get movin’
+          'clubs, events, dances, weddings, coffee shops, anywhere with a speaker'
         </div>
       </footer>
 
