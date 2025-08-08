@@ -8,6 +8,10 @@
 #booking h2 {
   margin-bottom: 30px;
   margin-top: 0px;
+  font-family: 'poppins', sans-serif;
+  font-weight: bold;
+  font-size: 2rem;
+  color : #eaeaea;
 }
 
 #booking-form {
