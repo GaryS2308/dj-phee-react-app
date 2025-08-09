@@ -106,7 +106,7 @@ const toISODateTime = (dateObj, timeStr) => {
   const year = dateObj.getFullYear();
   const month = pad(dateObj.getMonth() + 1);
   const day = pad(dateObj.getDate());
-  return `${year}${month}${day}T${pad(hour)}${pad(minute)}00Z`;
+  return `${year}${month}${day}T${pad(hour)}${pad(minute)}00`;
 };
 
 const startISO = toISODateTime(formData.eventDate, formData.startTime);
@@ -143,7 +143,7 @@ const calendar_url = `https://www.google.com/calendar/render?action=TEMPLATE&tex
     await send('service_qekby5l', 'template_b27p846', templateParams);
 
     // ✅ Success state
-    setConfirmationMessage('✅ Booking request received by Phee. You’ll hear back shortly!');
+    setConfirmationMessage('✅ Booking request received by PHEE. PHEE will get back to you via email promptly');
     setFormSubmitted(true);
     setFormData({
       name: '', email: '', phone: '', event: '', location: '',
