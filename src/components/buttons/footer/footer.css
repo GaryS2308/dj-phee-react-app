@@ -25,14 +25,6 @@
   font-size: 2.8rem;
   user-select: text;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-
-  line-height: 0.5;
-}
-.footer-brand {
-  font-weight: 1000;
-  font-size: 2.8rem;
-  user-select: text;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   line-height: 0.8;
   color: white; /* default color */
   padding: 6px 3px; /* narrow padding for hover background */
