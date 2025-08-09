@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SocialLinks from '../../buttons/social-links/social-links'; // Adjust the import path as needed
 import './footer.css';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const [showPrivacy, setShowPrivacy] = useState(false);
@@ -10,7 +11,7 @@ const Footer = () => {
     <>
       <footer className="footer">
         <div className="footer-top">
-          <div className="footer-item footer-brand">PHEE</div>
+          <Link to="/" className="footer-item footer-brand">PHEE</Link>
 
           <button className="footer-item footer-link" onClick={() => setShowPrivacy(true)}>
             Privacy Policy
