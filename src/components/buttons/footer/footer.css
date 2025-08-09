@@ -88,7 +88,7 @@
 }
 
 .modal-content {
-  background: #4f4f4f;
+  background: #474747;
   padding: 25px 30px;
   border-radius: 8px;
   max-width: 600px;
@@ -101,7 +101,7 @@
 /* Updated heading style for modal */
 .modal-content h2 {
   background-color: #333; /* darker grey */
-  padding: 12px 20px;
+  padding: 15px 25px;
   border-radius: 6px;
   color: #981b1b;
   font-weight: 800;
