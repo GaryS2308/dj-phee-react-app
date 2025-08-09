@@ -27,13 +27,13 @@ const BookingResponse = () => {
 
       {status === 'pending' && (
         <>
-          <p>Would you like to accept this booking?</p>
-          <button onClick={() => handleClick('accept')} style={{ margin: '10px' }}>✅ Accept Booking</button>
+          <p>Would you like to accept this event?</p>
+          <button onClick={() => handleClick('accept')} style={{ margin: '10px' }}>KEEP IT MOVIN OU PAL</button>
         </>
       )}
 
       {status === 'sending' && <p>Sending confirmation to the client...</p>}
-      {status === 'accepted' && <p>✅ Booking accepted! The client has been notified with the invoice.</p>}
+      {status === 'accepted' && <p>Booking accepted! VAMOSSSSS PHEEEEEEE!! The client has been notified with the invoice.</p>}
       {status === 'error' && <p>❌ Something went wrong. Please try again.</p>}
     </section>
   );

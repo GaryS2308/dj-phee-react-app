@@ -89,7 +89,7 @@ const BookingForm = () => {
 
   // ⛔ Check for required fields
   if (!formData.eventDate || !formData.startTime || !formData.duration) {
-    setConfirmationMessage('❌ Please select date, time and duration before submitting.');
+    setConfirmationMessage(' Please select date, time and duration before submitting.');
     return;
   }
 
@@ -143,7 +143,7 @@ const calendar_url = `https://www.google.com/calendar/render?action=TEMPLATE&tex
     await send('service_qekby5l', 'template_b27p846', templateParams);
 
     // ✅ Success state
-    setConfirmationMessage('✅ Booking request received by PHEE. PHEE will get back to you via email promptly');
+    setConfirmationMessage('Booking request received. PHEE will get back to you via email promptly');
     setFormSubmitted(true);
     setFormData({
       name: '', email: '', phone: '', event: '', location: '',
@@ -155,7 +155,7 @@ const calendar_url = `https://www.google.com/calendar/render?action=TEMPLATE&tex
 
   } catch (error) {
     console.error('Booking Error:', error);
-    setConfirmationMessage('❌ Booking failed. Please try again.');
+    setConfirmationMessage('Booking failed. Please try again.');
   }
 };
 
