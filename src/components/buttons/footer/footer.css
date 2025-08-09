@@ -29,7 +29,7 @@
   color: white; /* default color */
   padding: 6px 3px; /* narrow padding for hover background */
   border-radius: 4px; /* rounded corners */
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out;
   /* removed text-decoration and :visited styles as it’s now a div */
 }
 
