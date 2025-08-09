@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/dj-phee-react-app/static/css/main.9ad81ddf.css",
+    "main.js": "/dj-phee-react-app/static/js/main.7f0558da.js",
+    "index.html": "/dj-phee-react-app/index.html",
+    "main.9ad81ddf.css.map": "/dj-phee-react-app/static/css/main.9ad81ddf.css.map",
+    "main.7f0558da.js.map": "/dj-phee-react-app/static/js/main.7f0558da.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9ad81ddf.css",
+    "static/js/main.7f0558da.js"
+  ]
+}
