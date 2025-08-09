@@ -8,7 +8,9 @@
     "start": "export NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
     "build": "export NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
     "test": "export NODE_OPTIONS=--openssl-legacy-provider && react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -29,7 +31,7 @@
     "eslint-plugin-react": "^7.27.1",
     "react-scripts": "^5.0.1"
   },
-  "homepage": "http://yourusername.github.io/dj-phee-react-app",
+  "homepage": "https://garys2308.github.io/dj-phee-react-app",
   "keywords": [
     "react",
     "dj",
