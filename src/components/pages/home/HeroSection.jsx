@@ -1,6 +1,6 @@
 import React from 'react';
 import './HeroSection.css';
-import SocialLinks from '../../buttons/social-links/social-links'; // ✅ Add this
+
 
 const HeroSection = () => {
   return (

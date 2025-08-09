@@ -35,15 +35,10 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   line-height: 0.8;
   color: white; /* default color */
-  text-decoration: none; /* remove underline */
-  padding: 6px 3px; /* space for hover background */
-  border-radius: 4px; /* optional rounded corners */
+  padding: 6px 3px; /* narrow padding for hover background */
+  border-radius: 4px; /* rounded corners */
   transition: all 0.2s ease-in-out;
-}
-
-/* Remove default purple visited link */
-.footer-brand:visited {
-  color: white;
+  /* removed text-decoration and :visited styles as it’s now a div */
 }
 
 /* Hover state: invert colors */
@@ -52,6 +47,7 @@
   color: black;
   text-shadow: #111 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
+
 
 .footer-link {
   background: none;
