@@ -36,7 +36,7 @@
   line-height: 0.8;
   color: white; /* default color */
   text-decoration: none; /* remove underline */
-  padding: 2px 6px; /* space for hover background */
+  padding: 6px 3px; /* space for hover background */
   border-radius: 4px; /* optional rounded corners */
   transition: all 0.2s ease-in-out;
 }
