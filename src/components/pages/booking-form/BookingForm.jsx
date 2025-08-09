@@ -217,7 +217,7 @@ const calendar_url = `https://www.google.com/calendar/render?action=TEMPLATE&tex
           <input type="text" name="location" placeholder="Event Location" value={formData.location} onChange={handleChange} required />
           <textarea name="details" placeholder="Tell us about your event..." rows="5" value={formData.details} onChange={handleChange}></textarea>
 
-          <button type="submit" disabled={!formData.eventDate || !formData.startTime || !formData.duration}>Submit Booking Request</button>
+          <button type="submit" disabled={!formData.eventDate || !formData.startTime || !formData.duration || formSubmitted}>Submit Booking Request</button>
         </form>
       )}
 
