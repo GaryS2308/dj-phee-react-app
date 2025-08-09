@@ -12,7 +12,7 @@ const MarqueeBanner = () => {
     'ARCADE',
     'FOOLS GOLD',
     'DESTINY',
-    'RED BULL',
+    'RED BULL UNLOCKED',
   ];
 
   return (
