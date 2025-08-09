@@ -33,10 +33,10 @@
   font-size: 2.8rem;
   user-select: text;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  line-height: 0.5;
+  line-height: 0.8;
   color: white; /* default color */
   text-decoration: none; /* remove underline */
-  padding: 4px 8px; /* space for hover background */
+  padding: 6px 6px; /* space for hover background */
   border-radius: 4px; /* optional rounded corners */
   transition: all 0.2s ease-in-out;
 }
@@ -48,8 +48,9 @@
 
 /* Hover state: invert colors */
 .footer-brand:hover {
-  background-color: white;
+  background-color: rgb(218, 218, 218);
   color: black;
+  text-shadow: #111 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .footer-link {
