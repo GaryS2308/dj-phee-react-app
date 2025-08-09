@@ -88,14 +88,14 @@
 }
 
 .modal-content {
-  background: #474747;
+  background: #111;
   padding: 25px 30px;
   border-radius: 8px;
   max-width: 600px;
   max-height: 60vh;
   overflow-y: auto;
   color: #eee;
-  box-shadow: 0 0 15px #981b1b(255,204,0,0.6);
+  box-shadow: 0 0 20px #981b1b;
 }
 
 /* Updated heading style for modal */
