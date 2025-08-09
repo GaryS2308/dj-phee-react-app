@@ -11,6 +11,8 @@ import '../../buttons/slider/slider.css'; // import your slider styles here
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../firebase'; // Adjust if your firebase.js path is different
 import Footer from '../../buttons/footer/footer'; // Import the Footer component
+import { VscPass } from 'react-icons/vsc';
+
 
 
 const BookingForm = () => {
@@ -178,7 +180,10 @@ const calendar_url = `https://www.google.com/calendar/render?action=TEMPLATE&tex
 
       {formSubmitted ? (
         <div className="confirmation-section">
-          <div className="confirmation-message">{confirmationMessage}</div>
+          <div className="confirmation-message">
+                <VscPass style={{ color: '#d6d6d6ff', verticalAlign: 'middle', marginRight: '8px', fontSize: '1.5rem' }} />
+                  {confirmationMessage}
+          </div>
           <button onClick={handleNewBookingClick} className="new-booking-button cta-button">
             New Booking Form
           </button>
