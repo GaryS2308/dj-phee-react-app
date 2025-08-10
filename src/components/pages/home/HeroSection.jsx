@@ -1,5 +1,6 @@
 import React from 'react';
 import './HeroSection.css';
+import { Link } from 'react-router-dom';
 
 
 const HeroSection = () => {
@@ -12,7 +13,7 @@ const HeroSection = () => {
       <div className="overlay">
         <h1>PHEE </h1>
         <h2>clubs, events, dances, weddings, coffee shops, anywhere with a speaker</h2>
-        <a href="#/booking" className="cta-button">BOOK NOW</a>
+        <Link to="/booking" className="cta-button">BOOK NOW</Link>
         
       
       </div>
