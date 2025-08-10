@@ -24,6 +24,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/response" element={<BookingResponse />} />
+        <Route path="/booking" element={<BookingForm />} />
       </Routes>
     </Router>
   );
