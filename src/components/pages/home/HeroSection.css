@@ -61,7 +61,8 @@
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 768px) {
   .overlay h1 {
-    font-size: 10rem; /* Smaller heading on mobile */
+    font-size: 9rem; /* Smaller heading on mobile */
+    max-width: 95%;;
   }
 
   .overlay h2 {
