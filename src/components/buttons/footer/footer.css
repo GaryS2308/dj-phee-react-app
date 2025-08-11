@@ -166,6 +166,7 @@
   .footer-brand {
     font-size: 2.4rem; /* smaller logo text */
     padding: 3px 1.7px;
+    font-family: 'Anton', sans-serif;;
   }
 
   .footer-link {
@@ -173,7 +174,9 @@
   }
 
   .footer-social {
-    gap: 5px; /* smaller gap between icons */
+    gap: 0px; /* smaller gap between icons */
+    flex-wrap: wrap; /* allow wrapping on small screens */
+    size: 0.8rem;;
 
   }
 }

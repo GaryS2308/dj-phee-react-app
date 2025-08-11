@@ -26,7 +26,7 @@
   font-size: 20rem;
   margin-bottom: 0px;
   color: white;
-  font-family: 'poppins', sans-serif;
+  font-family: 'Anton', sans-serif;
   font-weight: bold;
   color : #eaeaea;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -38,7 +38,7 @@
   font-size: 1.2rem;
   color: #ccc;
   margin-bottom: 25px;
-  font-family: 'poppins', sans-serif;
+  font-family: 'Anton', sans-serif;
   font-weight: normal;
   margin-top: 0px;
   padding-top: 0%;
@@ -63,17 +63,21 @@
   .overlay h1 {
     font-size: 9rem; /* Smaller heading on mobile */
     max-width: 95%;;
+    box-align: center;
   }
 
   .overlay h2 {
-    font-size: 1rem; /* Smaller subheading on mobile */
+    font-size: clamp(1rem, 4vw, 1.4rem); /* auto scales between 1rem and 1.4rem */
     padding: 0 10px;
-    max-width: 90%;
-
+    max-width: 95%;
+    box-align: center;
+    margin: 0 auto;
+    line-height: 1.4;
   }
 
   .cta-button {
     padding: 8px 16px;
     font-size: 0.9rem;
+    box-align: center
   }
 }
