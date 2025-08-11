@@ -61,12 +61,14 @@
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 768px) {
   .overlay h1 {
-    font-size: 4rem; /* Smaller heading on mobile */
+    font-size: 10rem; /* Smaller heading on mobile */
   }
 
   .overlay h2 {
     font-size: 1rem; /* Smaller subheading on mobile */
     padding: 0 10px;
+    max-width: 90%;
+
   }
 
   .cta-button {
