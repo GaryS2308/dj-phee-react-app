@@ -14,6 +14,7 @@ const AboutPhee = () => {
         <img src="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416288/phee4_dmdhvv.jpg" alt="DJPhee Performing" />
         <img src="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416286/phee5_uehcyi.png" alt="DJPhee on Decks" />
         <img src="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416289/phee3_g7ybop.jpg" alt="DJPhee with Crowd" />
+        <img src="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754907611/phee6_qfq0by.jpg" alt="DJPhee in Action" />
       </div>
     </section>
   );
