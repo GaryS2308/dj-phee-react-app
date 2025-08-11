@@ -14,7 +14,7 @@ const HeroSection = () => {
   return (
     <div className="hero">
       <video autoPlay muted loop className="bg-video">
-        <source src="https://player.cloudinary.com/embed/?cloud_name=dea6wzxd8&public_id=phee-dj-video-1_hsfjz1&profile=gary1" type="video/mp4" />
+        <source src="https://res.cloudinary.com/embed/?cloud_name=dea6wzxd8&public_id=phee-dj-video-1_hsfjz1&profile=gary1" type="video/mp4" />
         
       </video>
       <div className="overlay">
