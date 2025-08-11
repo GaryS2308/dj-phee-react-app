@@ -12,7 +12,7 @@ const HeroSection = () => {
       <div className="overlay">
         <h1>PHEE </h1>
         <h2>clubs, events, dances, weddings, coffee shops, anywhere with a speaker</h2>
-        <a href="#booking" onClick={scrollToBooking} className="cta-button">BOOK NOW</a>
+        <a href="#/booking" onClick={scrollToBooking} className="cta-button">BOOK NOW</a>
         
       
       </div>
