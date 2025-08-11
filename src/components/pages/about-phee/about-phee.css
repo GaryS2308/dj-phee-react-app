@@ -58,6 +58,7 @@
 
   .phee-gallery::-webkit-scrollbar {
     display: none; /* Hide scrollbar for cleaner look */
+    
   }
 }
 

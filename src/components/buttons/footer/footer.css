@@ -149,3 +149,20 @@
 .modal-close:hover {
   background-color: #981b1b;
 }
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-links {
+    margin-top: 1rem;
+  }
+
+  .footer-socials {
+    margin-top: 1rem;
+    justify-content: center;
+  }
+}

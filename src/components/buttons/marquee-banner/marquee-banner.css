@@ -37,3 +37,10 @@
     transform: translateX(-50%);
   }
 }
+
+@media (max-width: 768px) {
+  .marquee-item {
+    font-size: 0.85rem; /* smaller text on mobile */
+    margin-right: 2rem; /* reduce spacing between items */
+  }
+}
