@@ -1,6 +1,6 @@
 // App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 
 import HeroSection from './components/pages/home/HeroSection';
 import PastEvents from './components/pages/past-events/past-events';
