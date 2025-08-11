@@ -10,11 +10,11 @@ const HeroSection = () => {
       bookingSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
-  
+
   return (
     <div className="hero">
       <video autoPlay muted loop className="bg-video">
-        <source src="https://res.cloudinary.com/dea6wzxd8/video/upload/v1754336431/dj-video_pdpmey.mp4" type="video/mp4" />
+        <source src="https://res.cloudinary.com/dea6wzxd8/video/upload/v1754915471/phee-dj-video-1_hsfjz1.mp4" type="video/mp4" />
         
       </video>
       <div className="overlay">

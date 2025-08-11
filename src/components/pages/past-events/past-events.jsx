@@ -39,6 +39,10 @@ function PastEvents() {
         freeMode={true}
         spaceBetween={20}
         slidesPerView={4}
+        breakpoints={{
+          0: { slidesPerView: 2, spaceBetween: 10 }, // mobile
+          768: { slidesPerView: 4, spaceBetween: 20 }
+        }}
         className="past-events-swiper"
       >
         {pastEvents.map((event, index) => (
