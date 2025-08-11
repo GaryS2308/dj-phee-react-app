@@ -2,12 +2,6 @@ import React from 'react';
 import './HeroSection.css';
 
 
-const player = cloudinary.player('player', {
-  cloudName: 'dea6wzxd8',
-  publicId: 'phee-dj-video-1_hsfjz1',
-  profile: 'gary1'
-});
-
 const HeroSection = () => {
   const scrollToBooking = (e) => {
     e.preventDefault();
@@ -19,9 +13,8 @@ const HeroSection = () => {
 
   return (
     <div className="hero">
-      <video autoPlay muted loop className="bg-video">
-        <source src="https://res.cloudinary.com/embed/?cloud_name=dea6wzxd8&public_id=phee-dj-video-1_hsfjz1&profile=gary1" type="video/mp4" />
-        
+      <video autoPlay muted loop playsInline className="bg-video">
+        <source src="https://res.cloudinary.com/dea6wzxd8/video/upload/v1754915471/phee-dj-video-1_hsfjz1.mp4" type="video/mp4" />  
       </video>
       <div className="overlay">
         <h1>PHEE </h1>
