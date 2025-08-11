@@ -3,6 +3,14 @@ import './HeroSection.css';
 
 
 const HeroSection = () => {
+  const scrollToBooking = (e) => {
+    e.preventDefault();
+    const bookingSection = document.getElementById('booking');
+    if (bookingSection) {
+      bookingSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
   return (
     <div className="hero">
       <video autoPlay muted loop className="bg-video">
