@@ -27,6 +27,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/response" element={<BookingResponse />} />
+        <Route path="/about" element={<AboutPhee />} />
+        <Route path="/past-events" element={<PastEvents />} />
+        <Route path="/booking" element={<BookingForm />} />
       </Routes>
     </Router>
   </HelmetProvider>
