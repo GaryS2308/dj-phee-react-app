@@ -221,7 +221,7 @@ const BookingForm = () => {
               formSubmitted     // disable after success until reset
             }
           >
-            Submit Booking Request
+            {isSubmitting ? 'Submitting...' : 'Submit Booking Request'}
           </button>
         </form>
       )}
