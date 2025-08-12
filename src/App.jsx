@@ -1,6 +1,7 @@
 // App.js
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import {Helmet, HelmetProvider} from 'react-helmet-async';
 
 import HeroSection from './components/pages/home/HeroSection';
 import PastEvents from './components/pages/past-events/past-events';
@@ -21,12 +22,14 @@ const HomePage = () => (
 
 const App = () => {
   return (
+  <HelmetProvider> 
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/response" element={<BookingResponse />} />
       </Routes>
     </Router>
+  </HelmetProvider>
   );
 };
 

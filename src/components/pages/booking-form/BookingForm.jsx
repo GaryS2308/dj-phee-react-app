@@ -12,6 +12,7 @@ import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../firebase'; // Adjust if your firebase.js path is different
 import Footer from '../../buttons/footer/footer'; // Import the Footer component
 import { VscPass } from 'react-icons/vsc';
+import { Helmet } from 'react-helmet-async';
 
 const BookingForm = () => {
   useEffect(() => {
@@ -170,6 +171,14 @@ const BookingForm = () => {
 
   return (
     <section id="booking">
+      <Helmet>
+        <title>Book DJ Phee — Professional DJ Booking</title>
+        <meta
+          name="description"
+          content="Book DJ Phee for your event — weddings, clubs, festivals, and private parties. Use the form to select date, time, and details to get started."
+        />
+      </Helmet>
+
       <h2>BOOK DJ PHEE</h2>
 
       {formSubmitted ? (

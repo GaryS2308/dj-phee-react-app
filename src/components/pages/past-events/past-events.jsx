@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Mousewheel, FreeMode } from 'swiper/modules';
 import MarqueeBanner from '../../buttons/marquee-banner/marquee-banner';
@@ -27,6 +28,14 @@ function PastEvents() {
 
   return (
     <section id="past-events">
+      <Helmet>
+        <title>Past Events — DJ Phee</title>
+        <meta
+          name="description"
+          content="Check out the vibrant past events DJ Phee has rocked, from clubs to weddings and festivals. Experience the energy and vibe captured in these posters and photos."
+        />
+      </Helmet>
+
       <h2>PAST EVENTS</h2>
       <Swiper
         modules={[Navigation, Pagination, Mousewheel, FreeMode]}
