@@ -9,7 +9,10 @@ const AboutPhee = () => {
     { src: "https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416288/phee4_dmdhvv.jpg", alt: "DJPhee Performing" },
     { src: "https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416286/phee5_uehcyi.png", alt: "DJPhee on Decks" },
     { src: "https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416289/phee3_g7ybop.jpg", alt: "DJPhee with Crowd" },
-    { src: "https://res.cloudinary.com/dea6wzxd8/image/upload/v1754907611/phee6_qfq0by.jpg", alt: "DJPhee in Action" }
+    { src: "https://res.cloudinary.com/dea6wzxd8/image/upload/v1754907611/phee6_qfq0by.jpg", alt: "DJPhee in Action" },
+    { src: "https://res.cloudinary.com/dea6wzxd8/image/upload/v1755076091/phee7_sfiwkd.jpg", alt: "DJPhee at Festival" },
+    { src: "https://res.cloudinary.com/dea6wzxd8/image/upload/v1755076092/phee8_wi2s8x.jpg", alt: "DJPhee Backstage" }
+
   ];
 
   return (
@@ -25,7 +28,8 @@ const AboutPhee = () => {
       <section id="about-phee">
         <h2>ABOUT PHEE</h2>
         <p>
-          Phee is a versatile DJ rooted in the pulsating rhythms of Afrotech. With an ear for energy and a talent for reading any room, he brings unforgettable vibes to clubs, weddings, coffee shops, and festivals, effortlessly blending genres to suit every crowd.
+          Phee is a Cape Town based DJ, originally from Johannesburg, making waves in the South African music scene with his signature blend of deep, hypnotic Afrotech rhythms and high-energy Electronic beats.
+          Known for reading the crowd and creating unforgettable atmospheres, DJ Phee brings his sound to Cape Town’s hottest clubs, intimate restaurants, vibey coffee shops, and high-profile private events. From matric dances to exclusive parties and festivals, he transforms every set into a journey, keeping the dance floor alive from the first beat to the last.
         </p>
 
         <div className="phee-gallery">

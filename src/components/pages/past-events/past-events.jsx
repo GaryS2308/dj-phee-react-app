@@ -24,6 +24,7 @@ function PastEvents() {
     { image: 'https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416287/poster4_dzdtrn.jpg', alt: 'Event Poster 11' },
     { image: 'https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416287/poster11_gqgvpc.jpg', alt: 'Event Poster 12' },
     { image: 'https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416286/poster8_vpyzbv.jpg', alt: 'Event Poster 13' },
+    { image: "https://res.cloudinary.com/dea6wzxd8/image/upload/v1755076276/poster14_k1qclc.jpg", alt: 'Event Poster 14' }
   ];
 
   return (
