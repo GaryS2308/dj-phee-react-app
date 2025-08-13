@@ -17,7 +17,7 @@ const HeroSection = () => {
         <title>DJ Phee</title>
         <meta
           name="description"
-          content="DJ Phee — professional DJ for clubs, events, weddings, coffee shops, and anywhere with a speaker. Bringing unforgettable vibes to your event."
+          content="DJ Phee - professional DJ for clubs, events, weddings, coffee shops, and anywhere with a speaker. Bringing unforgettable vibes to your event."
         />
       </Helmet>
 
