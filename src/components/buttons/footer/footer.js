@@ -115,7 +115,7 @@ const Footer = () => {
 
               <p>
                 <strong>Contact Us:</strong><br />
-                Email: ramatlotlo@gmail.com
+                Email: ramatlotlo7@gmail.com
               </p>
             </div>
             <button className="modal-close" onClick={() => setShowPrivacy(false)}>Close</button>
