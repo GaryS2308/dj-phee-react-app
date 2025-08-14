@@ -10,21 +10,21 @@
 
   <!-- About Phee Section -->
   <url>
-    <loc>https://phee.co.za/#about</loc>
+    <loc>https://phee.co.za/about</loc>
     <lastmod>2025-08-12</lastmod>
     <priority>0.90</priority>
   </url>
 
   <!-- Past Events Section -->
   <url>
-    <loc>https://phee.co.za/#past-events</loc>
+    <loc>https://phee.co.za/past-events</loc>
     <lastmod>2025-08-12</lastmod>
     <priority>0.90</priority>
   </url>
 
   <!-- Booking Form Section -->
   <url>
-    <loc>https://phee.co.za/#booking</loc>
+    <loc>https://phee.co.za/booking</loc>
     <lastmod>2025-08-12</lastmod>
     <priority>0.90</priority>
   </url>
