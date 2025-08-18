@@ -30,6 +30,10 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/response" element={<BookingResponse />} />
         <Route path="/links" element={<LinksPage />} />
+        <Route path="/past-events" element={<PastEvents />} />
+        <Route path="/about" element={<AboutPhee />} />
+        <Route path="/booking" element={<BookingForm />} />
+
       </Routes>
     </Router>
   </HelmetProvider>
