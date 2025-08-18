@@ -9,6 +9,8 @@ import AboutPhee from './components/pages/about-phee/about-phee';
 import BookingForm from './components/pages/booking-form/BookingForm';
 import BookingResponse from './components/pages/booking-response/booking-response'; // make sure this path is correct
 import './styles/styles.css';
+import LinksPage from './components/pages/links-page/links-page'; 
+
 
 const HomePage = () => (
   <>
@@ -27,6 +29,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/response" element={<BookingResponse />} />
+        <Route path="/links" element={<LinksPage />} />
       </Routes>
     </Router>
   </HelmetProvider>
