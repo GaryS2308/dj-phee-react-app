@@ -1,4 +1,3 @@
-// src/pages/BookingResponse.jsx
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { sendResponseEmail } from '../../buttons/emailjs/emailjs';
@@ -9,7 +8,9 @@ const BookingResponse = () => {
   const [status, setStatus] = useState('pending');
 
   const handleClick = (type) => {
-    console.log("📦 handleClick called with type:", type); 
+    if (status === 'sending') return; // Prevent multiple clicks during sending
+
+    console.log("📦 handleClick called with type:", type);
     setStatus('sending');
 
     sendResponseEmail(token, type)
@@ -27,13 +28,19 @@ const BookingResponse = () => {
 
       {status === 'pending' && (
         <>
-          <p>Would you like to accept this booking?</p>
-          <button onClick={() => handleClick('accept')} style={{ margin: '10px' }}>✅ Accept Booking</button>
+          <p>Would you like to accept this event?</p>
+          <button 
+            onClick={() => handleClick('accept')} 
+            style={{ margin: '10px' }} 
+            disabled={status === 'sending'}
+          >
+            KEEP IT MOVIN OU PAL
+          </button>
         </>
       )}
 
       {status === 'sending' && <p>Sending confirmation to the client...</p>}
-      {status === 'accepted' && <p>✅ Booking accepted! The client has been notified with the invoice.</p>}
+      {status === 'accepted' && <p>Booking accepted! VAMOSSSSS PHEEEEEEE!! The client has been notified with the invoice.</p>}
       {status === 'error' && <p>❌ Something went wrong. Please try again.</p>}
     </section>
   );

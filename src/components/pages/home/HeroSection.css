@@ -2,11 +2,12 @@
 .hero {
   position: relative;
   height: 100vh;
+  width: 100%;
   overflow: hidden;
 }
 
 .bg-video {
-  position: absolute;
+  position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
   object-fit: cover;
@@ -22,10 +23,27 @@
 }
 
 .overlay h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 20rem;
+  margin-bottom: 0px;
   color: white;
-  
+  font-family: 'poppins', sans-serif;
+  font-weight: bold;
+  color : #eaeaea;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  padding-bottom: 0%;
+  line-height: 1;
+}
+
+.overlay h2 {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin-bottom: 25px;
+  font-family: 'poppins', sans-serif;
+  font-weight: normal;
+  margin-top: 0px;
+  padding-top: 0%;
+  line-height: 1;
+  box-align: center;
 }
 
 .cta-button {
@@ -39,4 +57,33 @@
 
 .cta-button:hover {
   background: #510c0c;
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+  .overlay h1 {
+    font-size: 7rem; /* Smaller heading on mobile */;
+    max-width: 95%;
+    padding: 5dp 5dp;
+    box-align: center
+
+  
+  }
+
+  .overlay h2 {
+    font-size: 0.8rem; /* Smaller subheading on mobile */
+    padding: 5dp 5dp;
+    max-width: 95%;
+    box-align: center;
+    text-align: center;;
+
+
+  }
+
+  .cta-button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    margin-top: 5dp;
+
+  }
 }

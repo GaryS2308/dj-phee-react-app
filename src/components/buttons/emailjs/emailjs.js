@@ -44,7 +44,7 @@ export const sendResponseEmail = async (token, type) => {
     };
     const month = months[monthName];
     const [hour, minute] = timeStr.split(':');
-    return `${year}${month}${day.padStart(2, '0')}T${hour}${minute}00Z`;
+    return `${year}${month}${day.padStart(2, '0')}T${hour}${minute}00`;
   };
 
   const startISO = parseToISO(booking.event_date, booking.start_time);

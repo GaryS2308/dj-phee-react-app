@@ -142,55 +142,64 @@ const TimeSliderModal = ({
   const durationStr = formatDurationStr(durationMins);
 
   return (
-    <div className="modal-overlay">
-      <div className="modal">
-        <h3>Select Event Date</h3>
-        <DatePicker
-          selected={date}
-          onChange={setDate}
-          inline
-          minDate={new Date()}
-          calendarClassName="custom-calendar"
-        />
-        <h4 className="slider-label">Set Time & Duration</h4>
-        <p className="slider-time-display">
-          {startTimeStr} – {endTimeStr} ({durationStr})
-        </p>
-        <ReactSlider
-          className="time-slider"
-          thumbClassName="time-thumb"
-          trackClassName="time-track"
-          min={0}
-          max={dayMax}
-          step={step}
-          value={range}
-          onChange={onRangeChange}
-          pearling
-          minDistance={minDuration}
-          renderThumb={(props, state) => {
-            const { key, ...propsWithoutKey } = props; // remove key prop to avoid React warning
-            return (
-              <div key={state.index} {...propsWithoutKey}>
-                {state.valueNow === range[0] ? 'Start' : 'End'}
-              </div>
-            );
-          }}
-        />
-        <div className="slider-labels">
-          <span>00:00</span>
-          <span>06:00</span>
-          <span>12:00</span>
-          <span>18:00</span>
-          <span>24:00</span>
-        </div>
+    
+  <div className="modal-overlay" onClick={onCancel}>
+    <div
+      className="modal"
+      onClick={(e) => e.stopPropagation()}  // Prevent closing when clicking inside modal
+    >
+      <h3>Select Event Date</h3>
+      <DatePicker
+        selected={date}
+        onChange={setDate}
+        inline
+        minDate={new Date()}
+        calendarClassName="custom-calendar"
+      />
+      <h4 className="slider-label">Set Time & Duration</h4>
+      <p className="slider-time-display">
+        {startTimeStr} – {endTimeStr} ({durationStr})
+      </p>
+      <ReactSlider
+        className="time-slider"
+        thumbClassName="time-thumb"
+        trackClassName="time-track"
+        min={0}
+        max={dayMax}
+        step={step}
+        value={range}
+        onChange={onRangeChange}
+        pearling
+        minDistance={minDuration}
+        renderThumb={(props, state) => {
+          const { key, ...propsWithoutKey } = props; // destructure to remove `key`
+          return (
+            <div key={state.index} {...propsWithoutKey}>
+              {state.valueNow === range[0] ? 'Start' : 'End'}
+            </div>
+          );
+        }}
+      />
+      <div className="slider-labels">
+        <span>00:00</span>
+        <span>06:00</span>
+        <span>12:00</span>
+        <span>18:00</span>
+        <span>24:00</span>
+      </div>
 
-        <div className="modal-buttons">
-          <button onClick={onCancel} className="cancel-button">Cancel</button>
-          <button onClick={handleConfirm} className="confirm-button">Confirm</button>
-        </div>
+      <div className="modal-buttons">
+        <button onClick={onCancel} className="cancel-button">
+          Cancel
+        </button>
+        <button onClick={handleConfirm} className="confirm-button">
+          Confirm
+        </button>
+
       </div>
     </div>
-  );
-};
+  </div>
+);
+}
 
 export default TimeSliderModal;

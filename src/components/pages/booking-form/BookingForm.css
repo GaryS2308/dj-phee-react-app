@@ -1,12 +1,17 @@
 /* === Booking Section === */
 #booking {
-  padding: 60px 20px;
+  padding: 30px 20px;
   background: #000;
   text-align: center;
 }
 
 #booking h2 {
   margin-bottom: 30px;
+  margin-top: 0px;
+  font-family: 'poppins', sans-serif;
+  font-weight: bold;
+  font-size: 2.2rem;
+  color : #eaeaea;
 }
 
 #booking-form {
@@ -14,7 +19,7 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 }
 
 #booking-form label {
@@ -65,33 +70,23 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background 0.3s ease;
+  transition: 
+    background 0.3s ease,
+    box-shadow 0.2s ease,
+    transform 0.1s ease;
+  box-shadow: 0 4px 8px rgba(152, 27, 27, 0.4);
+  user-select: none;
 }
 
 #booking-form button:hover {
-  background: #981b1b;
+  background: #400101; /* slightly lighter or brighter */
+  box-shadow: 0 6px 12px #400101(152, 27, 27, 0.6);
 }
 
-/* === Flatpickr Overrides === */
-.flatpickr-calendar {
-  background: #222 !important;
-  border: none !important;
-  color: white !important;
-}
-
-.flatpickr-day:hover,
-.flatpickr-day.today,
-.flatpickr-day.selected {
-  background: #981b1b !important;
-  color: white !important;
-  border-radius: 5px !important;
-}
-
-.flatpickr-time input,
-.flatpickr-time .flatpickr-time-separator {
-  background: #222 !important;
-  color: white !important;
-  border: none !important;
+#booking-form button:active {
+  background: #400101; /* darker red */
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+  transform: scale(0.97);
 }
 
 /* === Start Time & Duration Buttons Containers === */
@@ -108,33 +103,6 @@
   gap: 12px;
 }
 
-/* === Buttons Styling === */
-.time-button,
-.duration-button {
-  background-color: #981b1b; /* deeper red */
-  border: none;
-  border-radius: 6px;
-  padding: 12px 0;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  text-align: center;
-  user-select: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-}
-
-.time-button:hover,
-.duration-button:hover {
-  background-color: #981b1b;
-}
-
-.time-button.selected,
-.duration-button.selected {
-  background-color: #981b1b;
-  box-shadow: 0 0 12px #981b1b;
-  font-weight: 700;
-}
 
 /* === Back Button Container and Style === */
 .back-wrapper {
@@ -143,26 +111,6 @@
   margin-bottom: 10px;
 }
 
-
-.show-more-button {
-  background: #333 !important; /* charcoal */
-  color: white;
-  border: 1px solid #222 !important;
-  padding: 6px 12px;
-  border-radius: 5px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  user-select: none;
-  display: inline-block;
-  margin-top: 12px;
-  text-decoration: none;
-}
-
-.show-more-button:hover {
-  background: #444 !important;
-  color: white;
-}
 
 .back-button {
   background: #333 !important;      /* charcoal */
@@ -203,31 +151,11 @@
 
 .confirmation-message {
   background: #222;
-  color: #981b1b;
+  color: #e2e2e2;
   padding: 30px 20px;
   border-radius: 8px;
   margin-top: 20px;
   text-align: center;
-}
-.breadcrumbs {
-  margin: 1rem 0;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  font-weight: 500;
-  color: #777;
-  font-size: 0.95rem;
-}
-
-.crumb {
-  cursor: pointer;
-  text-decoration: underline;
-  color: #ffffff;
-}
-
-.crumb.active {
-  font-weight: bold;
-  color: #ffffff;
 }
 
 .divider {

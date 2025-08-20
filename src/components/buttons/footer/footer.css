@@ -1,0 +1,179 @@
+.footer {
+  background-color: #111;
+  color: #eaeaea;
+  padding: 8px 40px;
+  font-family: 'Poppins', sans-serif;
+  user-select: none;
+  margin-top: 30px;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 20px;
+}
+
+.footer-item {
+  flex: 1;
+  text-align: center;
+}
+
+.footer-brand {
+  font-weight: 1000;
+  font-size: 2.8rem;
+  user-select: text;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  line-height: 0.8;
+  color: white; /* default color */
+  padding: 6px 3px; /* narrow padding for hover background */
+  border-radius: 4px; /* rounded corners */
+  transition: all 0.3s ease-in-out;
+  text-decoration: none;
+}
+
+/* Hover state: invert colors */
+.footer-brand:hover {
+  background-color: rgb(218, 218, 218);
+  color: black;
+  text-shadow: #111 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.footer-link {
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover,
+.footer-link:focus {
+  color: #981b1b;
+  outline: none;
+}
+
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* Bio line centered below */
+.footer-bio {
+  margin-top: 0px;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1rem;
+  text-align: center;
+  color: #bbb;
+}
+
+/* Modal styles */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: #111;
+  padding: 25px 30px;
+  border-radius: 8px;
+  max-width: 600px;
+  max-height: 60vh;
+  overflow-y: auto;
+  color: #eee;
+  box-shadow: 0 0 20px #981b1b;
+}
+
+/* Updated heading style for modal */
+.modal-content h2 {
+  background-color: #333; /* darker grey */
+  padding: 15px 25px;
+  border-radius: 6px;
+  color: #981b1b;
+  font-weight: 800;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: left; /* left align heading */
+}
+
+/* Updated modal body style */
+.modal-body {
+  text-align: left; /* left align all modal text */
+  font-size: 1rem;
+  line-height: 1.6;
+  white-space: normal; /* allow normal wrapping */
+  padding-left: 5px;
+}
+
+/* Style ordered list inside modal body */
+.modal-body ol {
+  padding-left: 20px;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.modal-body ol li {
+  margin-bottom: 18px; /* space between points */
+}
+
+.modal-body ol li p {
+  margin: 0; /* remove default margin from p inside li */
+}
+
+.modal-close {
+  margin-top: 20px;
+  background-color: #981b1b;
+  color: #e2e2e2;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal-close:hover {
+  background-color: #981b1b;
+}
+
+@media (max-width: 768px) {
+  .footer-top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px; /* smaller spacing between elements */
+  }
+
+  .footer-item {
+    flex: unset; /* stop forcing equal widths */
+    width: 100%; /* full width for each item */
+  }
+
+  .footer-brand {
+    font-size: 2.4rem; /* smaller logo text */
+    padding: 3px 1.7px;
+  }
+
+  .footer-link {
+    font-size: 0.6rem; /* smaller links */
+  }
+
+  .footer-social {
+    gap: 5px; /* smaller gap between icons */
+
+  }
+}

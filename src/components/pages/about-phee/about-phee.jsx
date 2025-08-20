@@ -1,21 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../../firebase'; // adjust the path to your firebase config
 import './about-phee.css';
 
 const AboutPhee = () => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchAboutPhee = async () => {
+      try {
+        const docRef = doc(db, 'siteContent', 'phee'); // 'phee' is your document ID
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setData(docSnap.data());
+        } else {
+          console.error('No document found!');
+        }
+      } catch (error) {
+        console.error('Error fetching About Phee data:', error);
+      }
+    };
+
+    fetchAboutPhee();
+  }, []);
+
+  if (!data) {
+    return <p>Loading...</p>; // optional loading message while fetching
+  }
+
   return (
-    <section id="about-phee">
-      <h2>About Phee</h2>
-      <p>
-        Phee is a versatile DJ rooted in the pulsating rhythms of Afrotech. With an ear for energy and a talent for reading any room, he brings unforgettable vibes to clubs, weddings, coffee shops, and festivals, effortlessly blending genres to suit every crowd.
-      </p>
-      <div className="phee-gallery">
-        <img src="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416287/phee2_ogysjy.jpg" alt="DJPhee DJing" />
-        <img src="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416288/phee1_of7hnv.jpg" alt="DJPhee at Event" />
-        <img src="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416288/phee4_dmdhvv.jpg" alt="DJPhee Performing" />
-        <img src="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416286/phee5_uehcyi.png" alt="DJPhee on Decks" />
-        <img src="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416289/phee3_g7ybop.jpg" alt="DJPhee with Crowd" />
-      </div>
-    </section>
+    <>
+      <Helmet>
+        <title>{data.metaTitle || 'About DJ Phee - Versatile Afrotech DJ'}</title>
+        <meta
+          name="description"
+          content={data.metaDescription || 'Learn about DJ Phee, a versatile Afrotech DJ known for unforgettable vibes.'}
+        />
+      </Helmet>
+
+      <section id="about-phee">
+        <h2>{data.aboutTitle}</h2>
+        <p>{data.aboutDescription}</p>
+
+        <div className="phee-gallery">
+          {data.aboutImages?.map((img, index) => (
+            <img key={index} src={img.src} alt={img.alt} />
+          ))}
+        </div>
+      </section>
+    </>
   );
 };
 

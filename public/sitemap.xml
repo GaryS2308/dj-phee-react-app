@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Main Home Page -->
+  <url>
+    <loc>https://phee.co.za/</loc>
+    <lastmod>2025-08-12</lastmod>
+    <priority>1.00</priority>
+  </url>
+
+  <!-- About Phee Section -->
+  <url>
+    <loc>https://phee.co.za/about</loc>
+    <lastmod>2025-08-12</lastmod>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Past Events Section -->
+  <url>
+    <loc>https://phee.co.za/past-events</loc>
+    <lastmod>2025-08-12</lastmod>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Booking Form Section -->
+  <url>
+    <loc>https://phee.co.za/booking</loc>
+    <lastmod>2025-08-12</lastmod>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Booking Response Page -->
+  <url>
+    <loc>https://phee.co.za/response</loc>
+    <lastmod>2025-08-12</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+</urlset>
