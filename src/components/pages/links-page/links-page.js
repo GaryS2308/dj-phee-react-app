@@ -38,7 +38,7 @@ const LinksPage = () => {
           Royal Hockey
         </a>
         <a href="https://www.instagram.com/obohockeysa?utm_source=ig_web_button_share_sheet&igsh=MW1xaWtvZGl5NGtwMw==" target="_blank" rel="noopener noreferrer" className="link-btn">
-          Obo Hockey SA
+          OBO Hockey SA
         </a>
       </div>
     </div>
