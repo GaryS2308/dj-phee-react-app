@@ -8,16 +8,50 @@ import SocialLinks from '../../buttons/social-links/social-links';
 import Crumbs from '../../buttons/crumbs/crumbs'; // you can remove if unused
 import TimeSliderModal from '../../buttons/slider/slider';
 import '../../buttons/slider/slider.css'; // import your slider styles here
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase'; // Adjust if your firebase.js path is different
 import Footer from '../../buttons/footer/footer'; // Import the Footer component
 import { VscPass } from 'react-icons/vsc';
 import { Helmet } from 'react-helmet-async';
 
+
 const BookingForm = () => {
   useEffect(() => {
-    init("0fqk3GFHeuZ3SHdGz");
-  }, []);
+  // Initialize EmailJS once
+  init("0fqk3GFHeuZ3SHdGz");
+}, []);
+
+useEffect(() => {
+  const fetchBookings = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, 'bookings'));
+      const ranges = snapshot.docs.map(doc => {
+        const data = doc.data();
+        const dateParts = data.event_date?.split(' ');
+        if (!dateParts || dateParts.length < 3) return null;
+
+        const day = parseInt(dateParts[0]);
+        const month = new Date(`${dateParts[1]} 1, 2000`).getMonth();
+        const year = parseInt(dateParts[2]);
+
+        const startTimeParts = data.start_time?.split(':');
+        const endTimeParts = data.end_time?.split(':');
+        if (!startTimeParts || !endTimeParts) return null;
+
+        const start = new Date(year, month, day, startTimeParts[0], startTimeParts[1]);
+        const end = new Date(year, month, day, endTimeParts[0], endTimeParts[1]);
+
+        return { start, end };
+      }).filter(Boolean);
+
+      setBookedRanges(ranges);
+    } catch (err) {
+      console.error('❌ Failed to fetch bookings from Firebase:', err);
+    }
+  };
+
+  fetchBookings();
+}, []);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -40,6 +74,7 @@ const BookingForm = () => {
   const [costEstimate, setCostEstimate] = useState('Estimated Cost: R0');
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [showSliderModal, setShowSliderModal] = useState(false);
+
 
   const parseDurationToHours = (duration) => {
     let totalHours = 0;
@@ -240,6 +275,7 @@ const BookingForm = () => {
           selectedDate={formData.eventDate || new Date()}
           initialStartTime={formData.startTime || '19:00'}
           initialDuration={formData.duration || '1hr'}
+          bookedRanges={bookedRanges} 
           onCancel={() => setShowSliderModal(false)}
           onConfirm={({ date, startTime, duration }) => {
             setFormData(prev => ({
