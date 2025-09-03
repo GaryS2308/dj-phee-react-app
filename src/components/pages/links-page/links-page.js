@@ -16,7 +16,7 @@ const LinksPage = () => {
           <strong> DJ | Athlete | Coach </strong> <br />
           Cape Town, South Africa 
           <br />
-          DJ Phee is a South African DJ and producer known for his energetic sets and unique sound. With a passion for music that transcends genres, he has made a name for himself in the local and international music scene.
+          Phee is a South African DJ and Athlete known for his energetic aura. With a passion for music that transcends genres, he has made a name for himself in the local music scene.
         </p>    
       </div>
 
@@ -25,15 +25,16 @@ const LinksPage = () => {
         <a href="https://phee.co.za/" target="_blank" rel="noopener noreferrer" className="link-btn">
           DJ PHEE Bookings
         </a>
+        <a href="https://soundcloud.com/phemelo-ramatlotlo-122152686" target="_blank" rel="noopener noreferrer" className="link-btn">
+          SoundCloud
+        </a>
         <a href="https://moralsthebrand.co.za" target="_blank" rel="noopener noreferrer" className="link-btn">
           Morals The Brand
         </a>
         <a href="https://olympicsa.co.za" target="_blank" rel="noopener noreferrer" className="link-btn">
           Olympic ZA
         </a>
-        <a href="https://soundcloud.com/phemelo-ramatlotlo-122152686" target="_blank" rel="noopener noreferrer" className="link-btn">
-          SoundCloud
-        </a>
+        
         <a href="https://www.royalhockey.co.za/" target="_blank" rel="noopener noreferrer" className="link-btn">
           Royal Hockey
         </a>
