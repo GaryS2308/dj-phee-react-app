@@ -1,8 +1,13 @@
 /* === About Phee Section === */
 #about-phee {
-  padding: 60px 20px;
-  background: #111;
+  padding: 48px 20px;
+  background: linear-gradient(180deg, #050505 0%, #0b0b0b 35%, #111 100%);
   text-align: center;
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #about-phee p {
@@ -18,8 +23,20 @@
   grid-auto-rows: minmax(250px, auto);
   gap: 20px;
   max-width: 1400px;
-  margin: 40px auto;
+  margin: 32px auto 20px;
   padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+  #about-phee {
+    padding: 40px 16px 32px;
+  }
+
+  .phee-gallery {
+    gap: 16px;
+    margin: 24px auto 12px;
+    padding: 0 12px;
+  }
 }
 
 .phee-gallery img {

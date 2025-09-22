@@ -1,13 +1,35 @@
 /* === Past Events Slider (#vibe) === */
 #past-events {
-  padding: 60px 20px;
-  background: #000;
+  padding: 40px 20px;
+  background: linear-gradient(180deg, #111 0%, #050505 55%, #020202 100%);
   text-align: center;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.past-events-loading {
+  margin: 24px auto;
+  font-size: 1rem;
+  color: #bbb;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .swiper {
   width: 100%;
-  padding: 40px 0;
+  padding: 28px 0;
+}
+
+@media (max-width: 768px) {
+  #past-events {
+    padding: 32px 16px;
+  }
+
+  .swiper {
+    padding: 20px 0;
+  }
 }
 
 .swiper-slide {

@@ -5,7 +5,7 @@ import "./links-page.css";
 const LinksPage = () => {
   return (
     <div className="links-container">
-      <div className="links-header">
+      <div className="links-header" data-reveal data-reveal-order="0">
         <img
           src="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416286/phee5_uehcyi.png" 
           alt="DJ Phee"
@@ -21,24 +21,24 @@ const LinksPage = () => {
       </div>
 
       <div className="links-list">
-        
-        <a href="https://phee.co.za/" target="_blank" rel="noopener noreferrer" className="link-btn">
+
+        <a href="https://phee.co.za/" target="_blank" rel="noopener noreferrer" className="link-btn" data-reveal data-reveal-order="1">
           DJ PHEE Bookings
         </a>
-        <a href="https://soundcloud.com/phemelo-ramatlotlo-122152686" target="_blank" rel="noopener noreferrer" className="link-btn">
+        <a href="https://soundcloud.com/phemelo-ramatlotlo-122152686" target="_blank" rel="noopener noreferrer" className="link-btn" data-reveal data-reveal-order="2">
           SoundCloud
         </a>
-        <a href="https://moralsthebrand.co.za" target="_blank" rel="noopener noreferrer" className="link-btn">
+        <a href="https://moralsthebrand.co.za" target="_blank" rel="noopener noreferrer" className="link-btn" data-reveal data-reveal-order="3">
           Morals The Brand
         </a>
-        <a href="https://olympicsa.co.za" target="_blank" rel="noopener noreferrer" className="link-btn">
+        <a href="https://olympicsa.co.za" target="_blank" rel="noopener noreferrer" className="link-btn" data-reveal data-reveal-order="4">
           Olympic ZA
         </a>
-        
-        <a href="https://www.royalhockey.co.za/" target="_blank" rel="noopener noreferrer" className="link-btn">
+
+        <a href="https://www.royalhockey.co.za/" target="_blank" rel="noopener noreferrer" className="link-btn" data-reveal data-reveal-order="5">
           Royal Hockey
         </a>
-        <a href="https://www.instagram.com/obohockeysa?utm_source=ig_web_button_share_sheet&igsh=MW1xaWtvZGl5NGtwMw==" target="_blank" rel="noopener noreferrer" className="link-btn">
+        <a href="https://www.instagram.com/obohockeysa?utm_source=ig_web_button_share_sheet&igsh=MW1xaWtvZGl5NGtwMw==" target="_blank" rel="noopener noreferrer" className="link-btn" data-reveal data-reveal-order="6">
           OBO Hockey SA
         </a>
       </div>

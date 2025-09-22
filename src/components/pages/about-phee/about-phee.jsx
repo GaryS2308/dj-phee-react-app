@@ -26,29 +26,39 @@ const AboutPhee = () => {
     fetchAboutPhee();
   }, []);
 
-  if (!data) {
-    return <p>Loading...</p>; // optional loading message while fetching
-  }
-
   return (
     <>
       <Helmet>
-        <title>{data.metaTitle || 'About DJ Phee - Versatile Afrotech DJ'}</title>
+        <title>{data?.metaTitle || 'About DJ Phee - Versatile Afrotech DJ'}</title>
         <meta
           name="description"
-          content={data.metaDescription || 'Learn about DJ Phee, a versatile Afrotech DJ known for unforgettable vibes.'}
+          content={
+            data?.metaDescription ||
+            'Learn about DJ Phee, a versatile Afrotech DJ known for unforgettable vibes.'
+          }
         />
       </Helmet>
 
       <section id="about-phee">
-        <h2>{data.aboutTitle}</h2>
-        <p>{data.aboutDescription}</p>
+        <h2 data-reveal data-reveal-order="0">{data?.aboutTitle || 'About Phee'}</h2>
+        <p data-reveal data-reveal-order="1">
+          {data?.aboutDescription ||
+            'Loading Phee’s story... hang tight while we fetch the latest updates.'}
+        </p>
 
-        <div className="phee-gallery">
-          {data.aboutImages?.map((img, index) => (
-            <img key={index} src={img.src} alt={img.alt} />
-          ))}
-        </div>
+        {data?.aboutImages?.length ? (
+          <div
+            className="phee-gallery"
+            data-reveal
+            data-reveal-order="2"
+          >
+            {data.aboutImages.map((img, index) => (
+              <img key={index} src={img.src} alt={img.alt} loading="lazy" />
+            ))}
+          </div>
+        ) : (
+          <p data-reveal data-reveal-order="2">Gallery will be updated shortly.</p>
+        )}
       </section>
     </>
   );

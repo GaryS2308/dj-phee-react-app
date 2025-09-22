@@ -32,6 +32,7 @@ const Footer = () => {
             <SocialLinks />
           </div>
         </div>
+        <p className="footer-credit">Website designed by Gary Strybis</p>
       </footer>
 
       {/* Terms & Conditions Modal */}

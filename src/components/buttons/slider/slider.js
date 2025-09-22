@@ -155,6 +155,30 @@ const TimeSliderModal = ({
         inline
         minDate={new Date()}
         calendarClassName="custom-calendar"
+        renderCustomHeader={({ date: headerDate, decreaseMonth, increaseMonth }) => (
+          <div className="calendar-header">
+            <button
+              type="button"
+              className="calendar-nav-button"
+              onClick={decreaseMonth}
+              aria-label="Previous month"
+            >
+              ‹
+            </button>
+            <div className="calendar-header__title">
+              <span className="calendar-header__year">{format(headerDate, 'yyyy')}</span>
+              <span className="calendar-header__month">{format(headerDate, 'MMMM')}</span>
+            </div>
+            <button
+              type="button"
+              className="calendar-nav-button"
+              onClick={increaseMonth}
+              aria-label="Next month"
+            >
+              ›
+            </button>
+          </div>
+        )}
       />
       <h4 className="slider-label">Set Time & Duration</h4>
       <p className="slider-time-display">

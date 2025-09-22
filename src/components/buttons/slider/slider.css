@@ -10,15 +10,18 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 12px;
 }
 
 /* Modal Box */
 .modal {
   background: #111;
-  padding: 30px 30px 40px 30px;
+  padding: 28px 30px 36px;
   border-radius: 14px;
-  width: 420px;
-  max-width: 95vw;
+  width: min(420px, 92vw);
+  max-height: 92vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   color: #eee;
   text-align: center;
   box-shadow: 0 0 20px #981b1b;
@@ -44,9 +47,117 @@
 
 /* DatePicker calendar custom background */
 .custom-calendar {
-  background-color: #5f5f5f !important;
+  background-color: #2f2f2f !important;
   border-radius: 8px !important;
   color: #eee !important;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 12px;
+  padding: 0 6px;
+}
+
+.calendar-header__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+  gap: 2px;
+}
+
+.calendar-header__year {
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.calendar-header__month {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+}
+
+.calendar-nav-button {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar-nav-button:hover,
+.calendar-nav-button:focus-visible {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+  outline: none;
+}
+
+.custom-calendar .react-datepicker__header {
+  background-color: #2f2f2f !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  padding-top: 0 !important;
+  padding-bottom: 6px !important;
+}
+
+.custom-calendar .react-datepicker__current-month,
+.custom-calendar .react-datepicker__day-name,
+.custom-calendar .react-datepicker__day,
+.custom-calendar .react-datepicker__day--outside-month {
+  color: #f8f8f8 !important;
+}
+
+.custom-calendar .react-datepicker__current-month {
+  display: none !important;
+}
+
+.custom-calendar .react-datepicker__day-name {
+  opacity: 0.8;
+}
+
+.custom-calendar .react-datepicker__day-name,
+.custom-calendar .react-datepicker__day {
+  background-color: transparent !important;
+}
+
+.custom-calendar .react-datepicker__day--keyboard-selected,
+.custom-calendar .react-datepicker__day--selected,
+.custom-calendar .react-datepicker__day:hover {
+  background-color: rgba(152, 27, 27, 0.28) !important;
+  border-radius: 50% !important;
+}
+
+@media (max-width: 420px) {
+  .calendar-nav-button {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .calendar-header__month {
+    font-size: 1.4rem;
+  }
+
+  .calendar-header__year {
+    font-size: 0.8rem;
+  }
+}
+
+.custom-calendar .react-datepicker__day--disabled,
+.custom-calendar .react-datepicker__day--disabled:hover {
+  color: rgba(255, 255, 255, 0.35) !important;
 }
 
 /* Slider time display text */
@@ -110,46 +221,103 @@
 /* Modal buttons container */
 .modal-buttons {
   display: flex;
-  justify-content: space-between;
-  align-items: stretch; /* <- ensures same height */
+  justify-content: center;
+  align-items: stretch;
   gap: 12px;
+  margin-top: 18px;
 }
 
 .cancel-button,
 .confirm-button {
   flex: 1;
+  min-width: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 12px 0;
-  border-radius: 6px;
-  border: none;
+  border-radius: 999px;
+  border: 1px solid transparent;
   font-weight: 600;
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.3s ease;
-  height: 48px; /* force them to same height */
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  height: 48px;
   box-sizing: border-box;
 }
 
-
-/* Cancel button colors */
 .cancel-button {
-  background-color: #ffffff;
-  color: #981b1b;
-}
-.cancel-button:hover {
-  background-color: #981b1b;
-  color: #fff;
+  background-color: rgba(130, 24, 24, 0.95);
+  color: #f8f8f8;
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
-/* Confirm button colors */
+.cancel-button:hover,
+.cancel-button:focus-visible {
+  background-color: rgba(156, 32, 32, 1);
+  border-color: rgba(255, 255, 255, 0.3);
+  outline: none;
+}
+
 .confirm-button {
-  background-color: #ffffff;
-  color: #981b1b;
-}
-.confirm-button:hover {
-  background-color: #981b1b;
-  color: #fff;
+  background-color: #158443;
+  color: #f4f4f4;
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
+.confirm-button:hover,
+.confirm-button:focus-visible {
+  background-color: #17a054;
+  border-color: rgba(255, 255, 255, 0.3);
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .modal {
+    width: min(360px, 94vw);
+    padding: 24px 20px 32px;
+    border-radius: 12px;
+  }
+
+  .modal h3 {
+    font-size: 1.3rem;
+  }
+
+  .modal h4.slider-label {
+    font-size: 1.25rem;
+  }
+
+  .slider-time-display {
+    font-size: 1rem;
+  }
+
+  .time-thumb {
+    height: 18px;
+    width: 18px;
+  }
+
+  .slider-labels {
+    margin-bottom: 14px;
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .modal {
+    width: 94vw;
+    padding: 20px 16px 28px;
+  }
+
+  .modal-buttons {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .cancel-button,
+  .confirm-button {
+    height: 44px;
+    min-width: calc(50% - 6px);
+    font-size: 0.85rem;
+    padding: 8px 0;
+  }
+}

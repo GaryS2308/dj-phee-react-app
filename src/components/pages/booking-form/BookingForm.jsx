@@ -180,10 +180,10 @@ const BookingForm = () => {
         />
       </Helmet>
 
-      <h2>BOOK DJ PHEE</h2>
+      <h2 data-reveal data-reveal-order="1">BOOK DJ PHEE</h2>
 
       {formSubmitted ? (
-        <div className="confirmation-section">
+        <div className="confirmation-section" data-reveal data-reveal-order="2">
           <div className="confirmation-message">
             <VscPass style={{ color: '#d6d6d6ff', verticalAlign: 'middle', marginRight: '8px', fontSize: '1.5rem' }} />
             {confirmationMessage}
@@ -193,7 +193,7 @@ const BookingForm = () => {
           </button>
         </div>
       ) : (
-        <form id="booking-form" onSubmit={handleSubmit}>
+        <form id="booking-form" onSubmit={handleSubmit} data-reveal data-reveal-order="2">
           <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required />
           <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required />
           <input type="tel" name="phone" placeholder="Your Phone Number (optional)" value={formData.phone} onChange={handleChange} />
@@ -256,7 +256,9 @@ const BookingForm = () => {
         />
       )}
 
-      <Footer />
+      <div data-reveal data-reveal-order="3">
+        <Footer />
+      </div>
     </section>
   );
 };

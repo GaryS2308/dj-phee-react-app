@@ -23,25 +23,35 @@ const BookingResponse = () => {
   };
 
   return (
-    <section style={{ padding: '60px', textAlign: 'center', background: '#000', color: '#fff' }}>
-      <h2>Booking Response</h2>
+    <section
+      style={{ padding: '60px', textAlign: 'center', background: '#000', color: '#fff' }}
+    >
+      <h2 data-reveal data-reveal-order="0">Booking Response</h2>
 
       {status === 'pending' && (
         <>
-          <p>Would you like to accept this event?</p>
+          <p data-reveal data-reveal-order="1">Would you like to accept this event?</p>
           <button 
             onClick={() => handleClick('accept')} 
             style={{ margin: '10px' }} 
             disabled={status === 'sending'}
+            data-reveal
+            data-reveal-order="2"
           >
             KEEP IT MOVIN OU PAL
           </button>
         </>
       )}
 
-      {status === 'sending' && <p>Sending confirmation to the client...</p>}
-      {status === 'accepted' && <p>Booking accepted! VAMOSSSSS PHEEEEEEE!! The client has been notified with the invoice.</p>}
-      {status === 'error' && <p>❌ Something went wrong. Please try again.</p>}
+      {status === 'sending' && (
+        <p data-reveal data-reveal-order="1">Sending confirmation to the client...</p>
+      )}
+      {status === 'accepted' && (
+        <p data-reveal data-reveal-order="1">Booking accepted! VAMOSSSSS PHEEEEEEE!! The client has been notified with the invoice.</p>
+      )}
+      {status === 'error' && (
+        <p data-reveal data-reveal-order="1">❌ Something went wrong. Please try again.</p>
+      )}
     </section>
   );
 };

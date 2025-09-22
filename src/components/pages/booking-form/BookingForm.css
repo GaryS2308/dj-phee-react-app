@@ -1,7 +1,7 @@
 /* === Booking Section === */
 #booking {
-  padding: 30px 20px;
-  background: #000;
+  padding: 30px 20px 36px;
+  background: linear-gradient(180deg, #020202 0%, #050505 40%, #0e0e0e 100%);
   text-align: center;
 }
 

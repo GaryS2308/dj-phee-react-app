@@ -39,10 +39,6 @@ function PastEvents() {
     fetchPastEvents();
   }, []);
 
-  if (!pastEvents.length) {
-    return <p>Loading past events...</p>; // optional
-  }
-
   return (
     <section id="past-events">
       <Helmet>
@@ -50,31 +46,43 @@ function PastEvents() {
         <meta name="description" content={meta.description} />
       </Helmet>
 
-      <h2>PAST EVENTS</h2>
-      <Swiper
-        modules={[Navigation, Pagination, Mousewheel, FreeMode]}
-        navigation
-        pagination={{ clickable: true }}
-        loop={true}
-        grabCursor={true}
-        mousewheel={{ forceToAxis: true }}
-        speed={600}
-        freeMode={true}
-        spaceBetween={20}
-        slidesPerView={4}
-        breakpoints={{
-          0: { slidesPerView: 1, spaceBetween: 10 }, // mobile
-          768: { slidesPerView: 4, spaceBetween: 20 }
-        }}
-        className="past-events-swiper"
-      >
-        {pastEvents.map((event, index) => (
-          <SwiperSlide key={index}>
-            <img src={event.image} alt={event.alt} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      <MarqueeBanner />
+      <h2 data-reveal data-reveal-order="0">PAST EVENTS</h2>
+
+      {pastEvents.length ? (
+        <Swiper
+          modules={[Navigation, Pagination, Mousewheel, FreeMode]}
+          navigation
+          pagination={{ clickable: true }}
+          loop={true}
+          grabCursor={true}
+          mousewheel={{ forceToAxis: true }}
+          speed={600}
+          freeMode={true}
+          spaceBetween={20}
+          slidesPerView={4}
+          breakpoints={{
+            0: { slidesPerView: 1, spaceBetween: 10 }, // mobile
+            768: { slidesPerView: 4, spaceBetween: 20 }
+          }}
+          className="past-events-swiper"
+          data-reveal
+          data-reveal-order="1"
+        >
+          {pastEvents.map((event, index) => (
+            <SwiperSlide key={index}>
+              <img src={event.image} alt={event.alt} loading="lazy" />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      ) : (
+        <p className="past-events-loading" data-reveal data-reveal-order="1">
+          Loading past events...
+        </p>
+      )}
+
+      <div data-reveal data-reveal-order="2">
+        <MarqueeBanner />
+      </div>
     </section>
   );
 }
