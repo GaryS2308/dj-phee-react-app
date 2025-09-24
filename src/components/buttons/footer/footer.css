@@ -99,75 +99,107 @@
 }
 
 .modal-content {
-  background: #111;
-  padding: 25px 30px;
+  background: rgba(18, 18, 18, 0.96);
+  padding: 16px 18px;
   border-radius: 12px;
-  max-width: min(620px, 92vw);
-  max-height: 80vh;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: min(560px, 90vw);
+  max-height: 72vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  color: #eee;
-  box-shadow: 0 0 20px #981b1b;
+  color: #f3f3f3;
+  box-shadow: 0 28px 48px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
 }
 
 .legal-modal {
-  max-width: min(640px, 94vw);
+  max-width: min(600px, 92vw);
 }
 
-/* Updated heading style for modal */
 .modal-content h2 {
-  background-color: #333; /* darker grey */
-  padding: 15px 25px;
-  border-radius: 6px;
-  color: #981b1b;
-  font-weight: 800;
-  margin-top: 0;
-  margin-bottom: 20px;
-  text-align: left; /* left align heading */
+  background: linear-gradient(135deg, rgba(60, 60, 60, 0.85), rgba(28, 28, 28, 0.9));
+  padding: 5px 10px;
+  border-radius: 8px;
+  color: #d16464;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  text-align: center;
+  font-size: clamp(0.72rem, 1.4vw + 0.6rem, 0.95rem);
+  letter-spacing: 0.05em;
+  line-height: 1.15;
 }
 
-/* Updated modal body style */
 .modal-body {
-  text-align: left; /* left align all modal text */
-  font-size: 1rem;
-  line-height: 1.6;
-  white-space: normal; /* allow normal wrapping */
-  padding-left: 5px;
-  margin-right: -10px;
-  padding-right: 15px;
+  text-align: left;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  padding: 0 12px 0 4px;
+  margin-right: -12px;
   overflow-y: auto;
+  flex: 1;
 }
 
-/* Style ordered list inside modal body */
 .modal-body ol {
   padding-left: 20px;
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  padding-right: 8px;
 }
 
 .modal-body ol li {
-  margin-bottom: 18px; /* space between points */
+  margin-bottom: 16px;
 }
 
 .modal-body ol li p {
-  margin: 0; /* remove default margin from p inside li */
+  margin: 0;
 }
 
 .modal-close {
-  margin-top: 20px;
-  background-color: #981b1b;
-  color: #e2e2e2;
+  margin-top: 14px;
+  background-color: rgba(152, 27, 27, 0.88);
+  color: #f5f5f5;
   border: none;
-  padding: 10px 20px;
-  font-weight: 700;
-  border-radius: 4px;
+  padding: 8px 18px;
+  font-weight: 600;
+  border-radius: 999px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .modal-close:hover {
-  background-color: #981b1b;
+  background-color: rgba(181, 35, 35, 0.95);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .modal-content {
+    padding: 12px 14px;
+    max-width: 94vw;
+    max-height: 78vh;
+  }
+
+  .modal-content h2 {
+    font-size: clamp(0.62rem, 3vw, 0.7rem);
+    padding: 4px 8px;
+    margin-bottom: 6px;
+  }
+
+  .modal-body {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    padding-right: 10px;
+  }
+
+  .modal-body ol {
+    margin-bottom: 8px;
+  }
+
+  .modal-close {
+    padding: 6px 14px;
+    font-size: 0.75rem;
+  }
 }
 
 @media (max-width: 768px) {

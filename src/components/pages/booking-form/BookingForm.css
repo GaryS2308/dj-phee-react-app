@@ -62,6 +62,93 @@
   text-align: left;
 }
 
+
+.terms-consent {
+  margin-top: 18px;
+  margin-bottom: 6px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.terms-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #dcdcdc;
+}
+
+.terms-checkbox input {
+  width: 18px;
+  height: 18px;
+  margin-top: 0;
+  accent-color: #981b1b;
+  border: 1px solid #666;
+  border-radius: 4px;
+}
+
+.terms-checkbox input:focus-visible {
+  outline: 2px solid rgba(152, 27, 27, 0.5);
+  outline-offset: 2px;
+}
+
+.terms-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terms-intro {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #dcdcdc;
+}
+
+.inline-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #981b1b;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  border-radius: 0;
+  appearance: none;
+}
+
+.inline-link:hover,
+.inline-link:focus-visible {
+  color: #c33c3c;
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .terms-checkbox {
+    font-size: 0.72rem;
+    gap: 4px;
+  }
+
+  .terms-intro {
+    font-size: 0.72rem;
+  }
+
+  .terms-checkbox input {
+    width: 16px;
+    height: 16px;
+  }
+
+  .terms-links {
+    gap: 3px;
+  }
+
+  .inline-link {
+    font-size: 0.68rem;
+    white-space: nowrap;
+  }
+}
+
 #booking-form button {
   background: #981b1b;
   color: white;
@@ -76,6 +163,19 @@
     transform 0.1s ease;
   box-shadow: 0 4px 8px rgba(152, 27, 27, 0.4);
   user-select: none;
+}
+
+#booking-form button.inline-link {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0;
+  color: #981b1b;
+}
+
+#booking-form button.inline-link:hover,
+#booking-form button.inline-link:focus-visible {
+  color: #c33c3c;
 }
 
 #booking-form button:hover {

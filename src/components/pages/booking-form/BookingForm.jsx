@@ -11,6 +11,8 @@ import '../../buttons/slider/slider.css'; // import your slider styles here
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase'; // Adjust if your firebase.js path is different
 import Footer from '../../buttons/footer/footer'; // Import the Footer component
+import TermsModal from '../../modals/TermsModal';
+import CancellationModal from '../../modals/CancellationModal';
 import { VscPass } from 'react-icons/vsc';
 import { Helmet } from 'react-helmet-async';
 
@@ -41,6 +43,9 @@ const BookingForm = () => {
   const [costEstimate, setCostEstimate] = useState('Estimated Cost: R0');
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [showSliderModal, setShowSliderModal] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState({ terms: false, cancel: false });
 
   const parseDurationToHours = (duration) => {
     let totalHours = 0;
@@ -149,6 +154,7 @@ const BookingForm = () => {
       setDateConfirmed(false);
       setHasConfirmedOnce(false);
       setCostEstimate('Estimated Cost: R0');
+      setTermsAccepted({ terms: false, cancel: false });
 
     } catch (error) {
       console.error('Booking Error:', error);
@@ -162,6 +168,7 @@ const BookingForm = () => {
     setFormSubmitted(false);
     setIsSubmitting(false);
     setConfirmationMessage('');
+    setTermsAccepted({ terms: false, cancel: false });
   };
 
   let selectedDateTimeString = '';
@@ -216,21 +223,51 @@ const BookingForm = () => {
             </p>
           )}
 
-          <p id="cost-estimate">{costEstimate}</p>
+      <p id="cost-estimate">{costEstimate}</p>
 
-          <input type="text" name="location" placeholder="Event Location" value={formData.location} onChange={handleChange} required />
-          <textarea name="details" placeholder="Tell us about your event..." rows="5" value={formData.details} onChange={handleChange}></textarea>
+      <input type="text" name="location" placeholder="Event Location" value={formData.location} onChange={handleChange} required />
+      <textarea name="details" placeholder="Tell us about your event..." rows="5" value={formData.details} onChange={handleChange}></textarea>
 
-          <button
-            type="submit"
-            disabled={
-              !formData.eventDate ||
-              !formData.startTime ||
-              !formData.duration ||
-              isSubmitting ||   // disable while submitting
-              formSubmitted     // disable after success until reset
-            }
-          >
+      <div className="terms-consent" data-reveal data-reveal-order="3">
+        <p className="terms-intro">I agree to the:</p>
+        <label htmlFor="terms-checkbox" className="terms-checkbox">
+          <input
+            id="terms-checkbox"
+            type="checkbox"
+            checked={termsAccepted.terms}
+            onChange={(e) => setTermsAccepted((prev) => ({ ...prev, terms: e.target.checked }))}
+            required
+          />
+          <button type="button" className="inline-link" onClick={() => setShowTermsModal(true)}>
+            Terms & Conditions
+          </button>
+        </label>
+        <label htmlFor="cancel-checkbox" className="terms-checkbox">
+          <input
+            id="cancel-checkbox"
+            type="checkbox"
+            checked={termsAccepted.cancel}
+            onChange={(e) => setTermsAccepted((prev) => ({ ...prev, cancel: e.target.checked }))}
+            required
+          />
+          <button type="button" className="inline-link" onClick={() => setShowCancelModal(true)}>
+            Cancellation Policy
+          </button>
+        </label>
+      </div>
+
+      <button
+        type="submit"
+        disabled={
+          !formData.eventDate ||
+          !formData.startTime ||
+          !formData.duration ||
+          !termsAccepted.terms ||
+          !termsAccepted.cancel ||
+          isSubmitting ||   // disable while submitting
+          formSubmitted     // disable after success until reset
+        }
+      >
             {isSubmitting ? 'Submitting...' : 'Submit Booking Request'}
           </button>
         </form>
@@ -256,9 +293,11 @@ const BookingForm = () => {
         />
       )}
 
-      <div data-reveal data-reveal-order="3">
+      <div data-reveal data-reveal-order="4">
         <Footer />
       </div>
+      {showTermsModal && <TermsModal onClose={() => setShowTermsModal(false)} />}
+      {showCancelModal && <CancellationModal onClose={() => setShowCancelModal(false)} />}
     </section>
   );
 };
