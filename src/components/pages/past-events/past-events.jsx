@@ -21,7 +21,16 @@ function PastEvents() {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
-          setPastEvents(data.pastEvents || []);
+          const events = data.pastEvents || [];
+          const featuredEvent = {
+            image:
+              'https://res.cloudinary.com/dea6wzxd8/image/upload/v1759157514/phee_poster_red_bull_tfospb.jpg',
+            alt: 'DJ Phee Red Bull event poster'
+          };
+          const dedupedEvents = events.filter(
+            (event) => event?.image !== featuredEvent.image
+          );
+          setPastEvents([featuredEvent, ...dedupedEvents]);
           setMeta({
             title: data.pastEventsMetaTitle || 'Past Events — DJ Phee',
             description:

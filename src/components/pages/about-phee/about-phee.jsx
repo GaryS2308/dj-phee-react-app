@@ -14,7 +14,24 @@ const AboutPhee = () => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          setData(docSnap.data());
+          const fetchedData = docSnap.data();
+          const replacements = {
+            'https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416289/phee3_g7ybop.jpg':
+              'https://res.cloudinary.com/dea6wzxd8/image/upload/v1759158539/phee_image_2_fkvd1p.jpg',
+            'https://res.cloudinary.com/dea6wzxd8/image/upload/v1755076092/phee8_wi2s8x.jpg':
+              'https://res.cloudinary.com/dea6wzxd8/image/upload/v1759158539/phee_image_1_oj1yyt.jpg'
+          };
+
+          const updatedImages = Array.isArray(fetchedData.aboutImages)
+            ? fetchedData.aboutImages.map((img) => {
+                if (img?.src && replacements[img.src]) {
+                  return { ...img, src: replacements[img.src] };
+                }
+                return img;
+              })
+            : fetchedData.aboutImages;
+
+          setData({ ...fetchedData, aboutImages: updatedImages });
         } else {
           console.error('No document found!');
         }
