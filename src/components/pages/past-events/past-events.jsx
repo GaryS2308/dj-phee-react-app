@@ -14,6 +14,27 @@ function PastEvents() {
   const [pastEvents, setPastEvents] = useState([]);
   const [meta, setMeta] = useState({ title: '', description: '' });
 
+  const liveStreams = [
+    {
+      id: 'soulshaker-village-idiot',
+      title: 'SOULSHAKER SET @ VILLAGE IDIOT (19/03/2025)',
+      embedSrc:
+        'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2059987416&color=%234d4a41&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false',
+      profileHref: 'https://soundcloud.com/phemelo-ramatlotlo-122152686',
+      trackHref:
+        'https://soundcloud.com/phemelo-ramatlotlo-122152686/soulshaker-setvillage-idiot19032025'
+    },
+    {
+      id: 'cloud-9-fools-gold',
+      title: 'CLOUD 9 SET @ FOOLS GOLD SOCIAL (18/04/2025)',
+      embedSrc:
+        'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2094318828&color=%234c4c4c&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false',
+      profileHref: 'https://soundcloud.com/phemelo-ramatlotlo-122152686',
+      trackHref:
+        'https://soundcloud.com/phemelo-ramatlotlo-122152686/cloud-9-set-fools-gold-social18042025'
+    }
+  ];
+
   useEffect(() => {
     const fetchPastEvents = async () => {
       try {
@@ -91,6 +112,47 @@ function PastEvents() {
 
       <div data-reveal data-reveal-order="2">
         <MarqueeBanner />
+      </div>
+
+      <h3 className="past-events-subheading" data-reveal data-reveal-order="3">
+        LIVE SETS
+      </h3>
+
+      <div className="past-events-streams" data-reveal data-reveal-order="4">
+        {liveStreams.map((stream) => (
+          <div key={stream.id} className="past-events-stream">
+            <iframe
+              className="past-events-stream__player"
+              title={stream.title}
+              width="100%"
+              height="166"
+              scrolling="no"
+              frameBorder="no"
+              allow="autoplay"
+              loading="lazy"
+              src={stream.embedSrc}
+            ></iframe>
+            <div className="past-events-stream__links">
+              <a
+                href={stream.profileHref}
+                title="Phemelo Ramatlotlo on SoundCloud"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                SoundCloud Profile
+              </a>
+              <span>·</span>
+              <a
+                href={stream.trackHref}
+                title={stream.title}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open Track
+              </a>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
