@@ -71,7 +71,7 @@ const BookingForm = () => {
 
   useEffect(() => {
     if (formData.duration) {
-      const cost = parseDurationToHours(formData.duration) * 1000;
+      const cost = parseDurationToHours(formData.duration) * 1500;
       setCostEstimate(`Estimated Cost: R${cost}`);
     } else {
       setCostEstimate('Estimated Cost: R0');

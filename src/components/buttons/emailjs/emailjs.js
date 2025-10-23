@@ -23,7 +23,7 @@ export const sendResponseEmail = async (token, type) => {
   const booking = snapshot.docs[0].data();
   console.log("✅ Booking found:", booking);
 
-  const rate_per_hour = 1000;
+  const rate_per_hour = 1500;
   const parseDurationToHours = (duration) => {
     let totalHours = 0;
     const hrMatch = duration.match(/(\d+)hr/);

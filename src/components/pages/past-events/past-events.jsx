@@ -43,15 +43,22 @@ function PastEvents() {
         if (docSnap.exists()) {
           const data = docSnap.data();
           const events = data.pastEvents || [];
+          const latestPoster = {
+            image:
+              'https://res.cloudinary.com/dea6wzxd8/image/upload/v1761147324/Phee_poster_rage_inmpxh.jpg',
+            alt: 'DJ Phee Rage event poster'
+          };
           const featuredEvent = {
             image:
               'https://res.cloudinary.com/dea6wzxd8/image/upload/v1759157514/phee_poster_red_bull_tfospb.jpg',
             alt: 'DJ Phee Red Bull event poster'
           };
           const dedupedEvents = events.filter(
-            (event) => event?.image !== featuredEvent.image
+            (event) =>
+              event?.image !== featuredEvent.image &&
+              event?.image !== latestPoster.image
           );
-          setPastEvents([featuredEvent, ...dedupedEvents]);
+          setPastEvents([latestPoster, featuredEvent, ...dedupedEvents]);
           setMeta({
             title: data.pastEventsMetaTitle || 'Past Events — DJ Phee',
             description:

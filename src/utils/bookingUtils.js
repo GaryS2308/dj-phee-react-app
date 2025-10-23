@@ -1,6 +1,6 @@
 // filepath: /dj-phee-react-app/dj-phee-react-app/src/utils/bookingUtils.js
 
-export const calculateCost = (durationMinutes, hourlyRate = 1000) => {
+export const calculateCost = (durationMinutes, hourlyRate = 1500) => {
     const hours = durationMinutes / 60;
     return hours * hourlyRate;
 };
