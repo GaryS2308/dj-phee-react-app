@@ -3,14 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "description": "A React application for booking DJ Phee for events.",
-  "homepage": "https://phee.co.za/",
   "scripts": {
     "start": "export NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
     "build": "export NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
     "test": "export NODE_OPTIONS=--openssl-legacy-provider && react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy:firebase": "npm run build && firebase deploy --only hosting"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
