@@ -69,6 +69,15 @@ const BookingForm = () => {
     return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   };
 
+  const pushBookingSubmitEvent = (bookingDetails) => {
+    if (typeof window === 'undefined') return;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'booking_request_submitted',
+      bookingDetails,
+    });
+  };
+
   useEffect(() => {
     if (formData.duration) {
       const cost = parseDurationToHours(formData.duration) * 1500;
@@ -142,6 +151,15 @@ const BookingForm = () => {
 
       // Send to EmailJS (to DJ)
       await send('service_qekby5l', 'template_b27p846', templateParams);
+
+      const bookingEventData = {
+        eventType: formData.event || 'unspecified',
+        eventDate: formatDate(formData.eventDate),
+        startTime: formData.startTime,
+        duration: formData.duration,
+        location: formData.location || 'unspecified',
+      };
+      pushBookingSubmitEvent(bookingEventData);
 
       // Success
       setConfirmationMessage('Booking request received. PHEE will get back to you via email promptly');
