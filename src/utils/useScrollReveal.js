@@ -2,6 +2,12 @@ import { useEffect } from 'react';
 
 export const useScrollReveal = (options) => {
   useEffect(() => {
+    const isReactSnap = typeof navigator !== 'undefined' && navigator.userAgent === 'ReactSnap';
+    if (typeof window === 'undefined' || isReactSnap) return undefined;
+
+    const scopes = Array.from(document.querySelectorAll('.reveal-scope'));
+    scopes.forEach((scope) => scope.setAttribute('data-reveal-ready', 'true'));
+
     const {
       root = null,
       rootMargin = '0px 0px -15% 0px',
@@ -18,8 +24,6 @@ export const useScrollReveal = (options) => {
         element.classList.add('is-visible');
       });
     };
-
-    if (typeof window === 'undefined') return undefined;
 
     if (typeof IntersectionObserver === 'undefined') {
       revealImmediately();

@@ -65,6 +65,28 @@
   gap: 15px;
 }
 
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  justify-content: center;
+}
+
+.footer-legal-link {
+  color: #cfcfcf;
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.footer-legal-link:hover,
+.footer-legal-link:focus {
+  color: #d16464;
+  outline: none;
+}
+
 /* Bio line centered below */
 .footer-bio {
   margin-top: 0px;
@@ -227,6 +249,10 @@
   .footer-social {
     gap: 5px; /* smaller gap between icons */
 
+  }
+
+  .footer-legal-link {
+    font-size: 0.6rem;
   }
 
   .footer-credit {

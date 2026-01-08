@@ -5,14 +5,20 @@ import { Navigation, Pagination, Mousewheel, FreeMode } from 'swiper/modules';
 import MarqueeBanner from '../../buttons/marquee-banner/marquee-banner';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase'; // adjust path to your firebase config
+import LazySoundCloudEmbed from './LazySoundCloudEmbed';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './past-events.css';
 
 function PastEvents() {
+  const defaultMeta = {
+    title: 'PHEE | Hire a Professional DJ in Cape Town | Corporate, Clubs, Festivals & Private Events',
+    description:
+      'Book DJ PHEE for corporate events, year-end functions, clubs, festivals, weddings and private parties in Cape Town. A professional Afrotech DJ delivering high-energy sets and reliable service.'
+  };
   const [pastEvents, setPastEvents] = useState([]);
-  const [meta, setMeta] = useState({ title: '', description: '' });
+  const [meta, setMeta] = useState(defaultMeta);
 
   const liveStreams = [
     {
@@ -36,6 +42,9 @@ function PastEvents() {
   ];
 
   useEffect(() => {
+    const isReactSnap = typeof navigator !== 'undefined' && navigator.userAgent === 'ReactSnap';
+    if (isReactSnap) return;
+
     const fetchPastEvents = async () => {
       try {
         const docRef = doc(db, 'siteContent', 'phee');
@@ -60,10 +69,8 @@ function PastEvents() {
           );
           setPastEvents([latestPoster, featuredEvent, ...dedupedEvents]);
           setMeta({
-            title: data.pastEventsMetaTitle || 'Past Events — DJ Phee',
-            description:
-              data.pastEventsMetaDescription ||
-              'Check out the vibrant past events DJ Phee has rocked, from clubs to weddings and festivals. Experience the energy and vibe captured in these posters and photos.'
+            title: data.pastEventsMetaTitle || defaultMeta.title,
+            description: data.pastEventsMetaDescription || defaultMeta.description
           });
         } else {
           console.error('No document found!');
@@ -76,14 +83,27 @@ function PastEvents() {
     fetchPastEvents();
   }, []);
 
+  const getOptimizedCloudinaryUrl = (url, { width, height }) => {
+    if (!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) return url;
+    const transformation = `f_auto,q_auto,dpr_auto${width ? `,w_${width}` : ''}${height ? `,h_${height}` : ''},c_limit`;
+    return url.replace('/upload/', `/upload/${transformation}/`);
+  };
+
   return (
-    <section id="past-events">
+    <section id="past-events" className="reveal-scope">
       <Helmet>
         <title>{meta.title}</title>
         <meta name="description" content={meta.description} />
       </Helmet>
 
       <h2 data-reveal data-reveal-order="0">PAST EVENTS</h2>
+
+      <p className="past-events-lead" data-reveal data-reveal-order="1">
+        PHEE has performed at a wide range of Cape Town clubs, festivals and special events, including some of the city’s most recognised nightlife venues. His past sets span intimate club nights, large event productions and private celebrations, showcasing his ability to deliver across multiple environments.
+      </p>
+      <p className="past-events-lead" data-reveal data-reveal-order="2">
+        From late-night club energy to high-profile festival stages and corporate gatherings, these past events highlight his versatility as a Cape Town DJ for hire.
+      </p>
 
       {pastEvents.length ? (
         <Swiper
@@ -103,62 +123,49 @@ function PastEvents() {
           }}
           className="past-events-swiper"
           data-reveal
-          data-reveal-order="1"
+          data-reveal-order="3"
         >
           {pastEvents.map((event, index) => (
             <SwiperSlide key={index}>
-              <img src={event.image} alt={event.alt} loading="lazy" />
+              <img
+                src={getOptimizedCloudinaryUrl(event.image, { width: 1100, height: 1600 })}
+                srcSet={`${getOptimizedCloudinaryUrl(event.image, { width: 360, height: 540 })} 360w, ${getOptimizedCloudinaryUrl(event.image, { width: 540, height: 810 })} 540w, ${getOptimizedCloudinaryUrl(event.image, { width: 720, height: 1080 })} 720w, ${getOptimizedCloudinaryUrl(event.image, { width: 1100, height: 1600 })} 1100w`}
+                sizes="(max-width: 480px) 82vw, (max-width: 900px) 60vw, 320px"
+                alt={event.alt}
+                loading="lazy"
+                width="640"
+                height="960"
+              />
             </SwiperSlide>
           ))}
         </Swiper>
       ) : (
-        <p className="past-events-loading" data-reveal data-reveal-order="1">
+        <p className="past-events-loading" data-reveal data-reveal-order="3">
           Loading past events...
         </p>
       )}
 
-      <div data-reveal data-reveal-order="2">
+      <div data-reveal data-reveal-order="4">
         <MarqueeBanner />
       </div>
 
-      <h3 className="past-events-subheading" data-reveal data-reveal-order="3">
+      <h3 className="past-events-subheading" data-reveal data-reveal-order="5">
         LIVE SETS
       </h3>
 
-      <div className="past-events-streams" data-reveal data-reveal-order="4">
+      <p className="past-events-lead" data-reveal data-reveal-order="6">
+        Explore PHEE’s latest live sets recorded at Cape Town clubs, festivals and private events. His Afrotech sound blends deep rhythms with high-energy transitions, creating dynamic sets built for both nightlife and large-scale events. These mixes capture the same performance style he brings to corporate functions, club nights and festival appearances across the city.
+      </p>
+
+      <div className="past-events-streams" data-reveal data-reveal-order="7">
         {liveStreams.map((stream) => (
-          <div key={stream.id} className="past-events-stream">
-            <iframe
-              className="past-events-stream__player"
-              title={stream.title}
-              width="100%"
-              height="166"
-              scrolling="no"
-              frameBorder="no"
-              allow="autoplay"
-              loading="lazy"
-              src={stream.embedSrc}
-            ></iframe>
-            <div className="past-events-stream__links">
-              <a
-                href={stream.profileHref}
-                title="Phemelo Ramatlotlo on SoundCloud"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                SoundCloud Profile
-              </a>
-              <span>·</span>
-              <a
-                href={stream.trackHref}
-                title={stream.title}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Open Track
-              </a>
-            </div>
-          </div>
+          <LazySoundCloudEmbed
+            key={stream.id}
+            embedUrl={stream.embedSrc}
+            title={stream.title}
+            profileHref={stream.profileHref}
+            trackHref={stream.trackHref}
+          />
         ))}
       </div>
     </section>

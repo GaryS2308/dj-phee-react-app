@@ -6,7 +6,7 @@ const MarqueeBanner = () => {
     'HALO NIGHTCLUB',
     'MODULAR',
     'DEUS EX MACHINA',
-    'CAPRICE',
+    'CAFE CAPRICE',
     'RITAS',
     'THE VILLAGE IDIOT',
     'ARCADE',

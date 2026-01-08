@@ -4,7 +4,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ReactSlider from 'react-slider';
 import { format } from 'date-fns';
 import './slider.css';
-import { getDatabase, ref, onValue } from 'firebase/database';
 
 const TimeSliderModal = ({ 
   selectedDate, 
@@ -13,8 +12,6 @@ const TimeSliderModal = ({
   onCancel, 
   onConfirm 
 }) => {
-  // State to hold booked time ranges for selected date
-  const [bookedRanges, setBookedRanges] = useState([]);
 
   // Convert HH:mm to minutes since midnight
   const timeStrToMinutes = (timeStr) => {
@@ -57,28 +54,7 @@ const TimeSliderModal = ({
   const [date, setDate] = useState(selectedDate || new Date());
 
   useEffect(() => {
-    const db = getDatabase();
-    const dateStr = format(date, 'yyyy-MM-dd'); // match stored date format
-    const bookingsRef = ref(db, 'bookings');
-
-    const unsubscribe = onValue(bookingsRef, (snapshot) => {
-      const bookings = snapshot.val() || {};
-      const ranges = [];
-
-      for (const key in bookings) {
-        const booking = bookings[key];
-        if (booking.event_date === dateStr) {
-          const startMins = timeStrToMinutes(booking.start_time);
-          const durMins = durationStrToMinutes(booking.duration);
-          const endMins = startMins + durMins;
-          ranges.push([startMins, endMins]);
-        }
-      }
-
-      setBookedRanges(ranges);
-    });
-
-    return () => unsubscribe();
+    // RTDB availability checks removed; bookings are handled manually.
   }, [date]);
 
   const minDuration = 60; // min 1 hour
@@ -91,10 +67,6 @@ const TimeSliderModal = ({
     const now = new Date();
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-    const overlaps = bookedRanges.some(([bookedStart, bookedEnd]) => {
-      return newStart < bookedEnd && newEnd > bookedStart;
-    });
-
     const isToday = (someDate) => {
       return (
         someDate.getDate() === now.getDate() &&
@@ -106,7 +78,7 @@ const TimeSliderModal = ({
     const isValidDuration = newEnd - newStart >= minDuration;
     const isInFuture = !isToday(date) || newStart >= currentMinutes;
 
-    if (isValidDuration && !overlaps && newEnd <= dayMax && isInFuture) {
+    if (isValidDuration && newEnd <= dayMax && isInFuture) {
       setRange(vals);
     }
   };
@@ -115,18 +87,6 @@ const TimeSliderModal = ({
   const handleConfirm = () => {
     const selectedStart = range[0];
     const selectedEnd = range[1];
-
-    const overlaps = bookedRanges.find(([bookedStart, bookedEnd]) => {
-      return selectedStart < bookedEnd && selectedEnd > bookedStart;
-    });
-
-    if (overlaps) {
-      const [conflictStart, conflictEnd] = overlaps;
-      const startStr = minutesToTimeStr(conflictStart);
-      const endStr = minutesToTimeStr(conflictEnd);
-      alert(`❌ Booked from ${startStr} to ${endStr}. Please choose another time.`);
-      return;
-    }
 
     onConfirm({
       date,

@@ -1,6 +1,5 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -19,7 +18,21 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+let analyticsInstance = null;
+export const initAnalytics = async () => {
+  if (analyticsInstance || typeof window === 'undefined') return analyticsInstance;
+  try {
+    const { isSupported, getAnalytics } = await import('firebase/analytics');
+    const supported = await isSupported();
+    if (supported) {
+      analyticsInstance = getAnalytics(app);
+    }
+  } catch (error) {
+    analyticsInstance = null;
+  }
+  return analyticsInstance;
+};
 
 const db = getFirestore(app);
 export { db };

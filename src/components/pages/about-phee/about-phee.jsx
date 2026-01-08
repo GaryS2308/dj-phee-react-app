@@ -16,6 +16,9 @@ const AboutPhee = () => {
   ];
 
   useEffect(() => {
+    const isReactSnap = typeof navigator !== 'undefined' && navigator.userAgent === 'ReactSnap';
+    if (isReactSnap) return;
+
     const fetchAboutPhee = async () => {
       try {
         const docRef = doc(db, 'siteContent', 'phee'); // 'phee' is your document ID
@@ -67,7 +70,7 @@ const AboutPhee = () => {
         />
       </Helmet>
 
-      <section id="about-phee">
+      <section id="about-phee" className="reveal-scope">
         <h2 data-reveal data-reveal-order="0">{data?.aboutTitle || 'About Phee'}</h2>
         {aboutParagraphs.map((paragraph, index) => (
           <p key={index} data-reveal data-reveal-order={index + 1}>
@@ -82,16 +85,16 @@ const AboutPhee = () => {
             data-reveal-order={aboutParagraphs.length + 1}
         >
             {data.aboutImages.map((img, index) => (
-              <img
-                key={index}
-                src={getOptimizedCloudinaryUrl(img.src, { width: 900, height: 900 })}
-                srcSet={`${getOptimizedCloudinaryUrl(img.src, { width: 480, height: 480 })} 480w, ${getOptimizedCloudinaryUrl(img.src, { width: 720, height: 720 })} 720w, ${getOptimizedCloudinaryUrl(img.src, { width: 1080, height: 1080 })} 1080w`}
-                sizes="(max-width: 480px) 90vw, (max-width: 768px) 70vw, 320px"
-                alt={img.alt}
-                loading="lazy"
-                width="900"
-                height="900"
-              />
+                <img
+                  key={index}
+                  src={getOptimizedCloudinaryUrl(img.src, { width: 900, height: 900 })}
+                  srcSet={`${getOptimizedCloudinaryUrl(img.src, { width: 320, height: 320 })} 320w, ${getOptimizedCloudinaryUrl(img.src, { width: 480, height: 480 })} 480w, ${getOptimizedCloudinaryUrl(img.src, { width: 720, height: 720 })} 720w, ${getOptimizedCloudinaryUrl(img.src, { width: 1080, height: 1080 })} 1080w`}
+                  sizes="(max-width: 480px) 82vw, (max-width: 900px) 60vw, 320px"
+                  alt={img.alt}
+                  loading="lazy"
+                  width="900"
+                  height="900"
+                />
             ))}
           </div>
         ) : (

@@ -196,19 +196,26 @@ const BookingForm = () => {
   }
 
   return (
-    <section id="booking">
+    <section id="booking" className="reveal-scope">
       <Helmet>
-        <title>Book DJ Phee — Professional DJ Booking</title>
+        <title>PHEE | Hire a Professional DJ in Cape Town | Corporate, Clubs, Festivals & Private Events</title>
         <meta
           name="description"
-          content="Book DJ Phee for your event — weddings, clubs, festivals, and private parties. Use the form to select date, time, and details to get started."
+          content="Book DJ PHEE for corporate events, year-end functions, clubs, festivals, weddings and private parties in Cape Town. A professional Afrotech DJ delivering high-energy sets and reliable service."
         />
       </Helmet>
 
       <h2 data-reveal data-reveal-order="1">BOOK DJ PHEE</h2>
 
+      <p className="booking-lead" data-reveal data-reveal-order="2">
+        Book DJ PHEE for your next event in Cape Town, from corporate functions and year-end parties to clubs, festivals, weddings and private celebrations. As a professional DJ, he offers a reliable and polished experience with quick communication and flexible availability.
+      </p>
+      <p className="booking-lead" data-reveal data-reveal-order="3">
+        If you're looking to hire a DJ in Cape Town who can handle a corporate event, a festival slot, a club night or a private function, use the form below to request a date and availability.
+      </p>
+
       {formSubmitted ? (
-        <div className="confirmation-section" data-reveal data-reveal-order="2">
+        <div className="confirmation-section" data-reveal data-reveal-order="4">
           <div className="confirmation-message">
             <VscPass style={{ color: '#d6d6d6ff', verticalAlign: 'middle', marginRight: '8px', fontSize: '1.5rem' }} />
             {confirmationMessage}
@@ -218,7 +225,7 @@ const BookingForm = () => {
           </button>
         </div>
       ) : (
-        <form id="booking-form" onSubmit={handleSubmit} data-reveal data-reveal-order="2">
+        <form id="booking-form" onSubmit={handleSubmit} data-reveal data-reveal-order="4">
           <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required />
           <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required />
           <input type="tel" name="phone" placeholder="Your Phone Number (optional)" value={formData.phone} onChange={handleChange} />

@@ -36,7 +36,7 @@ const LinksPage = () => {
       </Helmet>
       <div className="links-header">
         <img
-          src="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416286/phee5_uehcyi.png" 
+          src="https://res.cloudinary.com/dea6wzxd8/image/upload/f_auto,q_auto,w_320,h_320,c_fill,g_auto/v1754416286/phee5_uehcyi.png" 
           alt="DJ Phee"
           className="links-avatar"
         />

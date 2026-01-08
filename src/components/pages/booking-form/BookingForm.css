@@ -14,6 +14,14 @@
   color : #eaeaea;
 }
 
+.booking-lead {
+  max-width: 760px;
+  margin: 0 auto 14px;
+  color: #dcdcdc;
+  line-height: 1.65;
+  font-size: 1.02rem;
+}
+
 #booking-form {
   max-width: 600px;
   margin: 0 auto;
@@ -128,6 +136,11 @@
   .terms-checkbox {
     font-size: 0.72rem;
     gap: 4px;
+  }
+
+  .booking-lead {
+    font-size: 0.95rem;
+    margin: 0 auto 12px;
   }
 
   .terms-intro {

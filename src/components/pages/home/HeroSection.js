@@ -1,0 +1,134 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import './HeroSection.css';
+
+const HeroSection = () => {
+  const [videoReady, setVideoReady] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const videoRef = useRef(null);
+  const isReactSnap = typeof navigator !== 'undefined' && navigator.userAgent === 'ReactSnap';
+
+  const scrollToBooking = (e) => {
+    e.preventDefault();
+    const bookingSection = document.getElementById('booking');
+    if (bookingSection) bookingSection.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // ONE optimized asset used for CSS bg + poster (prevents duplicated downloads)
+  const heroPosterMobile =
+    'https://res.cloudinary.com/dea6wzxd8/image/upload/f_auto,q_auto,dpr_auto,w_900/v1758540552/Phee_background_photo_fbayer.png';
+  const heroPosterDesktop =
+    'https://res.cloudinary.com/dea6wzxd8/image/upload/f_auto,q_auto,dpr_auto,w_1440/v1758540552/Phee_background_photo_fbayer.png';
+
+  const heroVideoSrc =
+    'https://res.cloudinary.com/dea6wzxd8/video/upload/v1754915471/phee-dj-video-1_hsfjz1.mp4';
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || isReactSnap) return undefined;
+
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.setAttribute('muted', '');
+    video.playsInline = true;
+    video.setAttribute('playsinline', '');
+
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    let hasPlayed = false;
+
+    const attemptPlay = () => {
+      if (!videoRef.current || hasPlayed) return;
+      if (!shouldLoadVideo) setShouldLoadVideo(true);
+      const p = videoRef.current.play();
+      if (p && typeof p.then === 'function') {
+        p.then(() => (hasPlayed = true)).catch(() => {});
+      }
+    };
+
+    const handleCanPlay = () => setVideoReady(true);
+    video.addEventListener('canplay', handleCanPlay);
+
+    // Desktop: start video quickly but NOT immediately (max 500ms delay)
+    if (!isMobile) {
+      window.setTimeout(() => {
+        attemptPlay();
+      }, 450);
+    }
+
+    // Mobile: only on first user interaction
+    const resumeOnGesture = () => {
+      if (hasPlayed) return;
+      attemptPlay();
+    };
+
+    document.addEventListener('pointerdown', resumeOnGesture, { once: true });
+    document.addEventListener('touchstart', resumeOnGesture, { once: true });
+    document.addEventListener('scroll', resumeOnGesture, { once: true, passive: true });
+    document.addEventListener('keydown', resumeOnGesture, { once: true });
+
+    return () => {
+      video.removeEventListener('canplay', handleCanPlay);
+      document.removeEventListener('pointerdown', resumeOnGesture);
+      document.removeEventListener('touchstart', resumeOnGesture);
+      document.removeEventListener('scroll', resumeOnGesture);
+      document.removeEventListener('keydown', resumeOnGesture);
+    };
+  }, [shouldLoadVideo, isReactSnap]);
+
+  return (
+    <>
+      <Helmet>
+        <title>PHEE | Hire a Professional DJ in Cape Town | Corporate, Clubs, Festivals & Private Events</title>
+        <meta
+          name="description"
+          content="Book DJ PHEE for corporate events, year-end functions, clubs, festivals, weddings and private parties in Cape Town. A professional Afrotech DJ delivering high-energy sets and reliable service."
+        />
+        {/* Preload hero poster for faster first paint on mobile */}
+        <link rel="preload" as="image" href={heroPosterMobile} fetchpriority="high" />
+      </Helmet>
+
+      <section
+        className={`hero ${videoReady ? 'video-ready' : ''}`}
+        id="hero"
+        style={{ '--hero-bg': `url(${heroPosterDesktop})` }}
+      >
+        <video
+          muted
+          loop
+          playsInline
+          className="bg-video"
+          poster={heroPosterMobile}
+          id="hero-video"
+          ref={videoRef}
+          preload={shouldLoadVideo ? 'metadata' : 'none'}
+        >
+          {shouldLoadVideo && <source src={heroVideoSrc} type="video/mp4" />}
+        </video>
+
+        <div className="overlay">
+          <div className="hero-copy">
+            <h1>PHEE</h1>
+            <h2>Professional DJ for corporate events, clubs, festivals and private functions in Cape Town.</h2>
+          </div>
+          <div className="hero-cta">
+            <a href="#booking" onClick={scrollToBooking} className="cta-button">
+              BOOK NOW
+            </a>
+            <button
+              type="button"
+              className="scroll-indicator"
+              onClick={scrollToBooking}
+              aria-label="Scroll to booking"
+            >
+              <span className="chevron" aria-hidden="true"></span>
+              <span className="chevron" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default HeroSection;

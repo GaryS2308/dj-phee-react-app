@@ -9,9 +9,9 @@ const TermsModal = ({ onClose }) => (
         <p><strong>Summary:</strong></p>
         <ol>
           <li>You fill in our booking form, we confirm if DJ Phee is available.</li>
-          <li>We treat your personal info (name, phone, email) as private — we don’t sell or share it.</li>
+          <li>We treat your personal info (name, phone, email) as private, we don’t sell or share it.</li>
           <li>You’re responsible for making sure your venue is safe and ready for a performance.</li>
-          <li>Life happens — bad weather, load-shedding, or emergencies might cause changes.</li>
+          <li>Life happens... bad weather, load-shedding, or emergencies might cause changes.</li>
           <li>We’re not liable for losses, injuries, or problems outside our control.</li>
           <li>By booking or using this website, you agree to these terms.</li>
         </ol>

@@ -7,7 +7,7 @@
   align-items: stretch;
   justify-content: center;
   overflow: hidden;
-  background: #040404 url('https://res.cloudinary.com/dea6wzxd8/image/upload/v1758540552/Phee_background_photo_fbayer.png') center/cover no-repeat;
+  background: #040404 var(--hero-bg) center/cover no-repeat;
   padding: clamp(4vh, 7vh, 10vh) 16px clamp(6vh, 8vh, 10vh);
 }
 
@@ -41,7 +41,9 @@
   flex-direction: column;
   align-items: center;
   gap: clamp(36px, 8vh, 56px);
-  transform: translate(-50%, 6vh);
+  transform: translate(-50%, -2vh);
+  isolation: isolate;
+  will-change: transform;
 }
 
 .hero-copy {
@@ -84,25 +86,62 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, rgba(152, 27, 27, 0.95), rgba(94, 9, 9, 0.95));
+  position: relative;
+  background: linear-gradient(165deg, #b02525 0%, #7b0f0f 42%, #430909 100%);
   color: #fefefe;
   padding: clamp(10px, 2.2vh, 16px) clamp(28px, 5vw, 42px);
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.24);
   text-decoration: none;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: clamp(0.72rem, 1.6vw, 0.95rem);
-  box-shadow: 0 8px 22px rgba(150, 28, 28, 0.24);
-  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.45),
+    0 14px 28px rgba(131, 25, 25, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -8px 18px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+
+.cta-button::after {
+  content: '';
+  position: absolute;
+  inset: 6px 18px 58% 18px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+  pointer-events: none;
+  opacity: 0.68;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  inset: -4px -10px -12px -10px;
+  border-radius: 999px;
+  background: radial-gradient(ellipse at center, rgba(153, 32, 32, 0.18) 0%, rgba(0, 0, 0, 0) 70%);
+  filter: blur(10px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cta-button span {
+  position: relative;
+  z-index: 1;
 }
 
 .cta-button:hover {
-  background: linear-gradient(135deg, rgba(182, 39, 39, 0.98), rgba(120, 17, 17, 0.98));
-  border-color: rgba(255, 255, 255, 0.45);
-  transform: translateY(-2px);
-  box-shadow: 0 20px 44px rgba(150, 28, 28, 0.4);
+  background: linear-gradient(160deg, #cb2929 0%, #8d1212 50%, #520d0d 100%);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow:
+    0 20px 42px rgba(0, 0, 0, 0.55),
+    0 20px 42px rgba(131, 25, 25, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -10px 18px rgba(0, 0, 0, 0.35);
+  filter: drop-shadow(0 8px 18px rgba(203, 41, 41, 0.25));
 }
 
 .cta-button:focus-visible {
@@ -154,7 +193,7 @@
 
   .overlay {
     width: min(92vw, 420px);
-    transform: translate(-50%, -1.5vh);
+    transform: translate(-50%, -4vh);
     gap: clamp(18px, 5vh, 30px);
   }
 
