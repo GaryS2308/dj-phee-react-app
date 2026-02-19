@@ -69,15 +69,34 @@
 .swiper-button-next,
 .swiper-button-prev {
   color: white;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  border-radius: 50%;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
   transition: background 0.3s ease;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  color: #ffffff;
+}
+
+.swiper-pagination-bullet {
+  background: #ffffff;
+  opacity: 0.45;
+}
+
+.swiper-pagination-bullet-active {
+  background: #ffffff;
+  opacity: 1;
+}
+
+.past-events-swiper {
+  --swiper-theme-color: #ffffff;
 }
 
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
-  background: rgba(0, 0, 0, 0.7);
+  background: transparent;
 }
 
 h2 {

@@ -1,17 +1,16 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
-import './HeroSection.css';
+import Link from 'next/link';
 
 const HeroSection = () => {
   const [videoReady, setVideoReady] = useState(false);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const videoRef = useRef(null);
-  const isReactSnap = typeof navigator !== 'undefined' && navigator.userAgent === 'ReactSnap';
-
-  const scrollToBooking = (e) => {
+  const scrollToNextSection = (e) => {
     e.preventDefault();
-    const bookingSection = document.getElementById('booking');
-    if (bookingSection) bookingSection.scrollIntoView({ behavior: 'smooth' });
+    const nextSection = document.getElementById('home-bio');
+    if (nextSection) nextSection.scrollIntoView({ behavior: 'smooth' });
   };
 
   // ONE optimized asset used for CSS bg + poster (prevents duplicated downloads)
@@ -24,7 +23,7 @@ const HeroSection = () => {
     'https://res.cloudinary.com/dea6wzxd8/video/upload/v1754915471/phee-dj-video-1_hsfjz1.mp4';
 
   useEffect(() => {
-    if (typeof window === 'undefined' || isReactSnap) return undefined;
+    if (typeof window === 'undefined') return undefined;
 
     const video = videoRef.current;
     if (!video) return;
@@ -74,20 +73,10 @@ const HeroSection = () => {
       document.removeEventListener('scroll', resumeOnGesture);
       document.removeEventListener('keydown', resumeOnGesture);
     };
-  }, [shouldLoadVideo, isReactSnap]);
+  }, [shouldLoadVideo]);
 
   return (
     <>
-      <Helmet>
-        <title>PHEE | Hire a Professional DJ in Cape Town | Corporate, Clubs, Festivals & Private Events</title>
-        <meta
-          name="description"
-          content="Book DJ PHEE for corporate events, year-end functions, clubs, festivals, weddings and private parties in Cape Town. A professional Afrotech DJ delivering high-energy sets and reliable service."
-        />
-        {/* Preload hero poster for faster first paint on mobile */}
-        <link rel="preload" as="image" href={heroPosterMobile} fetchpriority="high" />
-      </Helmet>
-
       <section
         className={`hero ${videoReady ? 'video-ready' : ''}`}
         id="hero"
@@ -112,14 +101,12 @@ const HeroSection = () => {
             <h2>Professional DJ for corporate events, clubs, festivals and private functions in Cape Town.</h2>
           </div>
           <div className="hero-cta">
-            <a href="#booking" onClick={scrollToBooking} className="cta-button">
-              BOOK NOW
-            </a>
+            <Link href="/booking#booking" className="cta-button">BOOK NOW</Link>
             <button
               type="button"
               className="scroll-indicator"
-              onClick={scrollToBooking}
-              aria-label="Scroll to booking"
+              onClick={scrollToNextSection}
+              aria-label="Scroll to content"
             >
               <span className="chevron" aria-hidden="true"></span>
               <span className="chevron" aria-hidden="true"></span>

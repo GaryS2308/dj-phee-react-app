@@ -2,8 +2,7 @@ import { useEffect } from 'react';
 
 export const useScrollReveal = (options) => {
   useEffect(() => {
-    const isReactSnap = typeof navigator !== 'undefined' && navigator.userAgent === 'ReactSnap';
-    if (typeof window === 'undefined' || isReactSnap) return undefined;
+    if (typeof window === 'undefined') return undefined;
 
     const scopes = Array.from(document.querySelectorAll('.reveal-scope'));
     scopes.forEach((scope) => scope.setAttribute('data-reveal-ready', 'true'));

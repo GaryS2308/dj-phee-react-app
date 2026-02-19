@@ -1,44 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getConsent, setConsent } from '../../utils/consent';
-import './ConsentBanner.css';
+'use client';
 
-const ConsentBanner = () => {
-  const [consent, setConsentState] = useState(() => getConsent());
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { getConsent, setConsent } from '../../utils/consent';
+
+const ConsentBanner = ({ consent, onDecision }) => {
+  const [mounted, setMounted] = useState(false);
+  const [localConsent, setLocalConsent] = useState(undefined);
+  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return undefined;
-
-    const handleChange = (event) => {
-      if (event && event.detail) {
-        setConsentState(event.detail);
-      } else {
-        setConsentState(getConsent());
-      }
-    };
-
-    window.addEventListener('phee-consent-change', handleChange);
-    return () => window.removeEventListener('phee-consent-change', handleChange);
+    setMounted(true);
   }, []);
 
-  if (consent !== 'unknown') return null;
+  useEffect(() => {
+    if (!mounted) return;
+    if (consent === undefined) {
+      setLocalConsent(getConsent());
+      return;
+    }
+    setLocalConsent(consent);
+  }, [consent, mounted]);
+
+  if (!mounted || dismissed || localConsent === undefined || localConsent !== null) return null;
+
+  const handleDecision = (value) => {
+    setDismissed(true);
+    setLocalConsent(value);
+    setConsent(value);
+    if (typeof onDecision === 'function') {
+      onDecision(value);
+    }
+  };
 
   return (
-    <div className="consent-banner" role="dialog" aria-live="polite" aria-label="Cookie consent">
-      <div className="consent-banner__content">
-        <p>
-          We use cookies and analytics to understand traffic and improve the site. You can accept or
-          reject non-essential tracking. See our{' '}
-          <Link to="/privacy">Privacy Policy</Link> and <Link to="/cookies">Cookie Policy</Link>.
-        </p>
-      </div>
-      <div className="consent-banner__actions">
-        <button type="button" className="consent-banner__button consent-banner__button--accept" onClick={() => setConsent('accepted')}>
-          Accept
-        </button>
-        <button type="button" className="consent-banner__button consent-banner__button--reject" onClick={() => setConsent('rejected')}>
-          Reject
-        </button>
+    <div className="consent-banner__backdrop" onClick={() => handleDecision('denied')}>
+      <div
+        className="consent-banner"
+        role="dialog"
+        aria-live="polite"
+        aria-label="Cookie consent"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="consent-banner__content">
+          <p>
+            We use cookies and analytics to understand traffic and improve the site. You can accept or
+            reject non-essential tracking. See our{' '}
+            <Link href="/privacy">Privacy Policy</Link> and <Link href="/cookies">Cookie Policy</Link>.
+          </p>
+        </div>
+        <div className="consent-banner__actions">
+          <button
+            type="button"
+            className="consent-banner__button consent-banner__button--accept"
+            onClick={() => handleDecision('granted')}
+          >
+            Accept
+          </button>
+          <button
+            type="button"
+            className="consent-banner__button consent-banner__button--reject"
+            onClick={() => handleDecision('denied')}
+          >
+            Reject
+          </button>
+        </div>
       </div>
     </div>
   );

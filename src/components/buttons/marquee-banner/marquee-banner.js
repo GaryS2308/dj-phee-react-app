@@ -1,9 +1,8 @@
 import React from 'react';
-import '../../buttons/marquee-banner/marquee-banner.css';
 
-const MarqueeBanner = () => {
-  const places = [
-    'HALO NIGHTCLUB',
+const defaultPlaces = [
+  'CABO BEACH CLUB',  
+  'HALO NIGHTCLUB',
     'MODULAR',
     'DEUS EX MACHINA',
     'CAFE CAPRICE',
@@ -13,13 +12,17 @@ const MarqueeBanner = () => {
     'FOOLS GOLD',
     'DESTINY',
     'RED BULL UNLOCKED',
-    'Nice Cafe',
-  ];
+    'NICE CAFE',
+    'SAINTS ST FRANCIS',
+];
+
+const MarqueeBanner = ({ items = defaultPlaces, flush = false }) => {
+  const marqueeItems = items.length ? items : defaultPlaces;
 
   return (
-    <div className="marquee-container">
+    <div className={`marquee-container${flush ? ' marquee-container--flush' : ''}`}>
       <div className="marquee-track">
-        {[...places, ...places].map((place, index) => (
+        {[...marqueeItems, ...marqueeItems].map((place, index) => (
   <div className="marquee-item" key={index}>
     📍 {place}
   </div>

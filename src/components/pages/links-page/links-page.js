@@ -1,39 +1,9 @@
 // src/pages/LinksPage.jsx
 import React from "react";
-import { Helmet } from "react-helmet-async";
-import "./links-page.css";
 
 const LinksPage = () => {
   return (
     <div className="links-container">
-      <Helmet>
-        <title>PHEE'S Links | DJ Phee</title>
-        <meta
-          name="description"
-          content="Explore DJ Phee's booking portal, music, brands, and partners all in one place."
-        />
-        <meta property="og:title" content="PHEE'S Links" />
-        <meta
-          property="og:description"
-          content="Direct access to DJ Phee bookings, music, and collaborations."
-        />
-        <meta
-          property="og:image"
-          content="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416286/phee5_uehcyi.png"
-        />
-        <meta property="og:url" content="https://phee.co.za/links" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="PHEE'S Links" />
-        <meta
-          name="twitter:description"
-          content="Book DJ Phee, hear the latest sets, and find every brand connection."
-        />
-        <meta
-          name="twitter:image"
-          content="https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416286/phee5_uehcyi.png"
-        />
-      </Helmet>
       <div className="links-header">
         <img
           src="https://res.cloudinary.com/dea6wzxd8/image/upload/f_auto,q_auto,w_320,h_320,c_fill,g_auto/v1754416286/phee5_uehcyi.png" 

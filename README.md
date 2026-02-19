@@ -1,58 +1,51 @@
-# DJ Phee React App
+# DJ PHEE Website (Next.js Static Export)
 
-## Overview
-DJ Phee is a versatile DJ rooted in the pulsating rhythms of Afrotech. This React application allows users to book DJ Phee for various events such as clubs, weddings, and festivals. The app features a hero section with a video background, a slider showcasing past events, an about section, and a booking form.
+This project powers `https://phee.co.za` using Next.js App Router and Firebase Hosting.
+
+## Stack
+- Next.js 14 (App Router, static export)
+- React 18
+- Firebase Firestore
+- EmailJS
+
+## Local Development
+1. Install dependencies:
+```bash
+npm install
+```
+2. Start dev server:
+```bash
+npm run dev
+```
+3. Open `http://localhost:3000`
+
+## Build and Deploy
+- Production build + static export:
+```bash
+npm run build
+```
+- Deploy to Firebase Hosting:
+```bash
+npm run deploy:firebase
+```
 
 ## Project Structure
+- `app/`: routes, metadata, robots, sitemap
+- `src/components/`: UI components and page sections
+- `src/utils/`: client-side utilities
+- `public/`: static assets only (for this project: favicon and links helper files)
+- `scripts/verify-static-export.mjs`: checks required exported pages after build
+
+## SEO Notes
+- Metadata is defined per route in `app/*/page.js`.
+- Global metadata is in `app/layout.js`.
+- `robots.txt` and `sitemap.xml` are generated from:
+  - `app/robots.txt/route.js`
+  - `app/sitemap.xml/route.js`
+
+## Maintenance Tips
+- If dev server shows missing chunk/module errors, clear Next cache:
+```bash
+rm -rf .next
 ```
-dj-phee-react-app
-├── public
-│   └── index.html          # Main HTML template for the React app
-├── src
-│   ├── components          # Contains all React components
-│   │   ├── HeroSection.jsx # Hero section with video background
-│   │   ├── PastEventsSlider.jsx # Slider for past events
-│   │   ├── AboutPhee.jsx   # Information about DJ Phee
-│   │   ├── BookingForm.jsx  # Form for booking DJ Phee
-│   │   ├── StartTimeSelector.jsx # Component for selecting start time
-│   │   ├── DurationSelector.jsx   # Component for selecting duration
-│   │   └── EventSummary.jsx # Displays event summary
-│   ├── App.jsx              # Main application component
-│   ├── index.js             # Entry point of the React application
-│   ├── styles               # Contains CSS styles
-│   │   └── styles.css       # Global and component-specific styles
-│   └── utils                # Utility functions
-│       └── bookingUtils.js  # Functions related to booking process
-├── package.json             # npm configuration file
-└── README.md                # Project documentation
-```
-
-## Setup Instructions
-1. **Clone the repository:**
-   ```
-   git clone <repository-url>
-   cd dj-phee-react-app
-   ```
-
-2. **Install dependencies:**
-   ```
-   npm install
-   ```
-
-3. **Run the application:**
-   ```
-   npm start
-   ```
-   The app will be available at `http://localhost:3000`.
-
-## Usage
-- Navigate through the hero section to learn about DJ Phee.
-- View past events in the slider.
-- Fill out the booking form to request DJ Phee for your event.
-- Select the event date, start time, and duration to get an estimated cost.
-
-## Contributing
-Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes.
-
-## License
-This project is licensed under the MIT License.
+- Re-run `npm run dev`.

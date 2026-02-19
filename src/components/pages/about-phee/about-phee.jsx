@@ -1,24 +1,52 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import Link from 'next/link';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase'; // adjust the path to your firebase config
-import './about-phee.css';
 
 const AboutPhee = () => {
   const [data, setData] = useState(null);
-  const defaultMetaTitle = 'PHEE | Hire a Professional DJ in Cape Town | Corporate, Clubs, Festivals & Private Events';
-  const defaultMetaDescription =
-    'Book DJ PHEE for corporate events, year-end functions, clubs, festivals, weddings and private parties in Cape Town. A professional Afrotech DJ delivering high-energy sets and reliable service.';
   const aboutParagraphs = [
-    'Phee is a Cape Town-based DJ known for delivering high-energy Afrotech sets across corporate events, clubs, festivals and private functions. As a professional DJ in Cape Town, he has built a reputation for reading the room, keeping the crowd moving, and adapting his sound to every environment. From year-end corporate functions and company parties to weddings, birthday celebrations and late-night venues.',
-    'With a solid presence in Cape Town’s music scene, DJ PHEE performs at some of the city’s leading clubs and festival stages, bringing a distinct Afrotech and Electronic blend to the dance floor. Whether he’s playing a large-scale festival, a corporate event, a club night or an intimate private gathering, he delivers a polished, reliable and memorable experience every time.',
-    "If you're searching for a corporate event DJ in Cape Town, a club DJ for a Friday night slot, a festival-ready performer or a private event DJ, PHEE offers a versatile and professional approach to every booking."
+    <>
+      Phee is a Cape Town–based DJ known for his infectious energy, feel-good presence, and ability to turn any gathering into a proper celebration. Often described as the “Mayor of Cape Town” behind the decks, Phee brings people together through music, greeting everyone with a smile, knowing the room, and creating an atmosphere where guests instantly feel welcome and ready to move. 
+      <br />
+      <br />
+      Specialising in Afrotech, Phee’s sound is driven by rhythm, groove, and high-energy selections that keep dance floors alive. His sets are dynamic, uplifting, and expertly curated to match the moment. Whether it’s a packed club at midnight, a sunset corporate event, or an intimate private celebration.
+    </>,
+    <>
+      While Afrotech sits at the core of his style, Phee is a highly versatile DJ, confidently delivering House, Tech House, Afro House, Commercial, and custom genre requests to suit each event and audience. As a professional DJ in Cape Town, Phee has built a strong reputation for his ability to read the room. He understands that no two events are the same and that great DJing goes beyond track selection. From smoothly guiding the energy early in the evening to elevating the crowd when it matters most, Phee adapts his sound in real time to ensure every event flows effortlessly.
+      <br />
+      <br />
+      Phee is regularly booked for:
+      <br />
+      • Corporate Events and Year-end Functions
+      <br />
+      • Weddings and Private Events
+      <br />
+      • Clubs and Nightlife Venues
+      <br />
+      • Festivals and Large-scale Events
+      <br />
+      • Brand Activations and Curated Experiences
+    </>,
+    <>
+      His experience across corporate functions, weddings, clubs, festivals, and private events makes him a reliable choice for clients who want both professionalism and personality. Event organisers value his punctuality, preparation, and polished setup, while guests remember him for his friendly energy and ability to keep the dance floor buzzing.
+      <br />
+      <br />
+      With a solid presence in Cape Town’s music and events scene, DJ Phee has performed at leading clubs, festival stages, and premium venues across the city such as Halo Nightclub, Cabo Beach club, Modular, The Village Idiot, and many more.
+    </>,
+    <>
+      Whether he’s entertaining a corporate crowd, setting the tone for a wedding reception, or delivering a high-impact club set, his focus remains the same: great music, great energy, and an unforgettable experience.
+      <br />
+      <br />
+      If you’re searching for a corporate event DJ in Cape Town, a wedding DJ who understands flow and crowd energy, a club or festival DJ with Afrotech expertise, or a versatile private event DJ, DJ Phee offers a flexible, professional, and high-energy approach tailored to your event. From planning to performance, he works closely with clients to ensure the music matches the moment and that every booking ends with a full dance floor and a great vibe.
+    </>
   ];
+  const aboutImages = Array.isArray(data?.aboutImages) ? data.aboutImages : [];
+  const bioImages = aboutImages.slice(0, 4);
 
   useEffect(() => {
-    const isReactSnap = typeof navigator !== 'undefined' && navigator.userAgent === 'ReactSnap';
-    if (isReactSnap) return;
-
     const fetchAboutPhee = async () => {
       try {
         const docRef = doc(db, 'siteContent', 'phee'); // 'phee' is your document ID
@@ -56,50 +84,59 @@ const AboutPhee = () => {
 
   const getOptimizedCloudinaryUrl = (url, { width, height }) => {
     if (!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) return url;
+    const transformation = `e_trim,f_auto,q_auto,dpr_auto${width ? `,w_${width}` : ''}${height ? `,h_${height}` : ''},c_pad,g_center,b_black`;
+    return url.replace('/upload/', `/upload/${transformation}/`);
+  };
+
+  const getOptimizedCloudinaryUrlFill = (url, { width, height }) => {
+    if (!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) return url;
     const transformation = `f_auto,q_auto,dpr_auto${width ? `,w_${width}` : ''}${height ? `,h_${height}` : ''},c_fill,g_auto`;
     return url.replace('/upload/', `/upload/${transformation}/`);
   };
 
   return (
     <>
-      <Helmet>
-        <title>{data?.metaTitle || defaultMetaTitle}</title>
-        <meta
-          name="description"
-          content={data?.metaDescription || defaultMetaDescription}
-        />
-      </Helmet>
-
       <section id="about-phee" className="reveal-scope">
         <h2 data-reveal data-reveal-order="0">{data?.aboutTitle || 'About Phee'}</h2>
-        {aboutParagraphs.map((paragraph, index) => (
-          <p key={index} data-reveal data-reveal-order={index + 1}>
-            {paragraph}
-          </p>
-        ))}
+        <div className="about-phee__blocks">
+          {aboutParagraphs.map((paragraph, index) => {
+            const image = bioImages[index];
+            const isReversed = index % 2 === 1;
+            const useCrop = index < 3;
+            const isBullets = index === 1;
 
-        {data?.aboutImages?.length ? (
-          <div
-            className="phee-gallery"
-            data-reveal
-            data-reveal-order={aboutParagraphs.length + 1}
-        >
-            {data.aboutImages.map((img, index) => (
-                <img
-                  key={index}
-                  src={getOptimizedCloudinaryUrl(img.src, { width: 900, height: 900 })}
-                  srcSet={`${getOptimizedCloudinaryUrl(img.src, { width: 320, height: 320 })} 320w, ${getOptimizedCloudinaryUrl(img.src, { width: 480, height: 480 })} 480w, ${getOptimizedCloudinaryUrl(img.src, { width: 720, height: 720 })} 720w, ${getOptimizedCloudinaryUrl(img.src, { width: 1080, height: 1080 })} 1080w`}
-                  sizes="(max-width: 480px) 82vw, (max-width: 900px) 60vw, 320px"
-                  alt={img.alt}
-                  loading="lazy"
-                  width="900"
-                  height="900"
-                />
-            ))}
-          </div>
-        ) : (
-          <p data-reveal data-reveal-order={aboutParagraphs.length + 1}>Gallery will be updated shortly.</p>
-        )}
+            return (
+              <div
+                key={index}
+                className={`about-phee__block${isReversed ? ' is-reversed' : ''}${isBullets ? ' about-phee__block--bullets' : ''}`}
+                data-reveal
+                data-reveal-order={index + 1}
+              >
+                <div className="about-phee__text">
+                  <p>{paragraph}</p>
+                </div>
+                {image ? (
+                  <div className={`about-phee__media${useCrop ? ' about-phee__media--crop' : ' about-phee__media--fit'}`}>
+                    <img
+                      src={(useCrop ? getOptimizedCloudinaryUrlFill : getOptimizedCloudinaryUrl)(image.src, { width: 900, height: 900 })}
+                      srcSet={`${(useCrop ? getOptimizedCloudinaryUrlFill : getOptimizedCloudinaryUrl)(image.src, { width: 320, height: 320 })} 320w, ${(useCrop ? getOptimizedCloudinaryUrlFill : getOptimizedCloudinaryUrl)(image.src, { width: 480, height: 480 })} 480w, ${(useCrop ? getOptimizedCloudinaryUrlFill : getOptimizedCloudinaryUrl)(image.src, { width: 720, height: 720 })} 720w, ${(useCrop ? getOptimizedCloudinaryUrlFill : getOptimizedCloudinaryUrl)(image.src, { width: 1080, height: 1080 })} 1080w`}
+                      sizes="(max-width: 768px) 90vw, (max-width: 1200px) 42vw, 520px"
+                      alt={image.alt}
+                      loading="lazy"
+                      width="900"
+                      height="900"
+                    />
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+        <div className="about-phee__cta" data-reveal data-reveal-order={aboutParagraphs.length + 1}>
+          <Link href="/booking#booking" className="cta-button">
+            BOOK NOW
+          </Link>
+        </div>
       </section>
     </>
   );

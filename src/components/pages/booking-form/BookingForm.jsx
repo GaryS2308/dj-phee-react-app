@@ -1,26 +1,31 @@
 // BookingForm.jsx
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
 import { init, send } from '@emailjs/browser';
-import '../../buttons/datepicker/datepicker.css';
-import './BookingForm.css';
-import SocialLinks from '../../buttons/social-links/social-links';
-import Crumbs from '../../buttons/crumbs/crumbs'; // you can remove if unused
 import TimeSliderModal from '../../buttons/slider/slider';
-import '../../buttons/slider/slider.css'; // import your slider styles here
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../firebase'; // Adjust if your firebase.js path is different
-import Footer from '../../buttons/footer/footer'; // Import the Footer component
 import TermsModal from '../../modals/TermsModal';
 import CancellationModal from '../../modals/CancellationModal';
 import { VscPass } from 'react-icons/vsc';
-import { Helmet } from 'react-helmet-async';
+import { BOOKING_FAQS } from '../../shared/bookingFaqData';
 
 const BookingForm = () => {
   useEffect(() => {
   // Initialize EmailJS once
   init("0fqk3GFHeuZ3SHdGz");
 }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (window.location.hash !== '#booking') return;
+    const section = document.getElementById('booking');
+    if (!section) return;
+    window.setTimeout(() => {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 0);
+  }, []);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -197,25 +202,20 @@ const BookingForm = () => {
 
   return (
     <section id="booking" className="reveal-scope">
-      <Helmet>
-        <title>PHEE | Hire a Professional DJ in Cape Town | Corporate, Clubs, Festivals & Private Events</title>
-        <meta
-          name="description"
-          content="Book DJ PHEE for corporate events, year-end functions, clubs, festivals, weddings and private parties in Cape Town. A professional Afrotech DJ delivering high-energy sets and reliable service."
-        />
-      </Helmet>
-
       <h2 data-reveal data-reveal-order="1">BOOK DJ PHEE</h2>
 
-      <p className="booking-lead" data-reveal data-reveal-order="2">
-        Book DJ PHEE for your next event in Cape Town, from corporate functions and year-end parties to clubs, festivals, weddings and private celebrations. As a professional DJ, he offers a reliable and polished experience with quick communication and flexible availability.
+      <p className="booking-subheading" data-reveal data-reveal-order="2">
+        Use the form below to check availability, estimate pricing, and share the details of your event for a quick and personal response.
       </p>
       <p className="booking-lead" data-reveal data-reveal-order="3">
-        If you're looking to hire a DJ in Cape Town who can handle a corporate event, a festival slot, a club night or a private function, use the form below to request a date and availability.
+        Book DJ Phee for your next event in Cape Town: corporate functions, year-end parties, weddings, private celebrations, club nights, and festivals. Known for his high-energy Afro tech sound and versatile DJ style, Phee tailors every set to the crowd, venue, and occasion.
+      </p>
+      <p className="booking-lead" data-reveal data-reveal-order="4">
+        If you’re looking to hire a DJ in Cape Town who knows how to read the room and deliver the right energy at the right time, complete the form below to request availability and receive a tailored quote.
       </p>
 
       {formSubmitted ? (
-        <div className="confirmation-section" data-reveal data-reveal-order="4">
+        <div className="confirmation-section" data-reveal data-reveal-order="5">
           <div className="confirmation-message">
             <VscPass style={{ color: '#d6d6d6ff', verticalAlign: 'middle', marginRight: '8px', fontSize: '1.5rem' }} />
             {confirmationMessage}
@@ -225,7 +225,7 @@ const BookingForm = () => {
           </button>
         </div>
       ) : (
-        <form id="booking-form" onSubmit={handleSubmit} data-reveal data-reveal-order="4">
+        <form id="booking-form" onSubmit={handleSubmit} data-reveal data-reveal-order="5">
           <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required />
           <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required />
           <input type="tel" name="phone" placeholder="Your Phone Number (optional)" value={formData.phone} onChange={handleChange} />
@@ -318,11 +318,21 @@ const BookingForm = () => {
         />
       )}
 
-      <div data-reveal data-reveal-order="4">
-        <Footer />
-      </div>
       {showTermsModal && <TermsModal onClose={() => setShowTermsModal(false)} />}
       {showCancelModal && <CancellationModal onClose={() => setShowCancelModal(false)} />}
+
+      <section className="booking-faq" aria-labelledby="booking-faq-heading">
+        <p className="booking-faq-kicker">Need help before submitting?</p>
+        <h3 id="booking-faq-heading">PHEE's Booking FAQs</h3>
+        <div className="booking-faq-list">
+          {BOOKING_FAQS.map((item, index) => (
+            <details key={item.question} className="booking-faq-item" open={index === 0}>
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
     </section>
   );
 };

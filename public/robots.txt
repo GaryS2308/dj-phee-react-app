@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://phee.co.za/sitemap.xml

@@ -9,6 +9,10 @@
   margin-bottom: 0px;
 }
 
+.marquee-container--flush {
+  margin-top: 0;
+}
+
 .marquee-track {
   display: flex;
   animation: scroll-left 18s linear infinite;

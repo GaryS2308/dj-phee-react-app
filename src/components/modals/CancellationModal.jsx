@@ -1,5 +1,4 @@
 import React from 'react';
-import '../buttons/footer/footer.css';
 
 const CancellationModal = ({ onClose }) => (
   <div className="modal-backdrop" onClick={onClose}>

@@ -3,7 +3,6 @@ import React from 'react';
 import { FaInstagram } from 'react-icons/fa';
 import { FaEnvelope } from 'react-icons/fa';
 import { FaSoundcloud } from 'react-icons/fa';
-import './social-links.css';
 
 const SocialLinks = () => {
   return (

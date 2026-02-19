@@ -1,5 +1,4 @@
 import React from 'react';
-import './WherePheePerforms.css';
 
 const performanceSpots = [
   {

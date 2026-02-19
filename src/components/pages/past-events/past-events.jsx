@@ -1,24 +1,15 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Mousewheel, FreeMode } from 'swiper/modules';
 import MarqueeBanner from '../../buttons/marquee-banner/marquee-banner';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase'; // adjust path to your firebase config
 import LazySoundCloudEmbed from './LazySoundCloudEmbed';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import './past-events.css';
 
 function PastEvents() {
-  const defaultMeta = {
-    title: 'PHEE | Hire a Professional DJ in Cape Town | Corporate, Clubs, Festivals & Private Events',
-    description:
-      'Book DJ PHEE for corporate events, year-end functions, clubs, festivals, weddings and private parties in Cape Town. A professional Afrotech DJ delivering high-energy sets and reliable service.'
-  };
   const [pastEvents, setPastEvents] = useState([]);
-  const [meta, setMeta] = useState(defaultMeta);
 
   const liveStreams = [
     {
@@ -42,9 +33,6 @@ function PastEvents() {
   ];
 
   useEffect(() => {
-    const isReactSnap = typeof navigator !== 'undefined' && navigator.userAgent === 'ReactSnap';
-    if (isReactSnap) return;
-
     const fetchPastEvents = async () => {
       try {
         const docRef = doc(db, 'siteContent', 'phee');
@@ -68,10 +56,6 @@ function PastEvents() {
               event?.image !== latestPoster.image
           );
           setPastEvents([latestPoster, featuredEvent, ...dedupedEvents]);
-          setMeta({
-            title: data.pastEventsMetaTitle || defaultMeta.title,
-            description: data.pastEventsMetaDescription || defaultMeta.description
-          });
         } else {
           console.error('No document found!');
         }
@@ -91,11 +75,6 @@ function PastEvents() {
 
   return (
     <section id="past-events" className="reveal-scope">
-      <Helmet>
-        <title>{meta.title}</title>
-        <meta name="description" content={meta.description} />
-      </Helmet>
-
       <h2 data-reveal data-reveal-order="0">PAST EVENTS</h2>
 
       <p className="past-events-lead" data-reveal data-reveal-order="1">
@@ -149,7 +128,7 @@ function PastEvents() {
         <MarqueeBanner />
       </div>
 
-      <h3 className="past-events-subheading" data-reveal data-reveal-order="5">
+      <h3 id="live-mixes" className="past-events-subheading" data-reveal data-reveal-order="5">
         LIVE SETS
       </h3>
 

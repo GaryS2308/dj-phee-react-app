@@ -1,6 +1,6 @@
 import React from 'react';
+import Link from 'next/link';
 import SocialLinks from '../../buttons/social-links/social-links';
-import './footer.css';
 
 const Footer = () => {
 
@@ -11,6 +11,9 @@ const Footer = () => {
           <a href="/" className="footer-item footer-brand">
             PHEE
           </a>
+
+          <nav className="footer-item footer-nav" aria-label="Primary">
+          </nav>
 
           <div className="footer-item footer-legal">
             <a href="/privacy" className="footer-legal-link">Privacy</a>
