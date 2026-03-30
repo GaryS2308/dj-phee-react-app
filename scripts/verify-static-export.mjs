@@ -14,11 +14,11 @@ if (!fs.existsSync(buildDir)) {
 const routeSignatures = [
   {
     route: '/',
-    signature: 'Book DJ PHEE for corporate events'
+    signature: 'Professional DJ for corporate events, clubs, festivals and private functions in Cape Town.'
   },
   {
     route: '/bio',
-    signature: 'Cape Town-based DJ known for delivering high-energy Afrotech sets'
+    signature: 'Cape Town-based DJ delivering high-energy Afrotech sets for private and public events.'
   },
   {
     route: '/past-events',
@@ -26,15 +26,15 @@ const routeSignatures = [
   },
   {
     route: '/gallery',
-    signature: 'gallery of DJ PHEE performances is coming soon'
+    signature: 'High-energy moments from DJ Phee’s performances across Cape Town'
   },
   {
     route: '/booking',
-    signature: 'Book DJ PHEE for your next event in Cape Town'
+    signature: 'Book DJ Phee for your next event in Cape Town'
   },
   {
     route: '/links',
-    signature: 'booking portal, music, brands, and partners'
+    signature: 'DJ PHEE Bookings'
   },
   {
     route: '/privacy',
@@ -42,15 +42,15 @@ const routeSignatures = [
   },
   {
     route: '/cookies',
-    signature: 'uses cookies and analytics'
+    signature: 'Cookie Policy for DJ PHEE Website'
   },
   {
     route: '/terms',
-    signature: 'Terms and conditions for DJ Phee bookings'
+    signature: 'Booking Terms and Conditions'
   },
   {
     route: '/cancellation',
-    signature: 'Cancellation terms for DJ Phee bookings'
+    signature: 'Booking Cancellation Policy'
   }
 ];
 

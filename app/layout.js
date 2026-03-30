@@ -6,11 +6,11 @@ import './globals.css';
 export const metadata = {
   metadataBase: new URL('https://phee.co.za'),
   title: {
-    default: 'PHEE | Hire a Professional DJ in Cape Town | Corporate, Clubs, Festivals & Private Events',
+    default: 'Book DJ PHEE in Cape Town | Weddings, Events, Clubs and Festivals',
     template: '%s | PHEE'
   },
   description:
-    'Book DJ PHEE for corporate events, year-end functions, clubs, festivals, weddings and private parties in Cape Town. A professional Afrotech DJ delivering high-energy sets and reliable service.'
+    'Hire DJ PHEE for private events, brand launches, parties, weddings, clubs and festivals in Cape Town. Afrotech specialist with all-genre sets and travel by arrangement.'
 };
 
 export default function RootLayout({ children }) {

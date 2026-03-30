@@ -2,21 +2,21 @@ import HeroBanner from '../../src/components/hero/HeroBanner';
 import GalleryPage from '../../src/components/pages/gallery/GalleryPage';
 
 export const metadata = {
-  title: 'Gallery',
-  description: 'A curated gallery of DJ PHEE performances is coming soon.',
+  title: 'DJ PHEE Event Gallery in Cape Town',
+  description: 'Browse gallery highlights from DJ PHEE performances at private events, weddings, clubs, festivals and brand events in Cape Town.',
   alternates: {
     canonical: '/gallery'
   },
   openGraph: {
-    title: 'Gallery | PHEE',
-    description: 'A curated gallery of DJ PHEE performances is coming soon.',
+    title: 'DJ PHEE Event Gallery in Cape Town',
+    description: 'Browse gallery highlights from DJ PHEE performances at private events, weddings, clubs, festivals and brand events in Cape Town.',
     url: 'https://phee.co.za/gallery',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Gallery | PHEE',
-    description: 'A curated gallery of DJ PHEE performances is coming soon.'
+    title: 'DJ PHEE Event Gallery in Cape Town',
+    description: 'Browse gallery highlights from DJ PHEE performances at private events, weddings, clubs, festivals and brand events in Cape Town.'
   }
 };
 
@@ -43,7 +43,6 @@ export default function GalleryRoutePage() {
         ctaLabel="BOOK NOW"
         ctaHref="/booking#booking"
       />
-      <h1 className="sr-only">Gallery</h1>
       <GalleryPage />
     </main>
   );

@@ -2,24 +2,24 @@ import HeroBanner from '../../src/components/hero/HeroBanner';
 import AboutPhee from '../../src/components/pages/about-phee/about-phee';
 
 export const metadata = {
-  title: 'Bio',
+  title: 'DJ PHEE Bio: Afrotech DJ for Cape Town Events',
   description:
-    'Phee is a Cape Town-based DJ known for delivering high-energy Afrotech sets across corporate events, clubs, festivals and private functions.',
+    'Read DJ PHEE’s bio: a Cape Town DJ known for Afrotech, Afro Tech and Afro-Tech sets, with versatile genre coverage for weddings, parties, clubs and festivals.',
   alternates: {
     canonical: '/bio'
   },
   openGraph: {
-    title: 'Bio | PHEE',
+    title: 'DJ PHEE Bio: Afrotech DJ for Cape Town Events',
     description:
-      'Phee is a Cape Town-based DJ known for delivering high-energy Afrotech sets across corporate events, clubs, festivals and private functions.',
+      'Read DJ PHEE’s bio: a Cape Town DJ known for Afrotech, Afro Tech and Afro-Tech sets, with versatile genre coverage for weddings, parties, clubs and festivals.',
     url: 'https://phee.co.za/bio',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Bio | PHEE',
+    title: 'DJ PHEE Bio: Afrotech DJ for Cape Town Events',
     description:
-      'Phee is a Cape Town-based DJ known for delivering high-energy Afrotech sets across corporate events, clubs, festivals and private functions.'
+      'Read DJ PHEE’s bio: a Cape Town DJ known for Afrotech, Afro Tech and Afro-Tech sets, with versatile genre coverage for weddings, parties, clubs and festivals.'
   }
 };
 
@@ -29,7 +29,7 @@ export default function BioPage() {
     "@type": "Person",
     "name": "PHEE",
     "jobTitle": "DJ",
-    "description": "Cape Town-based DJ delivering high-energy Afrotech sets for private and public events.",
+    "description": "Cape Town-based DJ delivering Afrotech (Afro Tech / Afro-Tech) and versatile multi-genre sets for private and public events.",
     "url": "https://phee.co.za/bio",
     "sameAs": [
       "https://instagram.com/__phee__",
@@ -57,7 +57,6 @@ export default function BioPage() {
         ctaLabel="BOOK NOW"
         ctaHref="/booking#booking"
       />
-      <h1 className="sr-only">Bio</h1>
       <AboutPhee />
     </main>
   );

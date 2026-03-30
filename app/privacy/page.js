@@ -1,28 +1,27 @@
 import PrivacyPolicy from '../../src/components/pages/legal/PrivacyPolicy';
 
 export const metadata = {
-  title: 'Privacy Policy',
-  description: 'How PHEE collects, uses, and protects personal information.',
+  title: 'Privacy Policy for DJ PHEE Bookings',
+  description: 'Read how DJ PHEE booking enquiries are collected, used, stored and protected when you submit event details on this website.',
   alternates: {
     canonical: '/privacy'
   },
   openGraph: {
-    title: 'Privacy Policy | PHEE',
-    description: 'How PHEE collects, uses, and protects personal information.',
+    title: 'Privacy Policy for DJ PHEE Bookings',
+    description: 'Read how DJ PHEE booking enquiries are collected, used, stored and protected when you submit event details on this website.',
     url: 'https://phee.co.za/privacy',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Privacy Policy | PHEE',
-    description: 'How PHEE collects, uses, and protects personal information.'
+    title: 'Privacy Policy for DJ PHEE Bookings',
+    description: 'Read how DJ PHEE booking enquiries are collected, used, stored and protected when you submit event details on this website.'
   }
 };
 
 export default function PrivacyPage() {
   return (
     <main>
-      <h1 className="sr-only">Privacy Policy</h1>
       <PrivacyPolicy />
     </main>
   );

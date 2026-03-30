@@ -26,7 +26,7 @@ const Footer = () => {
             <SocialLinks />
           </div>
         </div>
-        <p className="footer-credit">Website designed by Gary Strybis</p>
+        <p className="footer-credit">Website designed by <a href="https://strydes.co.za" target="_blank" rel="noopener noreferrer" className="footer-credit-link"><img src="https://res.cloudinary.com/dea6wzxd8/image/upload/v1772612263/Stylish_metallic_S_and_D_logo_lkqfmr.png" alt="Strydes" className="footer-strydes-logo" /> Strydes</a></p>
       </footer>
     </>
   );

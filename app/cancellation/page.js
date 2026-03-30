@@ -1,28 +1,27 @@
 import CancellationPage from '../../src/components/pages/legal/CancellationPage';
 
 export const metadata = {
-  title: 'Cancellation Policy',
-  description: 'Cancellation terms for DJ Phee bookings.',
+  title: 'Booking Cancellation Policy',
+  description: 'Read DJ PHEE cancellation terms for confirmed bookings, including notice periods, fees and event-date changes.',
   alternates: {
     canonical: '/cancellation'
   },
   openGraph: {
-    title: 'Cancellation Policy | PHEE',
-    description: 'Cancellation terms for DJ Phee bookings.',
+    title: 'Booking Cancellation Policy',
+    description: 'Read DJ PHEE cancellation terms for confirmed bookings, including notice periods, fees and event-date changes.',
     url: 'https://phee.co.za/cancellation',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Cancellation Policy | PHEE',
-    description: 'Cancellation terms for DJ Phee bookings.'
+    title: 'Booking Cancellation Policy',
+    description: 'Read DJ PHEE cancellation terms for confirmed bookings, including notice periods, fees and event-date changes.'
   }
 };
 
 export default function CancellationRoutePage() {
   return (
     <main>
-      <h1 className="sr-only">Cancellation Policy</h1>
       <CancellationPage />
     </main>
   );

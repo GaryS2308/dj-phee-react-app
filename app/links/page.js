@@ -1,14 +1,14 @@
 import LinksPage from '../../src/components/pages/links-page/links-page';
 
 export const metadata = {
-  title: "PHEE'S Links",
-  description: "Explore DJ Phee's booking portal, music, brands, and partners all in one place.",
+  title: "Book DJ PHEE | Links, Music and Contact",
+  description: "Access DJ PHEE booking links, music profiles, social channels and brand contacts in one place.",
   alternates: {
     canonical: '/links'
   },
   openGraph: {
-    title: "PHEE'S Links",
-    description: 'Direct access to DJ Phee bookings, music, and collaborations.',
+    title: "Book DJ PHEE | Links, Music and Contact",
+    description: 'Direct access to DJ PHEE bookings, music, social channels and collaborations.',
     url: 'https://phee.co.za/links',
     type: 'website',
     images: [
@@ -19,8 +19,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "PHEE'S Links",
-    description: 'Book DJ Phee, hear the latest sets, and find every brand connection.',
+    title: "Book DJ PHEE | Links, Music and Contact",
+    description: 'Book DJ PHEE, hear the latest sets, and find every brand connection.',
     images: ['https://res.cloudinary.com/dea6wzxd8/image/upload/v1754416286/phee5_uehcyi.png']
   }
 };

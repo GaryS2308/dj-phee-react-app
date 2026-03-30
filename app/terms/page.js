@@ -1,28 +1,27 @@
 import TermsPage from '../../src/components/pages/legal/TermsPage';
 
 export const metadata = {
-  title: 'Terms & Conditions',
-  description: 'Terms and conditions for DJ Phee bookings.',
+  title: 'Booking Terms and Conditions',
+  description: 'Review DJ PHEE booking terms and conditions, including payments, event requirements, performance terms and client responsibilities.',
   alternates: {
     canonical: '/terms'
   },
   openGraph: {
-    title: 'Terms & Conditions | PHEE',
-    description: 'Terms and conditions for DJ Phee bookings.',
+    title: 'Booking Terms and Conditions',
+    description: 'Review DJ PHEE booking terms and conditions, including payments, event requirements, performance terms and client responsibilities.',
     url: 'https://phee.co.za/terms',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Terms & Conditions | PHEE',
-    description: 'Terms and conditions for DJ Phee bookings.'
+    title: 'Booking Terms and Conditions',
+    description: 'Review DJ PHEE booking terms and conditions, including payments, event requirements, performance terms and client responsibilities.'
   }
 };
 
 export default function TermsRoutePage() {
   return (
     <main>
-      <h1 className="sr-only">Terms and Conditions</h1>
       <TermsPage />
     </main>
   );

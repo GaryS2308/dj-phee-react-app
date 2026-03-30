@@ -2,24 +2,24 @@ import HeroBanner from '../../src/components/hero/HeroBanner';
 import BookingForm from '../../src/components/pages/booking-form/BookingForm';
 
 export const metadata = {
-  title: 'Booking',
+  title: 'Book DJ PHEE for Events in Cape Town',
   description:
-    'Book DJ PHEE for your next event in Cape Town, from corporate functions and year-end parties to clubs, festivals, weddings and private celebrations.',
+    'Book DJ PHEE for private events, brand launches, parties, dances, weddings, clubs and festivals in Cape Town, with travel available by arrangement.',
   alternates: {
     canonical: '/booking'
   },
   openGraph: {
-    title: 'Booking | PHEE',
+    title: 'Book DJ PHEE for Events in Cape Town',
     description:
-      'Book DJ PHEE for your next event in Cape Town, from corporate functions and year-end parties to clubs, festivals, weddings and private celebrations.',
+      'Book DJ PHEE for private events, brand launches, parties, dances, weddings, clubs and festivals in Cape Town, with travel available by arrangement.',
     url: 'https://phee.co.za/booking',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Booking | PHEE',
+    title: 'Book DJ PHEE for Events in Cape Town',
     description:
-      'Book DJ PHEE for your next event in Cape Town, from corporate functions and year-end parties to clubs, festivals, weddings and private celebrations.'
+      'Book DJ PHEE for private events, brand launches, parties, dances, weddings, clubs and festivals in Cape Town, with travel available by arrangement.'
   }
 };
 
@@ -28,12 +28,9 @@ export default function BookingPage() {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "name": "PHEE DJ Booking",
-    "description": "Book DJ PHEE for corporate events, clubs, festivals, weddings, and private parties in Cape Town.",
+    "description": "Book DJ PHEE for private events, brand launches, parties, dances, weddings, clubs and festivals in Cape Town, with travel by arrangement.",
     "url": "https://phee.co.za/booking",
-    "areaServed": {
-      "@type": "City",
-      "name": "Cape Town"
-    },
+    "areaServed": "Cape Town, South Africa, and travel destinations by arrangement",
     "serviceType": "DJ booking and performance",
     "provider": {
       "@type": "Person",
@@ -103,7 +100,6 @@ export default function BookingPage() {
         subtitle="Request availability, rates, and booking details for DJ Phee in Cape Town."
         image="https://res.cloudinary.com/dea6wzxd8/image/upload/v1768549868/Phee_Hero_photo_rz1dei.jpg"
       />
-      <h1 className="sr-only">Booking</h1>
       <BookingForm />
     </main>
   );

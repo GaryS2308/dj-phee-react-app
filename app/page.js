@@ -4,24 +4,24 @@ import WherePheePerforms from '../src/components/pages/home/WherePheePerforms';
 import MarqueeBanner from '../src/components/buttons/marquee-banner/marquee-banner';
 
 export const metadata = {
-  title: 'Hire a Professional DJ in Cape Town | Corporate, Clubs, Festivals & Private Events',
+  title: 'Book DJ PHEE in Cape Town | Weddings, Parties, Clubs and Festivals',
   description:
-    'Book DJ PHEE for corporate events, year-end functions, clubs, festivals, weddings and private parties in Cape Town. A professional Afrotech DJ delivering high-energy sets and reliable service.',
+    'Hire DJ PHEE for private events, brand launches, parties, weddings, clubs and festivals in Cape Town. Afrotech specialist with all-genre sets and travel by arrangement.',
   alternates: {
     canonical: '/'
   },
   openGraph: {
-    title: 'PHEE | Hire a Professional DJ in Cape Town | Corporate, Clubs, Festivals & Private Events',
+    title: 'Book DJ PHEE in Cape Town | Weddings, Parties, Clubs and Festivals',
     description:
-      'Book DJ PHEE for corporate events, year-end functions, clubs, festivals, weddings and private parties in Cape Town. A professional Afrotech DJ delivering high-energy sets and reliable service.',
+      'Hire DJ PHEE for private events, brand launches, parties, weddings, clubs and festivals in Cape Town. Afrotech specialist with all-genre sets and travel by arrangement.',
     url: 'https://phee.co.za/',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'PHEE | Hire a Professional DJ in Cape Town | Corporate, Clubs, Festivals & Private Events',
+    title: 'Book DJ PHEE in Cape Town | Weddings, Parties, Clubs and Festivals',
     description:
-      'Book DJ PHEE for corporate events, year-end functions, clubs, festivals, weddings and private parties in Cape Town. A professional Afrotech DJ delivering high-energy sets and reliable service.'
+      'Hire DJ PHEE for private events, brand launches, parties, weddings, clubs and festivals in Cape Town. Afrotech specialist with all-genre sets and travel by arrangement.'
   }
 };
 
@@ -31,7 +31,7 @@ export default function HomePage() {
     "@type": "Person",
     "name": "PHEE",
     "jobTitle": "DJ",
-    "description": "Professional DJ for corporate events, clubs, festivals and private functions in Cape Town.",
+    "description": "Cape Town DJ specializing in Afrotech (also written Afro Tech or Afro-Tech) with versatile all-genre sets for weddings, private events, brand launches, clubs and festivals.",
     "url": "https://phee.co.za/",
     "sameAs": [
       "https://instagram.com/__phee__",

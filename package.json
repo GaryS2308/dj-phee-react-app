@@ -9,6 +9,8 @@
     "build": "next build",
     "postbuild": "rm -rf build && mv out build && npm run verify:static",
     "verify:static": "node scripts/verify-static-export.mjs",
+    "seo:audit": "node scripts/seo-audit.mjs",
+    "seo:audit:build": "npm run build && npm run seo:audit",
     "lint": "next lint",
     "deploy:firebase": "npm run build && npx firebase-tools deploy --only hosting"
   },

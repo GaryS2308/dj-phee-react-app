@@ -2,24 +2,24 @@ import HeroBanner from '../../src/components/hero/HeroBanner';
 import PastEvents from '../../src/components/pages/past-events/past-events';
 
 export const metadata = {
-  title: 'Past Events',
+  title: 'Past DJ Events and Club Sets in Cape Town',
   description:
-    'PHEE has performed at a wide range of Cape Town clubs, festivals and special events, showcasing his versatility as a DJ for hire.',
+    'See past DJ PHEE events across Cape Town clubs, festivals, private events and brand activations, including live-set highlights and venue history.',
   alternates: {
     canonical: '/past-events'
   },
   openGraph: {
-    title: 'Past Events | PHEE',
+    title: 'Past DJ Events and Club Sets in Cape Town',
     description:
-      'PHEE has performed at a wide range of Cape Town clubs, festivals and special events, showcasing his versatility as a DJ for hire.',
+      'See past DJ PHEE events across Cape Town clubs, festivals, private events and brand activations, including live-set highlights and venue history.',
     url: 'https://phee.co.za/past-events',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Past Events | PHEE',
+    title: 'Past DJ Events and Club Sets in Cape Town',
     description:
-      'PHEE has performed at a wide range of Cape Town clubs, festivals and special events, showcasing his versatility as a DJ for hire.'
+      'See past DJ PHEE events across Cape Town clubs, festivals, private events and brand activations, including live-set highlights and venue history.'
   }
 };
 
@@ -72,7 +72,6 @@ export default function PastEventsPage() {
         ctaLabel="BOOK NOW"
         ctaHref="/booking#booking"
       />
-      <h1 className="sr-only">Past Events</h1>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
