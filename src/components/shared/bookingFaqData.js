@@ -12,7 +12,7 @@ export const BOOKING_FAQS = [
   {
     question: 'What do you charge?',
     answer:
-      'Current rates are R1500 per hour. After you choose your date, start time, and duration in the booking form, you will see an estimated cost before submitting your request.'
+      'Current rates are R2000 per hour. After you choose your date, start time, and duration in the booking form, you will see an estimated cost before submitting your request.'
   },
   {
     question: 'What information helps speed up a booking response?',

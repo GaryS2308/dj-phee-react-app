@@ -85,7 +85,7 @@ const BookingResponse = () => {
     return totalHours;
   };
 
-  const estimatedAmount = booking ? parseDurationToHours(booking.duration) * 1500 : 0;
+  const estimatedAmount = booking ? parseDurationToHours(booking.duration) * 2000 : 0;
 
   const handleAccept = () => {
     if (status === 'sending' || fetchState !== 'ready' || !token) return;
