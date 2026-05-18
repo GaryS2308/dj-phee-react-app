@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const HomeBioSection = () => {
   return (
@@ -14,6 +15,16 @@ const HomeBioSection = () => {
           <p>
             Known for reading the room and keeping dance floors locked in, PHEE blends warmth and precision with
             a bold, forward sound that feels both polished and personal.
+          </p>
+          <p>
+            Available for events across South Africa and open to international bookings, the approach stays the
+            same wherever the gig takes him, read the room, set the energy and keep it building till the lights come on. From intimate
+            Cape Town celebrations to festival stages at Balito rage and touring bookings abroad, each set is shaped around the
+            moment and the crowd.
+          </p>
+          <p>
+            If you have your event in mind, get in touch via the <Link href="/booking" className="home-bio__link">booking form</Link>.
+            South African and international enquiries are welcome.
           </p>
         </div>
         <div className="home-bio__stack">

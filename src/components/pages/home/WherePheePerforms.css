@@ -56,6 +56,19 @@
   font-size: 0.98rem;
 }
 
+.where-card__link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #f4f4f4;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.where-card__link:visited {
+  color: #f4f4f4;
+}
+
 .where-card:hover {
   transform: translateY(-4px);
   border-color: rgba(255, 255, 255, 0.18);

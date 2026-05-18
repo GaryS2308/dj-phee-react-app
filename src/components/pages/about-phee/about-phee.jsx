@@ -12,7 +12,7 @@ const AboutPhee = () => {
       Phee is a Cape Town–based DJ known for his infectious energy, feel-good presence, and ability to turn any gathering into a proper celebration. Often described as the “Mayor of Cape Town” behind the decks, Phee brings people together through music, greeting everyone with a smile, knowing the room, and creating an atmosphere where guests instantly feel welcome and ready to move. 
       <br />
       <br />
-      Specialising in Afrotech, Phee’s sound is driven by rhythm, groove, and high-energy selections that keep dance floors alive. His sets are dynamic, uplifting, and expertly curated to match the moment. Whether it’s a packed club at midnight, a sunset corporate event, or an intimate private celebration.
+      Specialising in Afrotech, Phee’s sound is driven by rhythm, groove, and high-energy selections that keep dance floors alive. His sets are dynamic, uplifting, and expertly curated to match the moment. Whether it’s a packed club at midnight, a sunset <Link href="/corporate-dj-cape-town">corporate event</Link>, or an intimate private celebration.
     </>,
     <>
       While Afrotech sits at the core of his style, Phee is a highly versatile DJ, confidently delivering House, Tech House, Afro House, Commercial, and custom genre requests to suit each event and audience. As a professional DJ in Cape Town, Phee has built a strong reputation for his ability to read the room. He understands that no two events are the same and that great DJing goes beyond track selection. From smoothly guiding the energy early in the evening to elevating the crowd when it matters most, Phee adapts his sound in real time to ensure every event flows effortlessly.
@@ -40,7 +40,7 @@ const AboutPhee = () => {
       Whether he’s entertaining a corporate crowd, setting the tone for a wedding reception, or delivering a high-impact club set, his focus remains the same: great music, great energy, and an unforgettable experience.
       <br />
       <br />
-      If you’re searching for a corporate event DJ in Cape Town, a wedding DJ who understands flow and crowd energy, a club or festival DJ with Afrotech expertise, or a versatile private event DJ, DJ Phee offers a flexible, professional, and high-energy approach tailored to your event. From planning to performance, he works closely with clients to ensure the music matches the moment and that every booking ends with a full dance floor and a great vibe.
+      If you’re searching for a corporate event DJ in Cape Town, a <Link href="/wedding-dj-cape-town">wedding DJ</Link> who understands flow and crowd energy, a club or festival DJ with Afrotech expertise, or a versatile private event DJ, DJ Phee offers a flexible, professional, and high-energy approach tailored to your event. From planning to performance, he works closely with clients to ensure the music matches the moment and that every booking ends with a full dance floor and a great vibe.
     </>
   ];
   const aboutImages = Array.isArray(data?.aboutImages) ? data.aboutImages : [];

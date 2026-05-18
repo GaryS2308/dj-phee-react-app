@@ -14,7 +14,7 @@ if (!fs.existsSync(buildDir)) {
 const routeSignatures = [
   {
     route: '/',
-    signature: 'Professional DJ for corporate events, clubs, festivals and private functions in Cape Town.'
+    signature: 'WHERE PHEE PERFORMS'
   },
   {
     route: '/bio',
@@ -26,7 +26,7 @@ const routeSignatures = [
   },
   {
     route: '/gallery',
-    signature: 'High-energy moments from DJ Phee’s performances across Cape Town'
+    signature: 'Real rooms, real crowds, real moments'
   },
   {
     route: '/booking',
@@ -50,7 +50,7 @@ const routeSignatures = [
   },
   {
     route: '/cancellation',
-    signature: 'Booking Cancellation Policy'
+    signature: 'Cancellation Policy'
   }
 ];
 

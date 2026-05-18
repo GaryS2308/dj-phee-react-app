@@ -67,6 +67,7 @@ export default function PastEventsPage() {
     <main>
       <HeroBanner
         title="PAST EVENTS"
+        seoTitle="Past DJ Events & Club Sets in Cape Town"
         subtitle="A selection of performances, venues, and featured moments."
         image="https://res.cloudinary.com/dea6wzxd8/image/upload/v1768549983/phee_photo_amgvyt.jpg"
         ctaLabel="BOOK NOW"

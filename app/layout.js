@@ -16,6 +16,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          href="https://res.cloudinary.com/dea6wzxd8/image/upload/f_auto,q_auto,w_900/v1758540552/Phee_background_photo_fbayer.png"
+          fetchPriority="high"
+        />
+      </head>
       <body>
         <PrimaryNav />
         {children}

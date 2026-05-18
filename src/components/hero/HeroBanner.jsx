@@ -3,6 +3,7 @@ import './HeroBanner.css';
 
 const HeroBanner = ({
   title,
+  seoTitle,
   subtitle,
   image,
   imageMobile,
@@ -30,7 +31,10 @@ const HeroBanner = ({
       ) : null}
       <div className="hero-banner__overlay">
         <div className="hero-banner__copy">
-          <h1>{title}</h1>
+          <h1>
+            {seoTitle ? <span className="hero-banner__seo-title">{seoTitle}</span> : null}
+            <span aria-hidden={seoTitle ? 'true' : undefined}>{title}</span>
+          </h1>
           {subtitle ? <p>{subtitle}</p> : null}
         </div>
         {showCta ? (

@@ -470,3 +470,132 @@ social-links {
   gap: 1.5rem;
   margin-top: 1.5rem;
 }
+
+/* === SEO Content Blocks === */
+.booking-content-block {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2rem 20px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.booking-content-block h2 {
+  font-family: 'poppins', sans-serif;
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: #eaeaea;
+  margin-bottom: 1rem;
+}
+
+.booking-content-block p {
+  color: rgba(234, 234, 234, 0.7);
+  line-height: 1.7;
+  font-size: 0.98rem;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.booking-content-block a {
+  color: #eaeaea;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .booking-content-block {
+    padding: 1.5rem 1rem;
+  }
+
+  .booking-content-block h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/* === Event Packages === */
+.booking-packages {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+}
+
+.booking-packages__heading {
+  font-family: 'poppins', sans-serif;
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: #eaeaea;
+  margin-bottom: 0.75rem;
+}
+
+.booking-packages__intro {
+  color: rgba(234, 234, 234, 0.7);
+  line-height: 1.7;
+  font-size: 0.98rem;
+  max-width: 680px;
+  margin: 0 auto 2rem;
+}
+
+.booking-packages__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.booking-packages__card {
+  background: rgba(12, 12, 12, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 1.5rem 1.25rem;
+  text-align: left;
+}
+
+.booking-packages__card h3 {
+  font-family: 'poppins', sans-serif;
+  font-size: 1.05rem;
+  color: #eaeaea;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 1rem;
+}
+
+.booking-packages__card ul {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.booking-packages__card ul li {
+  color: rgba(234, 234, 234, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.booking-packages__card ul li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: rgba(152, 27, 27, 0.9);
+}
+
+.booking-packages__link {
+  color: #eaeaea;
+  font-size: 0.88rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .booking-packages__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-packages {
+    padding: 1.75rem 1rem;
+  }
+}

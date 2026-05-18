@@ -10,23 +10,24 @@ const LinksPage = () => {
           alt="DJ Phee"
           className="links-avatar"
         />
-        <h1 className="links-name">PHEE</h1>
+        <h1 className="links-name"><span className="sr-only">DJ PHEE, Music, Socials and Booking Links. </span>PHEE</h1>
         <p className="links-bio">
           <strong> DJ | Athlete | Coach </strong> <br />
-          Cape Town, South Africa 
+          Cape Town, South Africa
           <br />
           Phee is a South African DJ and Athlete known for his energetic aura. With a passion for music that transcends genres, he has made a name for himself in the local music scene.
-        </p>    
+        </p>
       </div>
 
       <div className="links-list">
-
+        <h2 className="sr-only">Stream DJ PHEE&apos;s Music</h2>
         <a href="https://phee.co.za/" target="_blank" rel="noopener noreferrer" className="link-btn">
           DJ PHEE Bookings
         </a>
         <a href="https://soundcloud.com/phemelo-ramatlotlo-122152686" target="_blank" rel="noopener noreferrer" className="link-btn">
           SoundCloud
         </a>
+        <h2 className="sr-only">Follow DJ PHEE</h2>
         <a href="https://moralsthebrand.co.za" target="_blank" rel="noopener noreferrer" className="link-btn">
           Morals The Brand
         </a>

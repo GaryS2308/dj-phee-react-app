@@ -18,6 +18,19 @@
   color: #e0e0e0;
 }
 
+#about-phee a,
+#about-phee a:visited {
+  color: #f4f4f4;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+#about-phee a:hover,
+#about-phee a:focus-visible {
+  color: #ffffff;
+}
+
 .about-phee__blocks {
   display: flex;
   flex-direction: column;

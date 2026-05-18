@@ -3,8 +3,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { sendResponseEmail } from '../../buttons/emailjs/emailjs';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../../firebase';
+import { BOOKING_STATUSES, EVENT_TYPE_OPTIONS, normalizeEventTypeOption } from '../../../../lib/adminDataShapes';
 
 const CELEBRATION_IMAGES = [
   'https://res.cloudinary.com/dea6wzxd8/image/upload/v1771491718/br_1_i4qppm.jpg',
@@ -27,6 +28,9 @@ const BookingResponse = () => {
   const [fetchState, setFetchState] = useState('loading');
   const [status, setStatus] = useState('idle');
   const [booking, setBooking] = useState(null);
+  const [bookingStatus, setBookingStatus] = useState('pending');
+  const [eventType, setEventType] = useState('other');
+  const [quotedAmount, setQuotedAmount] = useState('');
   const [confettiPieces, setConfettiPieces] = useState([]);
 
   const heroImage = useMemo(() => {
@@ -50,7 +54,13 @@ const BookingResponse = () => {
           return;
         }
 
-        setBooking(snapshot.docs[0].data());
+        const bookingDoc = snapshot.docs[0];
+        const data = bookingDoc.data();
+        const estimated = parseDurationToHours(data.duration) * 2000;
+        setBooking({ id: bookingDoc.id, ...data });
+        setBookingStatus(BOOKING_STATUSES.includes(data.status) ? data.status : 'pending');
+        setEventType(normalizeEventTypeOption(data.eventType || data.event));
+        setQuotedAmount(String(data.quotedAmount || data.totalAmount || estimated || ''));
         setFetchState('ready');
       } catch (error) {
         console.error('Failed to load booking details:', error);
@@ -91,8 +101,18 @@ const BookingResponse = () => {
     if (status === 'sending' || fetchState !== 'ready' || !token) return;
 
     setStatus('sending');
+    const finalAmount = Number(quotedAmount || estimatedAmount || 0);
 
-    sendResponseEmail(token, 'accept')
+    updateDoc(doc(db, 'bookings', booking.id), {
+      status: bookingStatus,
+      eventType,
+      event: eventType,
+      quotedAmount: finalAmount,
+      totalAmount: finalAmount,
+      balanceAmount: Math.max(finalAmount - Number(booking.amountPaid || 0), 0),
+      updatedAt: serverTimestamp()
+    })
+      .then(() => sendResponseEmail(token, 'accept', { total_amount: finalAmount, event: eventType }))
       .then(() => {
         setStatus('accepted');
       })
@@ -147,6 +167,21 @@ const BookingResponse = () => {
                 <div><dt>Location</dt><dd>{booking.location || 'N/A'}</dd></div>
                 <div><dt>Estimate</dt><dd>{`R${estimatedAmount}`}</dd></div>
               </dl>
+              <div className="booking-response__controls">
+                <label>Event type
+                  <select value={eventType} onChange={(event) => setEventType(event.target.value)}>
+                    {EVENT_TYPE_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
+                  </select>
+                </label>
+                <label>Booking status
+                  <select value={bookingStatus} onChange={(event) => setBookingStatus(event.target.value)}>
+                    {BOOKING_STATUSES.map((option) => <option key={option} value={option}>{option}</option>)}
+                  </select>
+                </label>
+                <label>Final price
+                  <input type="number" min="0" step="1" value={quotedAmount} onChange={(event) => setQuotedAmount(event.target.value)} />
+                </label>
+              </div>
               {booking.details && <p className="booking-response__notes">{booking.details}</p>}
             </div>
 

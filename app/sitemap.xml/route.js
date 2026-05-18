@@ -5,17 +5,17 @@ const getSitemap = () => {
     'https://phee.co.za/past-events',
     'https://phee.co.za/gallery',
     'https://phee.co.za/booking',
-    'https://phee.co.za/links',
-    'https://phee.co.za/privacy',
-    'https://phee.co.za/cookies',
-    'https://phee.co.za/terms',
-    'https://phee.co.za/cancellation'
+    'https://phee.co.za/wedding-dj-cape-town',
+    'https://phee.co.za/corporate-dj-cape-town',
+    'https://phee.co.za/event-dj-cape-town'
   ];
 
   const body = urls
-    .map(
-      (url) => `<url><loc>${url}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`
-    )
+    .map((url) => {
+      const isService = url.includes('wedding-dj') || url.includes('corporate-dj') || url.includes('event-dj');
+      const priority = isService ? '0.9' : '0.7';
+      return `<url><loc>${url}</loc><changefreq>weekly</changefreq><priority>${priority}</priority></url>`;
+    })
     .join('');
 
   return `<?xml version="1.0" encoding="UTF-8"?>\n` +

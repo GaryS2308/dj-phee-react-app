@@ -1,7 +1,11 @@
 import TermsPage from '../../src/components/pages/legal/TermsPage';
 
 export const metadata = {
-  title: 'Booking Terms and Conditions',
+  title: 'Booking Terms and Conditions | DJ PHEE Cape Town',
+  robots: {
+    index: false,
+    follow: true,
+  },
   description: 'Review DJ PHEE booking terms and conditions, including payments, event requirements, performance terms and client responsibilities.',
   alternates: {
     canonical: '/terms'

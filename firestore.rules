@@ -1,0 +1,41 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    match /bookings/{bookingId} {
+      allow create: if true;
+      allow read, update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    match /invoices/{invoiceId} {
+      allow read, create, update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    match /quotations/{quotationId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /clients/{clientId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /quoteServices/{serviceId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /documentTemplates/{templateId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /siteContent/{document=**} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+  }
+}

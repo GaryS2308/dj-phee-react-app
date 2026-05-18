@@ -3,6 +3,10 @@ import CookiePolicy from '../../src/components/pages/legal/CookiePolicy';
 export const metadata = {
   title: 'Cookie Policy for DJ PHEE Website',
   description: 'Learn which cookies and analytics tools are used on the DJ PHEE website and how you can manage your cookie preferences.',
+  robots: {
+    index: false,
+    follow: true,
+  },
   alternates: {
     canonical: '/cookies'
   },

@@ -37,6 +37,7 @@ export default function GalleryRoutePage() {
       />
       <HeroBanner
         title="GALLERY"
+        seoTitle="DJ PHEE Event Gallery – Cape Town"
         subtitle="Highlights from recent performances and events."
         imageMobile="https://res.cloudinary.com/dea6wzxd8/image/upload/v1768549869/phee-mobile_hero_1_rjeczb.jpg"
         imageDesktop="https://res.cloudinary.com/dea6wzxd8/image/upload/v1768549983/phee_hero_desktop_xqxsc2.jpg"

@@ -23,5 +23,10 @@ export const BOOKING_FAQS = [
     question: 'Do you take bookings outside of Cape Town?',
     answer:
       'Yes. Bookings outside Cape Town are available, any travel related expenses are quoted separately and covered by the client. and can be mentioned in the "Tell us about your event" field'
+  },
+  {
+    question: 'Does DJ PHEE play Afrotech?',
+    answer:
+      "Yes. Afrotech is DJ PHEE's primary speciality. His sets blend traditional African percussion and instrumental samples with modern house and techno production, creating a high-energy sound built for dance floors. He performs Afrotech at Cape Town club nights, festivals, corporate events and private celebrations across the Western Cape."
   }
 ];

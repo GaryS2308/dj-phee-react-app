@@ -84,6 +84,13 @@ function PastEvents() {
         From late-night club energy to high-profile festival stages and corporate gatherings, these past events highlight his versatility as a Cape Town DJ for hire.
       </p>
 
+      <p className="past-events-lead" data-reveal data-reveal-order="3">
+        Two of PHEE&apos;s most recent recorded sets capture the range well. The SOULSHAKER SET at The Village Idiot in March 2025 leaned into deep, groove-heavy Afro House that built slowly over the night. The kind of set that rewards a crowd that stays in the room. The CLOUD 9 SET at Fools Gold Social in April 2025 moved at a higher tempo, with Afrotech energy that pushed the dance floor from the first track. Both mixes are available to stream in the Live Sets section below.
+      </p>
+      <p className="past-events-lead" data-reveal data-reveal-order="4">
+        Other regular PHEE venues include Halo Nightclub, where the production scale calls for peak-time sets built around high-energy Afrotech transitions; Cabo Beach Club, which rewards a warmer, more coastal-leaning sound that holds a crowd through longer grooves; and Modular, a venue with a technically astute crowd that demands precision in the mix and curation in the selection. Each of these spaces has shaped how PHEE approaches a set in a specific environment, and that experience carries directly into every booking, whether that is a club night, corporate function or private event.
+      </p>
+
       {pastEvents.length ? (
         <Swiper
           modules={[Navigation, Pagination, Mousewheel, FreeMode]}
@@ -102,7 +109,7 @@ function PastEvents() {
           }}
           className="past-events-swiper"
           data-reveal
-          data-reveal-order="3"
+          data-reveal-order="5"
         >
           {pastEvents.map((event, index) => (
             <SwiperSlide key={index}>
@@ -124,19 +131,19 @@ function PastEvents() {
         </p>
       )}
 
-      <div data-reveal data-reveal-order="4">
+      <div data-reveal data-reveal-order="6">
         <MarqueeBanner />
       </div>
 
-      <h3 id="live-mixes" className="past-events-subheading" data-reveal data-reveal-order="5">
+      <h3 id="live-mixes" className="past-events-subheading" data-reveal data-reveal-order="7">
         LIVE SETS
       </h3>
 
-      <p className="past-events-lead" data-reveal data-reveal-order="6">
+      <p className="past-events-lead" data-reveal data-reveal-order="8">
         Explore PHEE’s latest live sets recorded at Cape Town clubs, festivals and private events. His Afrotech sound blends deep rhythms with high-energy transitions, creating dynamic sets built for both nightlife and large-scale events. These mixes capture the same performance style he brings to corporate functions, club nights and festival appearances across the city.
       </p>
 
-      <div className="past-events-streams" data-reveal data-reveal-order="7">
+      <div className="past-events-streams" data-reveal data-reveal-order="9">
         {liveStreams.map((stream) => (
           <LazySoundCloudEmbed
             key={stream.id}

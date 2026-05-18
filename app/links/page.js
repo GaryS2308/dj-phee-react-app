@@ -3,6 +3,10 @@ import LinksPage from '../../src/components/pages/links-page/links-page';
 export const metadata = {
   title: "Book DJ PHEE | Links, Music and Contact",
   description: "Access DJ PHEE booking links, music profiles, social channels and brand contacts in one place.",
+  robots: {
+    index: false,
+    follow: true,
+  },
   alternates: {
     canonical: '/links'
   },

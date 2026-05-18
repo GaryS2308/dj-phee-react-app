@@ -108,6 +108,17 @@
   margin-bottom: 0;
 }
 
+.home-bio__link {
+  color: #f4f4f4;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.home-bio__link:hover {
+  color: #ffffff;
+}
+
 .home-bio__social {
   padding: 20px 22px;
 }

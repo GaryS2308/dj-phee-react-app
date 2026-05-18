@@ -66,6 +66,15 @@
   will-change: transform;
 }
 
+/* SEO title: in the DOM and rendered, but visually invisible — not clipped or display:none */
+.hero-banner__seo-title {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  font-size: 0;
+}
+
 .hero-banner__copy {
   display: flex;
   flex-direction: column;

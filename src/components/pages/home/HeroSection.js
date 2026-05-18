@@ -97,7 +97,7 @@ const HeroSection = () => {
 
         <div className="overlay">
           <div className="hero-copy">
-            <h1>PHEE</h1>
+            <h1><span className="sr-only">DJ PHEE – Wedding, Corporate &amp; Event DJ Cape Town</span><span aria-hidden="true">PHEE</span></h1>
             <h2>Professional DJ for corporate events, clubs, festivals and private functions in Cape Town.</h2>
           </div>
           <div className="hero-cta">

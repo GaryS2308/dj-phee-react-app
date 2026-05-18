@@ -3,7 +3,7 @@ import { send } from '@emailjs/browser';
 import { db } from '../../../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
-export const sendResponseEmail = async (token, type) => {
+export const sendResponseEmail = async (token, type, overrides = {}) => {
   console.log("📨 sendResponseEmail called with token:", token, "type:", type);
 
   if (type !== 'accept') {
@@ -32,7 +32,7 @@ export const sendResponseEmail = async (token, type) => {
     return totalHours || 1;
   };
 
-  const total_amount = parseDurationToHours(booking.duration) * rate_per_hour;
+  const total_amount = Number(overrides.total_amount || booking.quotedAmount || booking.totalAmount || parseDurationToHours(booking.duration) * rate_per_hour);
 
   // Convert "13 August 2025" + "19:00" into ISO UTC format for Google Calendar
   const parseToISO = (dateStr, timeStr) => {
@@ -59,7 +59,7 @@ export const sendResponseEmail = async (token, type) => {
     start_time: booking.start_time,
     end_time: booking.end_time,
     duration: booking.duration,
-    event: booking.event,
+    event: overrides.event || booking.eventType || booking.event,
     location: booking.location,
     rate_per_hour,
     total_amount,

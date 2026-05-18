@@ -2,6 +2,7 @@
 @import "../src/components/pages/home/HeroSection.css";
 @import "../src/components/pages/home/HomeBioSection.css";
 @import "../src/components/pages/home/WherePheePerforms.css";
+@import "../src/components/pages/home/HomeBottomSection.css";
 @import "../src/components/pages/about-phee/about-phee.css";
 @import "../src/components/pages/past-events/past-events.css";
 @import "../src/components/pages/booking-form/BookingForm.css";

@@ -50,6 +50,7 @@ export default function BioPage() {
       />
       <HeroBanner
         title="BIO"
+        seoTitle="DJ PHEE – Afrotech DJ Based in Cape Town"
         subtitle="Cape Town-based DJ delivering high-energy Afrotech sets for private and public events."
         image="https://res.cloudinary.com/dea6wzxd8/image/upload/v1768549868/phee_hero_photo_2_fs1a9g.jpg"
         imagePosition="center 78%"

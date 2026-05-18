@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { init, send } from '@emailjs/browser';
 import TimeSliderModal from '../../buttons/slider/slider';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../../firebase'; // Adjust if your firebase.js path is different
 import TermsModal from '../../modals/TermsModal';
 import CancellationModal from '../../modals/CancellationModal';
@@ -151,7 +151,8 @@ const BookingForm = () => {
       // Save booking to Firestore
       await addDoc(collection(db, 'bookings'), {
         ...templateParams,
-        timestamp: new Date(),
+        timestamp: serverTimestamp(),
+        createdAt: serverTimestamp(),
       });
 
       // Send to EmailJS (to DJ)
@@ -331,6 +332,62 @@ const BookingForm = () => {
               <p>{item.answer}</p>
             </details>
           ))}
+        </div>
+      </section>
+
+      <section className="booking-content-block">
+        <h2>Book an Afrotech DJ in Cape Town</h2>
+        <p>
+          DJ PHEE specialises in Afrotech, Electronic and House, high-energy genres rooted in African identity and built for dance floors. Whether you need deep grooves for a cocktail hour or peak-time Afrotech for a club set, PHEE reads the room and adapts the mix to your crowd.
+        </p>
+      </section>
+
+      <section className="booking-content-block">
+        <h2>DJ Services Across Cape Town &amp; the Western Cape</h2>
+        <p>
+          DJ PHEE is based in Cape Town and available for bookings across the Western Cape, including Stellenbosch, Franschhoek, Paarl, Hermanus and the Cape Winelands. Travel to other South African cities and international destinations is available by arrangement.
+        </p>
+      </section>
+
+      <section className="booking-packages">
+        <h2 className="booking-packages__heading">Event Packages</h2>
+        <p className="booking-packages__intro">
+          Whether you need a DJ for a few hours or a full-day event, PHEE offers flexible bookings tailored to your occasion. All packages are quoted based on duration, venue and requirements. Rates start from R2,000 per hour.
+        </p>
+        <div className="booking-packages__grid">
+          <div className="booking-packages__card">
+            <h3>Wedding</h3>
+            <ul>
+              <li>Ceremony, cocktail hour and reception</li>
+              <li>Pre-event consultation included</li>
+              <li>First dance and special request handling</li>
+              <li>Afrotech, Afro House, Deep House and Top 40</li>
+              <li>Professional equipment provided</li>
+            </ul>
+            <a href="/wedding-dj-cape-town" className="booking-packages__link">Learn more about wedding DJ</a>
+          </div>
+          <div className="booking-packages__card">
+            <h3>Corporate</h3>
+            <ul>
+              <li>Year-end functions, brand launches and activations</li>
+              <li>Music policy briefing and clean edits as standard</li>
+              <li>Formal-to-floor energy management</li>
+              <li>In-house or provided equipment</li>
+              <li>Punctual setup, no management required on the night</li>
+            </ul>
+            <a href="/corporate-dj-cape-town" className="booking-packages__link">Learn more about corporate DJ</a>
+          </div>
+          <div className="booking-packages__card">
+            <h3>Private Party</h3>
+            <ul>
+              <li>Birthdays, celebrations and intimate functions</li>
+              <li>Custom genre requests and playlist guidance</li>
+              <li>Flexible duration from 2 hours</li>
+              <li>Available across Cape Town and the Western Cape</li>
+              <li>Fully tailored to the guest list</li>
+            </ul>
+            <a href="/booking#booking" className="booking-packages__link">Get a quote</a>
+          </div>
         </div>
       </section>
     </section>
