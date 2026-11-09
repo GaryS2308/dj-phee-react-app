@@ -1,5 +1,6 @@
 import HeroBanner from '../../src/components/hero/HeroBanner';
 import CorporateDjPage from '../../src/components/pages/corporate-dj/CorporateDjPage';
+import { getOpenGraphImages, getShareImageUrl, heroImages } from '../seo';
 
 export const metadata = {
   title: 'Corporate Event DJ Cape Town | DJ PHEE',
@@ -13,13 +14,15 @@ export const metadata = {
     description:
       'Hire DJ PHEE for corporate events in Cape Town. Year-end functions, brand launches, company parties and conference entertainment. Professional setup, versatile sets, rates from R2,000/hr.',
     url: 'https://phee.co.za/corporate-dj-cape-town',
-    type: 'website'
+    type: 'website',
+    images: getOpenGraphImages(heroImages.primary, 'DJ PHEE corporate event DJ hero photo')
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Corporate Event DJ Cape Town | DJ PHEE',
     description:
-      'Hire DJ PHEE for corporate events in Cape Town. Year-end functions, brand launches, company parties and conference entertainment. Professional setup, versatile sets, rates from R2,000/hr.'
+      'Hire DJ PHEE for corporate events in Cape Town. Year-end functions, brand launches, company parties and conference entertainment. Professional setup, versatile sets, rates from R2,000/hr.',
+    images: [getShareImageUrl(heroImages.primary)]
   }
 };
 
@@ -31,6 +34,7 @@ export default function CorporateDjRoute() {
     "description": "Professional DJ services for corporate events in Cape Town, including year-end functions, brand launches, company parties and conference entertainment.",
     "url": "https://phee.co.za/corporate-dj-cape-town",
     "provider": {
+      "@id": "https://phee.co.za/#person",
       "@type": "Person",
       "name": "PHEE",
       "jobTitle": "DJ",
@@ -61,13 +65,19 @@ export default function CorporateDjRoute() {
     <main>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, {
+          '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://phee.co.za/' },
+            { '@type': 'ListItem', position: 2, name: jsonLd.name, item: jsonLd.url }
+          ]
+        }]) }}
       />
       <HeroBanner
         title="CORPORATE DJ"
         seoTitle="Corporate Event DJ Cape Town | DJ PHEE"
         subtitle="Professional DJ services for company events, brand launches and year-end functions across Cape Town."
-        image="https://res.cloudinary.com/dea6wzxd8/image/upload/v1768549868/Phee_Hero_photo_rz1dei.jpg"
+        image={heroImages.primary}
         ctaLabel="GET A QUOTE"
         ctaHref="/booking#booking"
       />

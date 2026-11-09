@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /response
 
 Sitemap: https://phee.co.za/sitemap.xml

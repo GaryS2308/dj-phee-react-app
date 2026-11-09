@@ -1,5 +1,6 @@
 import HeroBanner from '../../src/components/hero/HeroBanner';
 import PastEvents from '../../src/components/pages/past-events/past-events';
+import { getOpenGraphImages, getShareImageUrl, heroImages } from '../seo';
 
 export const metadata = {
   title: 'Past DJ Events and Club Sets in Cape Town',
@@ -13,13 +14,15 @@ export const metadata = {
     description:
       'See past DJ PHEE events across Cape Town clubs, festivals, private events and brand activations, including live-set highlights and venue history.',
     url: 'https://phee.co.za/past-events',
-    type: 'website'
+    type: 'website',
+    images: getOpenGraphImages(heroImages.pastEvents, 'DJ PHEE past events hero photo')
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Past DJ Events and Club Sets in Cape Town',
     description:
-      'See past DJ PHEE events across Cape Town clubs, festivals, private events and brand activations, including live-set highlights and venue history.'
+      'See past DJ PHEE events across Cape Town clubs, festivals, private events and brand activations, including live-set highlights and venue history.',
+    images: [getShareImageUrl(heroImages.pastEvents)]
   }
 };
 
@@ -69,7 +72,7 @@ export default function PastEventsPage() {
         title="PAST EVENTS"
         seoTitle="Past DJ Events & Club Sets in Cape Town"
         subtitle="A selection of performances, venues, and featured moments."
-        image="https://res.cloudinary.com/dea6wzxd8/image/upload/v1768549983/phee_photo_amgvyt.jpg"
+        image={heroImages.pastEvents}
         ctaLabel="BOOK NOW"
         ctaHref="/booking#booking"
       />

@@ -30,11 +30,14 @@ const TEMPLATE_FIELDS = [
   ['logoUrl', 'Logo URL'],
   ['businessEmail', 'Business email'],
   ['businessPhone', 'Business phone'],
+  ['businessAddress', 'Business address'],
+  ['defaultDepositPercent', 'Default deposit %'],
   ['bankName', 'Bank name'],
   ['accountHolder', 'Account holder'],
   ['accountNumber', 'Account number'],
   ['branchCode', 'Branch code'],
-  ['bicSwiftCode', 'BIC / SWIFT code']
+  ['bicSwiftCode', 'BIC / SWIFT code'],
+  ['businessTaxNumber', 'DJ tax number']
 ];
 
 const TEMPLATE_COLOR_FIELDS = [
@@ -129,6 +132,14 @@ function templateText(template, key, fallback) {
   return template?.[key] === undefined || template?.[key] === null ? fallback : template[key];
 }
 
+function multilineText(value, fallback = '') {
+  const text = String(value || fallback || '');
+  const lines = text.split(/\r?\n/);
+  return lines.map((line, index) => (
+    <span key={`${line}-${index}`}>{index > 0 ? <br /> : null}{line}</span>
+  ));
+}
+
 function previewFocusClass(activeField, fields) {
   return fields.includes(activeField) ? ' admin-preview-focus' : '';
 }
@@ -153,7 +164,7 @@ function documentStyle(template) {
 function TemplatePreview({ template, activeField = '' }) {
   const activeTemplate = normalizeDocumentTemplate(template?.id, template || DEFAULT_DOCUMENT_TEMPLATE);
   const subtotal = PREVIEW_ITEMS.reduce((sum, item) => sum + item.total, 0);
-  const depositDue = Math.round(subtotal * 0.5);
+  const depositDue = Math.round(subtotal * (activeTemplate.defaultDepositPercent / 100));
 
   return (
     <article className="admin-document-preview admin-document-preview--settings" style={documentStyle(activeTemplate)}>
@@ -208,18 +219,25 @@ function TemplatePreview({ template, activeField = '' }) {
         <p className={`admin-document-preview__grand-total${previewFocusClass(activeField, ['quoteTotalLabel', 'invoiceTotalLabel'])}`}><span>{templateText(activeTemplate, 'quoteTotalLabel', 'Quote total')}</span><strong>{money(subtotal)}</strong></p>
       </section>
 
-      <div className="admin-settings-preview__bottom">
+      <div className="admin-document-preview__detail-grid">
+        {(activeTemplate.businessEmail || activeTemplate.businessPhone || activeTemplate.businessTaxNumber || activeTemplate.businessAddress) && (
+          <section className={`admin-document-preview__terms${previewFocusClass(activeField, ['businessEmail', 'businessPhone', 'businessTaxNumber', 'businessAddress'])}`}>
+            <span>Business Details</span>
+            <p><span className={previewFocusClass(activeField, ['businessEmail'])}><strong>Email:</strong> {activeTemplate.businessEmail || 'Email'}</span><br /><span className={previewFocusClass(activeField, ['businessPhone'])}><strong>Phone:</strong> {activeTemplate.businessPhone || 'Phone'}</span><br /><span className={previewFocusClass(activeField, ['businessAddress'])}><strong>Business address:</strong> {multilineText(activeTemplate.businessAddress, 'Business address')}</span><br /><span className={previewFocusClass(activeField, ['businessTaxNumber'])}><strong>DJ tax number:</strong> {activeTemplate.businessTaxNumber || 'Tax number'}</span></p>
+          </section>
+        )}
         {(activeTemplate.bankName || activeTemplate.accountNumber) && (
           <section className={`admin-document-preview__terms${previewFocusClass(activeField, ['bankDetailsSectionTitle', 'bankName', 'accountHolder', 'accountNumber', 'branchCode', 'bicSwiftCode'])}`}>
             <span className={previewFocusClass(activeField, ['bankDetailsSectionTitle'])}>{templateText(activeTemplate, 'bankDetailsSectionTitle', 'Bank Details')}</span>
-            <p><span className={previewFocusClass(activeField, ['bankName'])}>{activeTemplate.bankName}</span><br /><span className={previewFocusClass(activeField, ['accountHolder'])}>{activeTemplate.accountHolder}</span><br /><span className={previewFocusClass(activeField, ['accountNumber'])}>{activeTemplate.accountNumber || 'Account number'}</span><br /><span className={previewFocusClass(activeField, ['branchCode'])}>{activeTemplate.branchCode || 'Branch code'}</span><br /><span className={previewFocusClass(activeField, ['bicSwiftCode'])}>{activeTemplate.bicSwiftCode || 'BIC / SWIFT code'}</span></p>
+            <p><span className={previewFocusClass(activeField, ['bankName'])}><strong>Bank name:</strong> {activeTemplate.bankName}</span><br /><span className={previewFocusClass(activeField, ['accountHolder'])}><strong>Account holder:</strong> {activeTemplate.accountHolder}</span><br /><span className={previewFocusClass(activeField, ['accountNumber'])}><strong>Account number:</strong> {activeTemplate.accountNumber || 'Account number'}</span><br /><span className={previewFocusClass(activeField, ['branchCode'])}><strong>Branch code:</strong> {activeTemplate.branchCode || 'Branch code'}</span><br /><span className={previewFocusClass(activeField, ['bicSwiftCode'])}><strong>BIC / SWIFT code:</strong> {activeTemplate.bicSwiftCode || 'BIC / SWIFT code'}</span></p>
           </section>
         )}
-        <section className={`admin-document-preview__terms${previewFocusClass(activeField, ['termsSectionTitle', 'quotationTerms', 'invoiceTerms'])}`}>
-          <span className={previewFocusClass(activeField, ['termsSectionTitle'])}>{templateText(activeTemplate, 'termsSectionTitle', 'Terms')}</span>
-          <p className={previewFocusClass(activeField, ['quotationTerms', 'invoiceTerms'])}>{activeTemplate.quotationTerms}</p>
-        </section>
       </div>
+
+      <section className={`admin-document-preview__terms${previewFocusClass(activeField, ['termsSectionTitle', 'quotationTerms', 'invoiceTerms'])}`}>
+        <span className={previewFocusClass(activeField, ['termsSectionTitle'])}>{templateText(activeTemplate, 'termsSectionTitle', 'Terms')}</span>
+        <p className={previewFocusClass(activeField, ['quotationTerms', 'invoiceTerms'])}>{activeTemplate.quotationTerms}</p>
+      </section>
 
       <footer className={`admin-document-preview__footer${previewFocusClass(activeField, ['footerNote'])}`}>
         <span>{activeTemplate.businessName}</span>
@@ -539,9 +557,13 @@ function DocumentTemplatesSection() {
 
           <CollapsibleCard title="Business information">
             <div className="admin-template-form__grid">
-              {TEMPLATE_FIELDS.filter(([key]) => !['name', 'logoUrl', 'bankName', 'accountHolder', 'accountNumber', 'branchCode', 'bicSwiftCode'].includes(key)).map(([key, label]) => (
-                <label key={key}>{label}
-                  <input {...templateInputProps(key)} type="text" value={draft[key] || ''} onChange={(event) => update(key, event.target.value)} />
+              {TEMPLATE_FIELDS.filter(([key]) => !['name', 'logoUrl', 'bankName', 'accountHolder', 'accountNumber', 'branchCode', 'bicSwiftCode', 'businessTaxNumber'].includes(key)).map(([key, label]) => (
+                <label key={key} className={key === 'businessAddress' ? 'admin-template-form__wide' : undefined}>{label}
+                  {key === 'businessAddress' ? (
+                    <textarea {...templateInputProps(key)} value={draft[key] || ''} onChange={(event) => update(key, event.target.value)} placeholder="Line 1&#10;Line 2&#10;City, postal code" />
+                  ) : (
+                    <input {...templateInputProps(key)} type={key === 'defaultDepositPercent' ? 'number' : 'text'} min={key === 'defaultDepositPercent' ? '0' : undefined} max={key === 'defaultDepositPercent' ? '100' : undefined} value={draft[key] ?? ''} onChange={(event) => update(key, event.target.value)} />
+                  )}
                 </label>
               ))}
             </div>
@@ -549,7 +571,7 @@ function DocumentTemplatesSection() {
 
           <CollapsibleCard title="Bank details">
             <div className="admin-template-form__grid">
-              {TEMPLATE_FIELDS.filter(([key]) => ['bankName', 'accountHolder', 'accountNumber', 'branchCode', 'bicSwiftCode'].includes(key)).map(([key, label]) => (
+              {TEMPLATE_FIELDS.filter(([key]) => ['bankName', 'accountHolder', 'accountNumber', 'branchCode', 'bicSwiftCode', 'businessTaxNumber'].includes(key)).map(([key, label]) => (
                 <label key={key}>{label}
                   <input {...templateInputProps(key)} type="text" value={draft[key] || ''} onChange={(event) => update(key, event.target.value)} />
                 </label>

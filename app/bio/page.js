@@ -1,5 +1,6 @@
 import HeroBanner from '../../src/components/hero/HeroBanner';
 import AboutPhee from '../../src/components/pages/about-phee/about-phee';
+import { getOpenGraphImages, getShareImageUrl, heroImages } from '../seo';
 
 export const metadata = {
   title: 'DJ PHEE Bio: Afrotech DJ for Cape Town Events',
@@ -13,13 +14,15 @@ export const metadata = {
     description:
       'Read DJ PHEE’s bio: a Cape Town DJ known for Afrotech, Afro Tech and Afro-Tech sets, with versatile genre coverage for weddings, parties, clubs and festivals.',
     url: 'https://phee.co.za/bio',
-    type: 'website'
+    type: 'website',
+    images: getOpenGraphImages(heroImages.bio, 'DJ PHEE bio hero photo')
   },
   twitter: {
     card: 'summary_large_image',
     title: 'DJ PHEE Bio: Afrotech DJ for Cape Town Events',
     description:
-      'Read DJ PHEE’s bio: a Cape Town DJ known for Afrotech, Afro Tech and Afro-Tech sets, with versatile genre coverage for weddings, parties, clubs and festivals.'
+      'Read DJ PHEE’s bio: a Cape Town DJ known for Afrotech, Afro Tech and Afro-Tech sets, with versatile genre coverage for weddings, parties, clubs and festivals.',
+    images: [getShareImageUrl(heroImages.bio)]
   }
 };
 
@@ -52,7 +55,7 @@ export default function BioPage() {
         title="BIO"
         seoTitle="DJ PHEE – Afrotech DJ Based in Cape Town"
         subtitle="Cape Town-based DJ delivering high-energy Afrotech sets for private and public events."
-        image="https://res.cloudinary.com/dea6wzxd8/image/upload/v1768549868/phee_hero_photo_2_fs1a9g.jpg"
+        image={heroImages.bio}
         imagePosition="center 78%"
         imagePositionDesktop="center 15%"
         ctaLabel="BOOK NOW"

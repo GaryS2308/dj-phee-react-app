@@ -1,4 +1,5 @@
 import PrivacyPolicy from '../../src/components/pages/legal/PrivacyPolicy';
+import { getOpenGraphImages, getShareImageUrl, heroImages } from '../seo';
 
 export const metadata = {
   title: 'Privacy Policy for DJ PHEE Bookings',
@@ -14,12 +15,14 @@ export const metadata = {
     title: 'Privacy Policy for DJ PHEE Bookings',
     description: 'Read how DJ PHEE booking enquiries are collected, used, stored and protected when you submit event details on this website.',
     url: 'https://phee.co.za/privacy',
-    type: 'website'
+    type: 'website',
+    images: getOpenGraphImages(heroImages.primary, 'DJ PHEE booking information photo')
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Privacy Policy for DJ PHEE Bookings',
-    description: 'Read how DJ PHEE booking enquiries are collected, used, stored and protected when you submit event details on this website.'
+    description: 'Read how DJ PHEE booking enquiries are collected, used, stored and protected when you submit event details on this website.',
+    images: [getShareImageUrl(heroImages.primary)]
   }
 };
 

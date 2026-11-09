@@ -26,13 +26,13 @@ export default function AdminClientsCRM({ clients, bookings, quotations, invoice
             <tbody>
               {rows.map((client) => (
                 <tr key={client.id} onClick={() => setSelectedId(client.id)}>
-                  <td>
+                  <td data-label="Client">
                     <button type="button">{client.name}</button>
                     <small>{client.company || client.email || client.phone || 'Contact details needed'}</small>
                   </td>
-                  <td>{client.summary}</td>
-                  <td>{client.lastInteraction}</td>
-                  <td>{money(client.outstandingBalance)}</td>
+                  <td data-label="Summary">{client.summary}</td>
+                  <td data-label="Last interaction">{client.lastInteraction}</td>
+                  <td data-label="Outstanding">{money(client.outstandingBalance)}</td>
                 </tr>
               ))}
             </tbody>
@@ -53,6 +53,9 @@ export default function AdminClientsCRM({ clients, bookings, quotations, invoice
             <div><dt>Company</dt><dd>{selected.company || 'N/A'}</dd></div>
             <div><dt>Email</dt><dd>{selected.email || 'N/A'}</dd></div>
             <div><dt>Phone</dt><dd>{selected.phone || 'N/A'}</dd></div>
+            <div><dt>Tax number</dt><dd>{selected.taxNumbers?.length ? selected.taxNumbers.join(', ') : 'N/A'}</dd></div>
+            <div><dt>VAT number</dt><dd>{selected.vatNumbers?.length ? selected.vatNumbers.join(', ') : 'N/A'}</dd></div>
+            <div><dt>Co. reg. number</dt><dd>{selected.companyRegistrationNumbers?.length ? selected.companyRegistrationNumbers.join(', ') : 'N/A'}</dd></div>
             <div><dt>Interaction summary</dt><dd>{selected.summary}</dd></div>
             <div><dt>Last interaction</dt><dd>{selected.lastInteraction}</dd></div>
             <div><dt>Bookings</dt><dd>{selected.bookings.length}</dd></div>
@@ -73,6 +76,14 @@ export default function AdminClientsCRM({ clients, bookings, quotations, invoice
             <div>
               <span>Companies</span>
               <p>{selected.companies?.length ? selected.companies.join(', ') : selected.company || 'N/A'}</p>
+            </div>
+            <div>
+              <span>Tax numbers</span>
+              <p>{selected.taxNumbers?.length ? selected.taxNumbers.join(', ') : 'N/A'}</p>
+            </div>
+            <div>
+              <span>VAT numbers</span>
+              <p>{selected.vatNumbers?.length ? selected.vatNumbers.join(', ') : 'N/A'}</p>
             </div>
           </section>
           <ClientTable title="Booking history" rows={selected.bookings} columns={['eventType', 'eventDateLabel', 'status', 'quotedAmount']} />
@@ -95,7 +106,7 @@ function ClientTable({ title, rows, columns }) {
             {rows.map((row) => (
               <tr key={row.id || row.invoiceNumber || row.quoteNumber}>
                 {columns.map((column) => (
-                  <td key={column}>{typeof row[column] === 'number' ? money(row[column]) : row[column]}</td>
+                  <td key={column} data-label={column}>{typeof row[column] === 'number' ? money(row[column]) : row[column]}</td>
                 ))}
               </tr>
             ))}

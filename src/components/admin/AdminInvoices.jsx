@@ -18,6 +18,19 @@ import { addDays, clientKey, dateLabel, money, num, safeText, today, uid } from 
 const INVOICE_STATUSES = ['draft', 'sent', 'paid', 'partial', 'overdue'];
 const CATEGORIES = ['DJ Sets', 'Sound', 'Lighting', 'Other'];
 const UNITS = ['hours', 'quantity', 'days', 'sets', 'items'];
+const BANK_DETAIL_FIELDS = [
+  ['bankName', 'Bank name'],
+  ['accountHolder', 'Account holder'],
+  ['accountNumber', 'Account number'],
+  ['branchCode', 'Branch code'],
+  ['bicSwiftCode', 'BIC / SWIFT code']
+];
+const BUSINESS_DETAIL_FIELDS = [
+  ['businessEmail', 'Email'],
+  ['businessPhone', 'Phone'],
+  ['businessAddress', 'Business address'],
+  ['businessTaxNumber', 'DJ tax number']
+];
 const EMPTY_ITEM = {
   name: '',
   description: '',
@@ -43,6 +56,10 @@ function invoiceTotals(items, discount, depositPercent, amountPaid) {
   return { items: normalized, subtotal, total, depositDue, balanceDue };
 }
 
+function templateDepositPercent(template) {
+  return num(template?.defaultDepositPercent ?? DEFAULT_DOCUMENT_TEMPLATE.defaultDepositPercent);
+}
+
 function templateText(template, key, fallback) {
   return template?.[key] === undefined || template?.[key] === null ? fallback : template[key];
 }
@@ -57,11 +74,33 @@ function customerLines(document) {
     document.clientEmail,
     document.clientPhone,
     document.clientAddress,
-    document.clientTaxNumber,
+    document.clientTaxNumber ? `Tax number: ${document.clientTaxNumber}` : '',
     document.clientVatNumber ? `VAT number: ${document.clientVatNumber}` : '',
     document.clientCompanyRegistration ? `Co. Reg: ${document.clientCompanyRegistration}` : '',
     document.customerInfo
   ].filter(Boolean);
+}
+
+function bankDetailRows(template) {
+  return BANK_DETAIL_FIELDS
+    .map(([key, label]) => ({ key, label, value: template?.[key] }))
+    .filter(({ value }) => String(value || '').trim());
+}
+
+function businessDetailRows(template) {
+  return BUSINESS_DETAIL_FIELDS
+    .map(([key, label]) => ({ key, label, value: template?.[key] }))
+    .filter(({ value }) => String(value || '').trim());
+}
+
+function multilineValue(value) {
+  return String(value || '').split(/\r?\n/).map((line, index) => (
+    <span key={`${line}-${index}`}>{index > 0 ? <br /> : null}{line}</span>
+  ));
+}
+
+function escapeHtmlWithBreaks(value) {
+  return escapeHtml(value).replace(/\r?\n/g, '<br />');
 }
 
 function FieldGroup({ title, missing = 0, defaultOpen = false, children }) {
@@ -107,7 +146,7 @@ function draftFromBooking({ invoices, template, booking, quote }) {
     terms: template?.invoiceTerms || DEFAULT_DOCUMENT_TEMPLATE.invoiceTerms,
     notes: booking?.notes || '',
     discount: 0,
-    depositPercent: 50,
+    depositPercent: templateDepositPercent(template),
     amountPaid: num(booking?.amountPaid),
     items: amount
       ? [{ ...EMPTY_ITEM, id: uid(), name: booking?.eventType || 'DJ Performance', description: booking?.duration || '', quantity: 1, unitPrice: amount }]
@@ -142,7 +181,7 @@ function draftFromQuote({ invoices, template, quote }) {
     terms: template?.invoiceTerms || DEFAULT_DOCUMENT_TEMPLATE.invoiceTerms,
     notes: quote.notes || '',
     discount: quote.discount || 0,
-    depositPercent: quote.depositPercent || 50,
+    depositPercent: quote.depositPercent ?? templateDepositPercent(template),
     amountPaid: 0,
     items: quote.items?.length ? quote.items.map((item) => ({ ...item, id: uid() })) : []
   };
@@ -175,7 +214,7 @@ function blankDraft({ invoices, template }) {
     terms: template?.invoiceTerms || DEFAULT_DOCUMENT_TEMPLATE.invoiceTerms,
     notes: '',
     discount: 0,
-    depositPercent: 50,
+    depositPercent: templateDepositPercent(template),
     amountPaid: 0,
     items: []
   };
@@ -283,9 +322,14 @@ function InvoiceEditor({ draft, setDraft, invoices, clients, bookings, quotation
       name: booking.clientName,
       email: booking.clientEmail,
       phone: booking.clientPhone,
-      company: booking.raw?.company || ''
+      company: booking.raw?.company || '',
+      clientAddress: booking.raw?.clientAddress || '',
+      clientTaxNumber: booking.raw?.clientTaxNumber || '',
+      clientVatNumber: booking.raw?.clientVatNumber || '',
+      clientCompanyRegistration: booking.raw?.clientCompanyRegistration || '',
+      customerInfo: booking.raw?.customerInfo || ''
     }));
-    const map = new Map([...clients, ...fromBookings].map((c) => [c.clientKey || c.id, c]));
+    const map = new Map([...fromBookings, ...clients].map((c) => [c.clientKey || c.id, c]));
     return [...map.values()].filter((c) => c.name).sort((a, b) => a.name.localeCompare(b.name));
   }, [bookings, clients]);
   const serviceOptions = services.length ? services : STARTER_QUOTE_SERVICES;
@@ -485,6 +529,7 @@ function InvoiceEditor({ draft, setDraft, invoices, clients, bookings, quotation
               <label>Client email<input type="email" value={draft.clientEmail} onChange={(event) => update('clientEmail', event.target.value)} /></label>
               <label>Client phone<input value={draft.clientPhone} onChange={(event) => update('clientPhone', event.target.value)} /></label>
               <label>Company<input value={draft.company} onChange={(event) => update('company', event.target.value)} /></label>
+              <label>Client tax number<input value={draft.clientTaxNumber || ''} onChange={(event) => update('clientTaxNumber', event.target.value)} /></label>
               <label>VAT number<input value={draft.clientVatNumber || ''} onChange={(event) => update('clientVatNumber', event.target.value)} /></label>
               <label>Co. reg. number<input value={draft.clientCompanyRegistration || ''} onChange={(event) => update('clientCompanyRegistration', event.target.value)} /></label>
               <label className="admin-quote-form__wide">Client address<textarea value={draft.clientAddress || ''} onChange={(event) => update('clientAddress', event.target.value)} /></label>
@@ -576,6 +621,8 @@ function InvoiceEditor({ draft, setDraft, invoices, clients, bookings, quotation
 
 export function InvoicePreview({ invoice, template }) {
   const activeTemplate = normalizeDocumentTemplate(template?.id, template || DEFAULT_DOCUMENT_TEMPLATE);
+  const bankRows = bankDetailRows(activeTemplate);
+  const businessRows = businessDetailRows(activeTemplate);
   const style = documentStyle(activeTemplate);
   return (
     <article className="admin-document-preview" style={style}>
@@ -636,19 +683,31 @@ export function InvoicePreview({ invoice, template }) {
         <p><span>{templateText(activeTemplate, 'balanceDueLabel', 'Balance due')}</span><strong>{money(invoice.balanceDue)}</strong></p>
       </section>
 
-      {/* Bank / Terms */}
-      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px', marginTop:'14px'}}>
-        {(activeTemplate.bankName || activeTemplate.accountNumber) && (
+      {/* Business / Bank details */}
+      <div className="admin-document-preview__detail-grid">
+        {businessRows.length > 0 && (
           <section className="admin-document-preview__terms">
-            <span>{templateText(activeTemplate, 'bankDetailsSectionTitle', 'Bank Details')}</span>
-            <p>{activeTemplate.bankName}<br />{activeTemplate.accountHolder}<br />{activeTemplate.accountNumber}<br />{activeTemplate.branchCode}{activeTemplate.bicSwiftCode ? <><br />{activeTemplate.bicSwiftCode}</> : null}</p>
+            <span>Business Details</span>
+            <p>{businessRows.map((row, index) => (
+              <span key={row.key}>{index > 0 ? <br /> : null}<strong>{row.label}:</strong> {multilineValue(row.value)}</span>
+            ))}</p>
           </section>
         )}
-        <section className="admin-document-preview__terms">
-          <span>{templateText(activeTemplate, 'termsSectionTitle', 'Terms')}</span>
-          <p>{invoice.terms || activeTemplate.invoiceTerms}</p>
-        </section>
+        {bankRows.length > 0 && (
+          <section className="admin-document-preview__terms">
+            <span>{templateText(activeTemplate, 'bankDetailsSectionTitle', 'Bank Details')}</span>
+            <p>{bankRows.map((row, index) => (
+              <span key={row.key}>{index > 0 ? <br /> : null}<strong>{row.label}:</strong> {row.value}</span>
+            ))}</p>
+          </section>
+        )}
       </div>
+
+      {/* Terms */}
+      <section className="admin-document-preview__terms">
+        <span>{templateText(activeTemplate, 'termsSectionTitle', 'Terms')}</span>
+        <p>{invoice.terms || activeTemplate.invoiceTerms}</p>
+      </section>
 
       {/* Footer bar */}
       <footer className="admin-document-preview__footer">
@@ -691,6 +750,8 @@ function customerHtml(document) {
 
 export function buildInvoicePrintHtml(invoice, template) {
   const activeTemplate = normalizeDocumentTemplate(template?.id, template || DEFAULT_DOCUMENT_TEMPLATE);
+  const bankRows = bankDetailRows(activeTemplate);
+  const businessRows = businessDetailRows(activeTemplate);
   const items = invoice.items || [];
   const unitLabel = (item) => `${escapeHtml(String(item.quantity))} ${escapeHtml(item.unit)}`;
   return `<!doctype html><html><head><meta charset="utf-8" /><title>${escapeHtml(invoice.invoiceNumber)}</title><style>
@@ -732,8 +793,9 @@ export function buildInvoicePrintHtml(invoice, template) {
     .totals-line span, .totals-line strong { color: ${escapeHtml(activeTemplate.totalsTextColor)}; }
     .grand { font-size: 15px; font-weight: 800; border-top: 1px solid rgba(255,255,255,.18); padding-top: 8px; margin-top: 4px; }
 
-    .notes-terms { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+    .notes-terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-top: 14px; }
     .section-block { border-top: 1px solid ${escapeHtml(activeTemplate.panelBorderColor)}; padding-top: 14px; }
+    .terms-block { margin-top: 12px; }
     .section-block p { font-size: 11px; color: ${escapeHtml(activeTemplate.bodyTextColor)}; line-height: 1.6; margin-top: 5px; }
 
     .footer { margin-top: 20px; padding-top: 12px; padding-bottom: 8px; border-top: 1px solid ${escapeHtml(activeTemplate.panelBorderColor)}; display: flex; justify-content: space-between; align-items: center; }
@@ -789,11 +851,13 @@ export function buildInvoicePrintHtml(invoice, template) {
     </div>
 
     <div class="notes-terms">
-      <div class="section-block">
-        <p class="label">${escapeHtml(templateText(activeTemplate, 'termsSectionTitle', 'Terms'))}</p>
-        <p>${escapeHtml(invoice.terms || activeTemplate.invoiceTerms)}</p>
-      </div>
-      ${(activeTemplate.bankName || activeTemplate.accountNumber) ? `<div class="section-block"><p class="label">${escapeHtml(templateText(activeTemplate, 'bankDetailsSectionTitle', 'Bank Details'))}</p><p>${escapeHtml(activeTemplate.bankName)}<br />${escapeHtml(activeTemplate.accountHolder)}<br />${escapeHtml(activeTemplate.accountNumber)}<br />${escapeHtml(activeTemplate.branchCode)}${activeTemplate.bicSwiftCode ? `<br />${escapeHtml(activeTemplate.bicSwiftCode)}` : ''}</p></div>` : ''}
+      ${businessRows.length ? `<div class="section-block"><p class="label">Business Details</p><p>${businessRows.map((row) => `<strong>${escapeHtml(row.label)}:</strong> ${escapeHtmlWithBreaks(row.value)}`).join('<br />')}</p></div>` : ''}
+      ${bankRows.length ? `<div class="section-block"><p class="label">${escapeHtml(templateText(activeTemplate, 'bankDetailsSectionTitle', 'Bank Details'))}</p><p>${bankRows.map((row) => `<strong>${escapeHtml(row.label)}:</strong> ${escapeHtml(row.value)}`).join('<br />')}</p></div>` : ''}
+    </div>
+
+    <div class="section-block terms-block">
+      <p class="label">${escapeHtml(templateText(activeTemplate, 'termsSectionTitle', 'Terms'))}</p>
+      <p>${escapeHtml(invoice.terms || activeTemplate.invoiceTerms)}</p>
     </div>
 
     <div class="footer">
@@ -968,21 +1032,21 @@ export default function AdminInvoices({ invoices, quotations, clients, bookings,
             <tbody>
               {filtered.map((invoice) => (
                 <tr key={invoice.id} onClick={() => editInvoice(invoice)}>
-                  <td>{invoice.invoiceNumber}</td>
-                  <td><button type="button" onClick={() => editInvoice(invoice)}>{invoice.clientName}</button><small>{invoice.clientEmail}</small></td>
-                  <td>{invoice.eventType}</td>
-                  <td>{dateLabel(invoice.eventDate)}</td>
-                  <td>{invoice.eventLocation}</td>
-                  <td>{invoice.quoteNumber}</td>
-                  <td>{dateLabel(invoice.dueDate)}</td>
-                  <td>
+                  <td data-label="Invoice">{invoice.invoiceNumber}</td>
+                  <td data-label="Client"><button type="button" onClick={() => editInvoice(invoice)}>{invoice.clientName}</button><small>{invoice.clientEmail}</small></td>
+                  <td data-label="Event">{invoice.eventType}</td>
+                  <td data-label="Date">{dateLabel(invoice.eventDate)}</td>
+                  <td data-label="Location">{invoice.eventLocation}</td>
+                  <td data-label="Quote">{invoice.quoteNumber}</td>
+                  <td data-label="Due">{dateLabel(invoice.dueDate)}</td>
+                  <td data-label="Status">
                     <select className={`admin-status-select admin-pill--${invoice.status}`} value={invoice.status} onClick={(event) => event.stopPropagation()} onChange={(event) => changeInvoiceStatus(event, invoice)}>
                       {INVOICE_STATUSES.map((status) => <option key={status} value={status}>{status}</option>)}
                     </select>
                   </td>
-                  <td>{money(invoice.total)}</td>
-                  <td>{money(invoice.balanceDue)}</td>
-                  <td>
+                  <td data-label="Total">{money(invoice.total)}</td>
+                  <td data-label="Balance">{money(invoice.balanceDue)}</td>
+                  <td data-label="Actions">
                     <div className="admin-row-actions">
                       <button type="button" onClick={(event) => { event.stopPropagation(); editInvoice(invoice); }}>View/Edit</button>
                       <button type="button" onClick={(event) => { event.stopPropagation(); printInvoice(invoice, template); }}>Print</button>

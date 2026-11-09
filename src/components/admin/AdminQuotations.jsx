@@ -59,17 +59,18 @@ function quoteDraft({ quotations, template, booking }) {
     validUntil: addDays(14),
     notes: booking?.notes || '',
     terms: template?.quotationTerms || DEFAULT_DOCUMENT_TEMPLATE.quotationTerms,
-    depositPercent: 50,
+    discount: 0,
+    depositPercent: num(template?.defaultDepositPercent ?? DEFAULT_DOCUMENT_TEMPLATE.defaultDepositPercent),
     items: amount
       ? [{ ...EMPTY_ITEM, id: uid(), name: booking?.eventType || 'DJ Performance', description: booking?.duration || '', quantity: 1, unitPrice: amount }]
       : []
   };
 }
 
-function quoteTotals(items, depositPercent) {
+function quoteTotals(items, discount, depositPercent) {
   const normalized = items.map((item) => normalizeLineItem(item));
   const subtotal = normalized.reduce((sum, item) => sum + item.total, 0);
-  const total = subtotal;
+  const total = Math.max(subtotal - num(discount), 0);
   const depositDue = Math.round(total * (num(depositPercent) / 100));
   return { items: normalized, subtotal, total, depositDue };
 }
@@ -88,11 +89,32 @@ function customerLines(document) {
     document.clientEmail,
     document.clientPhone,
     document.clientAddress,
-    document.clientTaxNumber,
+    document.clientTaxNumber ? `Tax number: ${document.clientTaxNumber}` : '',
     document.clientVatNumber ? `VAT number: ${document.clientVatNumber}` : '',
     document.clientCompanyRegistration ? `Co. Reg: ${document.clientCompanyRegistration}` : '',
     document.customerInfo
   ].filter(Boolean);
+}
+
+function businessDetailRows(template) {
+  return [
+    ['businessEmail', 'Email'],
+    ['businessPhone', 'Phone'],
+    ['businessAddress', 'Business address'],
+    ['businessTaxNumber', 'DJ tax number']
+  ]
+    .map(([key, label]) => ({ key, label, value: template?.[key] }))
+    .filter(({ value }) => String(value || '').trim());
+}
+
+function multilineValue(value) {
+  return String(value || '').split(/\r?\n/).map((line, index) => (
+    <span key={`${line}-${index}`}>{index > 0 ? <br /> : null}{line}</span>
+  ));
+}
+
+function escapeHtmlWithBreaks(value) {
+  return escapeHtml(value).replace(/\r?\n/g, '<br />');
 }
 
 function FieldGroup({ title, missing = 0, defaultOpen = false, children }) {
@@ -215,16 +237,21 @@ function QuotationEditor({ draft, setDraft, quotations, clients, bookings, servi
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const activeTemplate = normalizeDocumentTemplate(template?.id, template || DEFAULT_DOCUMENT_TEMPLATE);
-  const totals = quoteTotals(draft.items || [], draft.depositPercent);
+  const totals = quoteTotals(draft.items || [], draft.discount, draft.depositPercent);
   const allClients = useMemo(() => {
     const fromBookings = bookings.map((booking) => ({
       id: clientKey({ email: booking.clientEmail, phone: booking.clientPhone, name: booking.clientName }),
       name: booking.clientName,
       email: booking.clientEmail,
       phone: booking.clientPhone,
-      company: booking.raw?.company || ''
+      company: booking.raw?.company || '',
+      clientAddress: booking.raw?.clientAddress || '',
+      clientTaxNumber: booking.raw?.clientTaxNumber || '',
+      clientVatNumber: booking.raw?.clientVatNumber || '',
+      clientCompanyRegistration: booking.raw?.clientCompanyRegistration || '',
+      customerInfo: booking.raw?.customerInfo || ''
     }));
-    const map = new Map([...clients, ...fromBookings].map((c) => [c.clientKey || c.id, c]));
+    const map = new Map([...fromBookings, ...clients].map((c) => [c.clientKey || c.id, c]));
     return [...map.values()].filter((c) => c.name).sort((a, b) => a.name.localeCompare(b.name));
   }, [bookings, clients]);
   const serviceOptions = services.length ? services : STARTER_QUOTE_SERVICES;
@@ -396,6 +423,7 @@ function QuotationEditor({ draft, setDraft, quotations, clients, bookings, servi
               <label>Client email<input type="email" value={draft.clientEmail} onChange={(event) => update('clientEmail', event.target.value)} /></label>
               <label>Client phone<input value={draft.clientPhone} onChange={(event) => update('clientPhone', event.target.value)} /></label>
               <label>Company<input value={draft.company} onChange={(event) => update('company', event.target.value)} /></label>
+              <label>Client tax number<input value={draft.clientTaxNumber || ''} onChange={(event) => update('clientTaxNumber', event.target.value)} /></label>
               <label>VAT number<input value={draft.clientVatNumber || ''} onChange={(event) => update('clientVatNumber', event.target.value)} /></label>
               <label>Co. reg. number<input value={draft.clientCompanyRegistration || ''} onChange={(event) => update('clientCompanyRegistration', event.target.value)} /></label>
               <label className="admin-quote-form__wide">Client address<textarea value={draft.clientAddress || ''} onChange={(event) => update('clientAddress', event.target.value)} /></label>
@@ -417,6 +445,7 @@ function QuotationEditor({ draft, setDraft, quotations, clients, bookings, servi
               <label>Issue date<input type="date" value={draft.issueDate} onChange={(event) => update('issueDate', event.target.value)} /></label>
               <label>Valid until<input type="date" value={draft.validUntil} onChange={(event) => update('validUntil', event.target.value)} /></label>
               <label>Status<select value={draft.status} onChange={(event) => update('status', event.target.value)}>{QUOTE_STATUSES.map((status) => <option key={status} value={status}>{status}</option>)}</select></label>
+              <label>Discount (R)<input type="number" min="0" step="1" value={draft.discount || ''} onChange={(event) => update('discount', event.target.value)} /></label>
               <label>Deposit %<input type="number" min="0" max="100" value={draft.depositPercent} onChange={(event) => update('depositPercent', event.target.value)} /></label>
               <label className="admin-quote-form__wide">Notes<textarea value={draft.notes} onChange={(event) => update('notes', event.target.value)} /></label>
               <label className="admin-quote-form__wide">Terms<textarea value={draft.terms} onChange={(event) => update('terms', event.target.value)} placeholder={activeTemplate?.quotationTerms} /></label>
@@ -429,6 +458,7 @@ function QuotationEditor({ draft, setDraft, quotations, clients, bookings, servi
 
           <div className="admin-quote-totals">
             <span>Subtotal <strong>{money(totals.subtotal)}</strong></span>
+            {num(draft.discount) > 0 && <span>Discount <strong>-{money(draft.discount)}</strong></span>}
             <span>Deposit due <strong>{money(totals.depositDue)}</strong></span>
             <span>Total <strong>{money(totals.total)}</strong></span>
           </div>
@@ -481,6 +511,7 @@ function LineItemsEditor({ items, serviceOptions, updateItem, addBlankItem, addS
 
 function QuotePreview({ quote, template }) {
   const activeTemplate = normalizeDocumentTemplate(template?.id, template || DEFAULT_DOCUMENT_TEMPLATE);
+  const businessRows = businessDetailRows(activeTemplate);
   const style = documentStyle(activeTemplate);
   return (
     <article className="admin-document-preview" style={style}>
@@ -535,9 +566,22 @@ function QuotePreview({ quote, template }) {
       {/* Totals */}
       <section className="admin-document-preview__totals">
         <p><span>{templateText(activeTemplate, 'subtotalLabel', 'Subtotal')}</span><strong>{money(quote.subtotal)}</strong></p>
+        {num(quote.discount) > 0 && <p><span>{templateText(activeTemplate, 'discountLabel', 'Discount')}</span><strong>-{money(quote.discount)}</strong></p>}
         {quote.depositDue > 0 && <p><span>{templateText(activeTemplate, 'depositDueLabel', 'Deposit due')}</span><strong>{money(quote.depositDue)}</strong></p>}
         <p className="admin-document-preview__grand-total"><span>{templateText(activeTemplate, 'quoteTotalLabel', 'Quote total')}</span><strong>{money(quote.total)}</strong></p>
       </section>
+
+      {/* Business details */}
+      <div className="admin-document-preview__detail-grid">
+        {businessRows.length > 0 && (
+          <section className="admin-document-preview__terms">
+            <span>Business Details</span>
+            <p>{businessRows.map((row, index) => (
+              <span key={row.key}>{index > 0 ? <br /> : null}<strong>{row.label}:</strong> {multilineValue(row.value)}</span>
+            ))}</p>
+          </section>
+        )}
+      </div>
 
       {/* Terms */}
       <section className="admin-document-preview__terms">
@@ -586,6 +630,7 @@ function customerHtml(document) {
 
 function buildQuotePrintHtml(quote, template) {
   const activeTemplate = normalizeDocumentTemplate(template?.id, template || DEFAULT_DOCUMENT_TEMPLATE);
+  const businessRows = businessDetailRows(activeTemplate);
   const items = quote.items || [];
   const unitLabel = (item) => `${escapeHtml(String(item.quantity))} ${escapeHtml(item.unit)}`;
   return `<!doctype html><html><head><meta charset="utf-8" /><title>${escapeHtml(quote.quoteNumber)}</title><style>
@@ -635,8 +680,9 @@ function buildQuotePrintHtml(quote, template) {
     .totals-line span, .totals-line strong { color: ${escapeHtml(activeTemplate.totalsTextColor)}; }
 
     /* ── Notes / Terms ── */
-    .notes-terms { margin-top: 16px; }
+    .notes-terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-top: 16px; }
     .section-block { border-top: 1px solid ${escapeHtml(activeTemplate.panelBorderColor)}; padding-top: 14px; }
+    .terms-block { margin-top: 12px; }
     .section-block p { font-size: 11px; color: ${escapeHtml(activeTemplate.bodyTextColor)}; line-height: 1.6; margin-top: 5px; }
 
     /* ── Footer bar ── */
@@ -685,16 +731,19 @@ function buildQuotePrintHtml(quote, template) {
     <div class="totals-row">
       <div class="totals-box">
         <div class="totals-line"><span>${escapeHtml(templateText(activeTemplate, 'subtotalLabel', 'Subtotal'))}</span><strong>${escapeHtml(money(quote.subtotal))}</strong></div>
+        ${num(quote.discount) > 0 ? `<div class="totals-line"><span>${escapeHtml(templateText(activeTemplate, 'discountLabel', 'Discount'))}</span><strong>-${escapeHtml(money(quote.discount))}</strong></div>` : ''}
         ${quote.depositDue ? `<div class="totals-line"><span>${escapeHtml(templateText(activeTemplate, 'depositDueLabel', 'Deposit due'))}</span><strong>${escapeHtml(money(quote.depositDue))}</strong></div>` : ''}
         <div class="totals-line grand"><span>${escapeHtml(templateText(activeTemplate, 'quoteTotalLabel', 'Quote total'))}</span><strong>${escapeHtml(money(quote.total))}</strong></div>
       </div>
     </div>
 
     <div class="notes-terms">
-      <div class="section-block">
-        <p class="label">${escapeHtml(templateText(activeTemplate, 'termsSectionTitle', 'Terms'))}</p>
-        <p>${escapeHtml(quote.terms || activeTemplate.quotationTerms)}</p>
-      </div>
+      ${businessRows.length ? `<div class="section-block"><p class="label">Business Details</p><p>${businessRows.map((row) => `<strong>${escapeHtml(row.label)}:</strong> ${escapeHtmlWithBreaks(row.value)}`).join('<br />')}</p></div>` : ''}
+    </div>
+
+    <div class="section-block terms-block">
+      <p class="label">${escapeHtml(templateText(activeTemplate, 'termsSectionTitle', 'Terms'))}</p>
+      <p>${escapeHtml(quote.terms || activeTemplate.quotationTerms)}</p>
     </div>
 
     <div class="footer">
@@ -851,19 +900,19 @@ export default function AdminQuotations({ quotations, clients, bookings, quoteSe
             <tbody>
               {filtered.map((quote) => (
                 <tr key={quote.id} onClick={() => editQuote(quote)}>
-                  <td>{quote.quoteNumber}</td>
-                  <td><button type="button" onClick={() => editQuote(quote)}>{quote.clientName}</button><small>{quote.clientEmail}</small></td>
-                  <td>{quote.eventType}</td>
-                  <td>{dateLabel(quote.eventDate)}</td>
-                  <td>{quote.eventLocation}</td>
-                  <td>{dateLabel(quote.validUntil)}</td>
-                  <td>
+                  <td data-label="Quote">{quote.quoteNumber}</td>
+                  <td data-label="Client"><button type="button" onClick={() => editQuote(quote)}>{quote.clientName}</button><small>{quote.clientEmail}</small></td>
+                  <td data-label="Event">{quote.eventType}</td>
+                  <td data-label="Date">{dateLabel(quote.eventDate)}</td>
+                  <td data-label="Location">{quote.eventLocation}</td>
+                  <td data-label="Valid until">{dateLabel(quote.validUntil)}</td>
+                  <td data-label="Status">
                     <select className={`admin-status-select admin-pill--${quote.status}`} value={quote.status} onClick={(event) => event.stopPropagation()} onChange={(event) => changeQuoteStatus(event, quote)}>
                       {QUOTE_STATUSES.map((status) => <option key={status} value={status}>{status}</option>)}
                     </select>
                   </td>
-                  <td>{money(quote.total)}</td>
-                  <td>
+                  <td data-label="Total">{money(quote.total)}</td>
+                  <td data-label="Actions">
                     <div className="admin-row-actions">
                       <button type="button" onClick={(event) => { event.stopPropagation(); editQuote(quote); }}>View/Edit</button>
                       <button type="button" onClick={(event) => { event.stopPropagation(); printQuote(quote, template); }}>Print</button>

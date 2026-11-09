@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { FaCalendarAlt, FaChartLine, FaFileCsv, FaFileInvoice, FaMoneyBillWave, FaSignOutAlt, FaUsers } from 'react-icons/fa';
+import { FaBars, FaCalendarAlt, FaChartLine, FaFileCsv, FaFileInvoice, FaMoneyBillWave, FaSignOutAlt, FaTimes, FaUsers } from 'react-icons/fa';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { createManualBooking } from '../../../lib/firestore/bookings';
@@ -50,6 +50,67 @@ const PAYMENT_OPTIONS = PAYMENT_STATUSES;
 const statusSelectValue = (status) => STATUS_OPTIONS.includes(status) ? status : 'pending';
 const CANCELLATION_FEE_OPTIONS = [0, 50, 100];
 const WEBSITE_LOGO_URL = '/favicon.png';
+
+const BOOKING_SORT_VALUES = {
+  date: (booking) => booking.eventDate?.getTime?.() || 0,
+  client: (booking) => booking.clientName || '',
+  event: (booking) => booking.eventType || '',
+  location: (booking) => booking.eventLocation || '',
+  status: (booking) => booking.status || '',
+  payment: (booking) => booking.paymentStatus || '',
+  price: (booking) => booking.quotedAmount || 0,
+  paid: (booking) => booking.amountPaid || 0,
+  outstanding: (booking) => outstandingForBooking(booking)
+};
+
+function sortBookingRows(bookings, sortBy = 'date-desc') {
+  const [field, direction] = sortBy.split('-');
+  const getValue = BOOKING_SORT_VALUES[field] || BOOKING_SORT_VALUES.date;
+  const multiplier = direction === 'asc' ? 1 : -1;
+  return [...bookings].sort((a, b) => {
+    const first = getValue(a);
+    const second = getValue(b);
+    const comparison = typeof first === 'string'
+      ? first.localeCompare(second, undefined, { sensitivity: 'base' })
+      : first - second;
+    return comparison * multiplier || (BOOKING_SORT_VALUES.date(b) - BOOKING_SORT_VALUES.date(a));
+  });
+}
+
+function nextBookingSort(current, field) {
+  return `${field}-${current === `${field}-asc` ? 'desc' : 'asc'}`;
+}
+
+function SortHeading({ label, field, sortBy, onSort }) {
+  const active = sortBy.startsWith(`${field}-`);
+  const direction = sortBy.endsWith('-asc') ? 'ascending' : 'descending';
+  return (
+    <th aria-sort={active ? direction : 'none'}>
+      <button type="button" className="admin-sort-heading" onClick={() => onSort(field)}>
+        {label}<span aria-hidden="true">{active ? (direction === 'ascending' ? ' ↑' : ' ↓') : ' ↕'}</span>
+      </button>
+    </th>
+  );
+}
+
+function bookingDateInputValue(value) {
+  if (!value) return '';
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  const localDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+  return localDate.toISOString().slice(0, 10);
+}
+
+function bookingDatePatch(value) {
+  const eventDate = value ? new Date(`${value}T00:00:00`) : null;
+  return {
+    eventDate,
+    event_date: eventDate
+      ? eventDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+      : ''
+  };
+}
+
 const DEFAULT_INVOICE_TEMPLATES = [
   {
     id: 'classic',
@@ -341,6 +402,7 @@ function useFilteredBookings(bookings) {
     search: '',
     status: '',
     paymentStatus: '',
+    origin: '',
     eventType: '',
     startDate: '',
     endDate: '',
@@ -360,25 +422,15 @@ function useFilteredBookings(bookings) {
       const matchesSearch = !filters.search || haystack.includes(filters.search.toLowerCase());
       const matchesStatus = !filters.status || booking.status === filters.status;
       const matchesPayment = !filters.paymentStatus || booking.paymentStatus === filters.paymentStatus;
+      const matchesOrigin = !filters.origin || booking.bookingOrigin === filters.origin;
       const matchesEvent = !filters.eventType || booking.eventType === filters.eventType;
       const start = filters.startDate ? new Date(filters.startDate) : null;
       const end = filters.endDate ? new Date(`${filters.endDate}T23:59:59`) : null;
       const matchesStart = !start || (booking.eventDate && booking.eventDate >= start);
       const matchesEnd = !end || (booking.eventDate && booking.eventDate <= end);
-      return matchesSearch && matchesStatus && matchesPayment && matchesEvent && matchesStart && matchesEnd;
+      return matchesSearch && matchesStatus && matchesPayment && matchesOrigin && matchesEvent && matchesStart && matchesEnd;
     });
-    const getDate = (booking) => booking.eventDate?.getTime?.() || 0;
-    const sorters = {
-      'date-desc': (a, b) => getDate(b) - getDate(a),
-      'date-asc': (a, b) => getDate(a) - getDate(b),
-      'price-desc': (a, b) => b.quotedAmount - a.quotedAmount,
-      'price-asc': (a, b) => a.quotedAmount - b.quotedAmount,
-      'client-asc': (a, b) => a.clientName.localeCompare(b.clientName),
-      'client-desc': (a, b) => b.clientName.localeCompare(a.clientName),
-      'location-asc': (a, b) => a.eventLocation.localeCompare(b.eventLocation),
-      'location-desc': (a, b) => b.eventLocation.localeCompare(a.eventLocation)
-    };
-    return [...result].sort(sorters[filters.sortBy] || sorters['date-desc']);
+    return sortBookingRows(result, filters.sortBy);
   }, [bookings, filters]);
 
   return { filters, setFilters, filtered };
@@ -397,6 +449,12 @@ function Filters({ filters, setFilters, eventTypes }) {
         <option value="">All payments</option>
         {PAYMENT_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
       </select>
+      <select value={filters.origin} onChange={(event) => update('origin', event.target.value)} aria-label="Filter booking origin">
+        <option value="">All origins</option>
+        <option value="website-form">Website form</option>
+        <option value="admin">Admin added</option>
+        <option value="unknown">Unknown</option>
+      </select>
       <select value={filters.eventType} onChange={(event) => update('eventType', event.target.value)}>
         <option value="">All event types</option>
         {eventTypes.map((option) => <option key={option} value={option}>{option}</option>)}
@@ -412,6 +470,14 @@ function Filters({ filters, setFilters, eventTypes }) {
         <option value="client-desc">Sort client Z-A</option>
         <option value="location-asc">Sort location A-Z</option>
         <option value="location-desc">Sort location Z-A</option>
+        <option value="event-asc">Sort event A-Z</option>
+        <option value="event-desc">Sort event Z-A</option>
+        <option value="status-asc">Sort status A-Z</option>
+        <option value="status-desc">Sort status Z-A</option>
+        <option value="payment-asc">Sort payment A-Z</option>
+        <option value="payment-desc">Sort payment Z-A</option>
+        <option value="outstanding-asc">Sort outstanding low to high</option>
+        <option value="outstanding-desc">Sort outstanding high to low</option>
       </select>
     </div>
   );
@@ -622,7 +688,7 @@ async function syncInvoicesFromBookingStatus(invoices, booking, nextStatus, canc
   })));
 }
 
-function BookingsTable({ bookings, invoices, onSelect, onGenerateQuote, onGenerateInvoice }) {
+function BookingsTable({ bookings, invoices, sortBy, onSort, onSelect, onGenerateQuote, onGenerateInvoice }) {
   const [actionStatus, setActionStatus] = useState('');
   const changeEventType = async (event, booking) => {
     event.stopPropagation();
@@ -631,6 +697,15 @@ function BookingsTable({ bookings, invoices, onSelect, onGenerateQuote, onGenera
       setActionStatus(`Updated ${booking.clientName} event type to ${event.target.value}.`);
     } catch (error) {
       setActionStatus(error?.code === 'permission-denied' ? 'Firestore rules blocked the event type update.' : 'Event type could not be updated.');
+    }
+  };
+  const changeEventDate = async (event, booking) => {
+    event.stopPropagation();
+    try {
+      await updateBooking(booking.id, bookingDatePatch(event.target.value));
+      setActionStatus(`Updated ${booking.clientName} event date.`);
+    } catch (error) {
+      setActionStatus(error?.code === 'permission-denied' ? 'Firestore rules blocked the event date update.' : 'Event date could not be updated.');
     }
   };
   const changeStatus = async (event, booking) => {
@@ -702,36 +777,60 @@ function BookingsTable({ bookings, invoices, onSelect, onGenerateQuote, onGenera
     <section className="admin-panel admin-panel--wide">
       <div className="admin-panel__intro">
         <h2>Bookings</h2>
-        <p>Change status inline, sort the list above, or open a booking for full details.</p>
+        <p>Default order: event date, newest first. Click a column heading to sort; click it again to reverse.</p>
       </div>
       {actionStatus && <p className="admin-alert">{actionStatus}</p>}
       <div className="admin-table-wrap">
         <table className="admin-table admin-bookings-table">
-          <thead><tr><th>Date</th><th>Client</th><th>Event</th><th>Location</th><th>Status</th><th>Payment</th><th>Quoted</th><th>Outstanding</th><th>Actions</th></tr></thead>
+          <thead><tr>
+            <SortHeading label="Date" field="date" sortBy={sortBy} onSort={onSort} />
+            <SortHeading label="Client" field="client" sortBy={sortBy} onSort={onSort} />
+            <SortHeading label="Event" field="event" sortBy={sortBy} onSort={onSort} />
+            <SortHeading label="Location" field="location" sortBy={sortBy} onSort={onSort} />
+            <SortHeading label="Status" field="status" sortBy={sortBy} onSort={onSort} />
+            <SortHeading label="Payment" field="payment" sortBy={sortBy} onSort={onSort} />
+            <SortHeading label="Quoted" field="price" sortBy={sortBy} onSort={onSort} />
+            <SortHeading label="Outstanding" field="outstanding" sortBy={sortBy} onSort={onSort} />
+            <th>Actions</th>
+          </tr></thead>
           <tbody>
             {bookings.map((booking) => (
               <tr key={booking.id} onClick={() => onSelect(booking.id)}>
-                <td>{booking.eventDateLabel}</td>
-                <td><button type="button">{booking.clientName}</button></td>
-                <td>
+                <td data-label="Date">
+                  <input
+                    className="admin-table-date-input"
+                    type="date"
+                    value={bookingDateInputValue(booking.eventDate)}
+                    aria-label={`Event date for ${booking.clientName}`}
+                    onClick={(event) => event.stopPropagation()}
+                    onChange={(event) => changeEventDate(event, booking)}
+                  />
+                </td>
+                <td data-label="Client">
+                  <button type="button">{booking.clientName}</button>
+                  <span className={`admin-origin admin-origin--${booking.bookingOrigin}`} title={booking.bookingOrigin === 'admin' ? `Added through admin${booking.source ? ` · ${booking.source}` : ''}` : booking.bookingOrigin === 'website-form' ? 'Submitted through the website booking form' : 'Origin could not be verified from this older record'}>
+                    {booking.bookingOrigin === 'website-form' ? 'Website form' : booking.bookingOrigin === 'admin' ? 'Admin added' : 'Unknown origin'}
+                  </span>
+                </td>
+                <td data-label="Event">
                   <select className="admin-status-select" value={normalizeEventTypeOption(booking.eventType)} onClick={(event) => event.stopPropagation()} onChange={(event) => changeEventType(event, booking)}>
                     {EVENT_TYPE_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
                   </select>
                 </td>
-                <td>{booking.eventLocation}</td>
-                <td>
+                <td data-label="Location">{booking.eventLocation}</td>
+                <td data-label="Status">
                   <select className={`admin-status-select admin-pill--${statusSelectValue(booking.status)}`} value={statusSelectValue(booking.status)} onClick={(event) => event.stopPropagation()} onChange={(event) => changeStatus(event, booking)}>
                     {STATUS_OPTIONS.map((status) => <option key={status} value={status}>{status}</option>)}
                   </select>
                 </td>
-                <td>
+                <td data-label="Payment">
                   <select className={`admin-status-select admin-pill--${booking.paymentStatus}`} value={PAYMENT_OPTIONS.includes(booking.paymentStatus) ? booking.paymentStatus : 'deposit'} onClick={(event) => event.stopPropagation()} onChange={(event) => changePaymentStatus(event, booking)}>
                     {PAYMENT_OPTIONS.map((status) => <option key={status} value={status}>{status}</option>)}
                   </select>
                 </td>
-                <td>{currency(booking.quotedAmount)}</td>
-                <td>{currency(outstandingForBooking(booking))}</td>
-                <td>
+                <td data-label="Quoted">{currency(booking.quotedAmount)}</td>
+                <td data-label="Outstanding">{currency(outstandingForBooking(booking))}</td>
+                <td data-label="Actions">
                   <div className="admin-row-actions">
                     <button type="button" onClick={(event) => { event.stopPropagation(); onGenerateQuote?.(booking.id); }}>Quote</button>
                     <button type="button" onClick={(event) => { event.stopPropagation(); onGenerateInvoice?.(booking.id); }}>Invoice</button>
@@ -750,6 +849,7 @@ function BookingsTable({ bookings, invoices, onSelect, onGenerateQuote, onGenera
 
 function BookingsView({ bookings, invoices, filtered, filters, setFilters, eventTypes, onSelect, onGenerateQuote, onGenerateInvoice }) {
   const metrics = bookingMetrics(bookings);
+  const websiteBookings = bookings.filter((booking) => booking.bookingOrigin === 'website-form');
   return (
     <div className="admin-stack">
       <ManualBookingForm />
@@ -761,7 +861,8 @@ function BookingsView({ bookings, invoices, filtered, filters, setFilters, event
         <MetricCard label="Fully paid" value={metrics.fullyPaid} />
       </div>
       <Filters filters={filters} setFilters={setFilters} eventTypes={eventTypes} />
-      <BookingsTable bookings={filtered} invoices={invoices} onSelect={onSelect} onGenerateQuote={onGenerateQuote} onGenerateInvoice={onGenerateInvoice} />
+      <p className="admin-origin-summary">Website form: <strong>{websiteBookings.length} enquiries</strong> · <strong>{currency(websiteBookings.filter((booking) => booking.status !== 'cancelled').reduce((sum, booking) => sum + booking.amountPaid, 0))} recorded paid</strong></p>
+      <BookingsTable bookings={filtered} invoices={invoices} sortBy={filters.sortBy} onSort={(field) => setFilters((current) => ({ ...current, sortBy: nextBookingSort(current.sortBy, field) }))} onSelect={onSelect} onGenerateQuote={onGenerateQuote} onGenerateInvoice={onGenerateInvoice} />
     </div>
   );
 }
@@ -812,6 +913,7 @@ function bookingsForGroup(bookings, type, label) {
   if (type === 'location') return bookings.filter((booking) => booking.eventLocation === label);
   if (type === 'client') return bookings.filter((booking) => booking.clientName === label);
   if (type === 'source') return bookings.filter((booking) => booking.source === label);
+  if (type === 'bookingOrigin') return bookings.filter((booking) => booking.bookingOrigin === (label?.value || label) && booking.status !== 'cancelled');
   return [];
 }
 
@@ -828,21 +930,26 @@ function bookingIdsForInvoices(invoices) {
 }
 
 function InsightDrawer({ insight, onClose, onBookingSelect }) {
+  const [bookingSortBy, setBookingSortBy] = useState('date-desc');
   if (!insight) return null;
   const insightBookings = insight.bookings || [];
+  const sortedBookings = sortBookingRows(insightBookings, bookingSortBy);
+  const changeBookingSort = (field) => setBookingSortBy((current) => nextBookingSort(current, field));
   const insightInvoices = insight.invoices || [];
   const totalQuoted = insightBookings.reduce((sum, booking) => sum + booking.quotedAmount, 0);
   const bookingPaid = insightBookings.reduce((sum, booking) => sum + booking.amountPaid, 0);
+  const bookingOutstanding = insightBookings.reduce((sum, booking) => sum + outstandingForBooking(booking), 0);
   const invoiceTotal = insightInvoices.reduce((sum, invoice) => sum + valueNumber(invoice.total), 0);
   const invoicePaid = insightInvoices.reduce((sum, invoice) => sum + invoicePaidAmount(invoice), 0);
   const invoiceOutstanding = insightInvoices.reduce((sum, invoice) => sum + invoiceBalanceDue(invoice), 0);
   const totalPaid = insightInvoices.length ? invoicePaid : bookingPaid;
-  const totalOutstanding = insightInvoices.length ? invoiceOutstanding : Math.max(totalQuoted - bookingPaid, 0);
+  const totalOutstanding = insightInvoices.length ? invoiceOutstanding : bookingOutstanding;
   const contacts = [...new Map(insightBookings.map((booking) => [booking.clientEmail || booking.clientName, booking])).values()];
   const showInvoices = insightInvoices.length || insight.mode === 'invoices';
 
   return (
-    <aside className="admin-detail" aria-label="Analytics detail">
+    <div className="admin-insight-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+    <aside className="admin-detail admin-detail--insight" role="dialog" aria-modal="true" aria-label="Analytics detail">
       <div className="admin-detail__head">
         <div>
           <p className="admin-kicker">{insight.type}</p>
@@ -896,19 +1003,48 @@ function InsightDrawer({ insight, onClose, onBookingSelect }) {
         </>
       ) : null}
       <h3>{showInvoices ? 'Linked bookings' : 'Related bookings'}</h3>
+      <p className="admin-insight-sort-hint">Default order: event date, newest first. Click a heading to sort; click again to reverse.</p>
+      <label className="admin-insight-mobile-sort">Sort bookings
+        <select value={bookingSortBy} onChange={(event) => setBookingSortBy(event.target.value)}>
+          <option value="date-desc">Date newest first</option>
+          <option value="date-asc">Date oldest first</option>
+          <option value="client-asc">Client A-Z</option>
+          <option value="client-desc">Client Z-A</option>
+          <option value="event-asc">Event A-Z</option>
+          <option value="event-desc">Event Z-A</option>
+          <option value="status-asc">Status A-Z</option>
+          <option value="status-desc">Status Z-A</option>
+          <option value="price-asc">Quoted low to high</option>
+          <option value="price-desc">Quoted high to low</option>
+          <option value="paid-asc">Paid low to high</option>
+          <option value="paid-desc">Paid high to low</option>
+          <option value="outstanding-asc">Outstanding low to high</option>
+          <option value="outstanding-desc">Outstanding high to low</option>
+        </select>
+      </label>
       <div className="admin-table-wrap">
         <table className="admin-table">
-          <thead><tr><th>Client</th><th>Date</th><th>Event</th><th>Status</th><th>Paid</th><th>Outstanding</th><th>Follow up</th></tr></thead>
+          <thead><tr>
+            <SortHeading label="Client" field="client" sortBy={bookingSortBy} onSort={changeBookingSort} />
+            <SortHeading label="Date" field="date" sortBy={bookingSortBy} onSort={changeBookingSort} />
+            <SortHeading label="Event" field="event" sortBy={bookingSortBy} onSort={changeBookingSort} />
+            <SortHeading label="Status" field="status" sortBy={bookingSortBy} onSort={changeBookingSort} />
+            <SortHeading label="Quoted" field="price" sortBy={bookingSortBy} onSort={changeBookingSort} />
+            <SortHeading label="Paid" field="paid" sortBy={bookingSortBy} onSort={changeBookingSort} />
+            <SortHeading label="Outstanding" field="outstanding" sortBy={bookingSortBy} onSort={changeBookingSort} />
+            <th>Follow up</th>
+          </tr></thead>
           <tbody>
-            {insightBookings.map((booking) => (
+            {sortedBookings.map((booking) => (
               <tr key={booking.id} onClick={() => onBookingSelect(booking.id)}>
-                <td><button type="button">{booking.clientName}</button><small>{booking.clientEmail}</small></td>
-                <td>{booking.eventDateLabel}</td>
-                <td>{booking.eventType}</td>
-                <td>{booking.status}</td>
-                <td>{currency(booking.amountPaid)}</td>
-                <td>{currency(outstandingForBooking(booking))}</td>
-                <td>
+                <td data-label="Client"><button type="button">{booking.clientName}</button><small>{booking.clientEmail}</small></td>
+                <td data-label="Date">{booking.eventDateLabel}</td>
+                <td data-label="Event">{booking.eventType}</td>
+                <td data-label="Status">{booking.status}</td>
+                <td data-label="Quoted">{currency(booking.quotedAmount)}</td>
+                <td data-label="Paid">{currency(booking.amountPaid)}</td>
+                <td data-label="Outstanding">{currency(outstandingForBooking(booking))}</td>
+                <td data-label="Follow up">
                   <div className="admin-contact-actions">
                     {booking.clientEmail && <a href={`mailto:${booking.clientEmail}?subject=${encodeURIComponent(`PHEE ${booking.eventType || 'booking'} follow-up`)}`} onClick={(event) => event.stopPropagation()}>Email</a>}
                     {booking.clientPhone && <a href={`tel:${booking.clientPhone}`} onClick={(event) => event.stopPropagation()}>Call</a>}
@@ -921,6 +1057,7 @@ function InsightDrawer({ insight, onClose, onBookingSelect }) {
         {!insightBookings.length && <EmptyState label={showInvoices ? 'No linked bookings' : 'No matching bookings'} />}
       </div>
     </aside>
+    </div>
   );
 }
 
@@ -984,14 +1121,25 @@ function BookingDetail({ booking, invoices, invoiceTemplates, selectedTemplateId
         <div><dt>Date</dt><dd>{booking.eventDateLabel}</dd></div>
         <div><dt>Time</dt><dd>{[booking.startTime, booking.endTime].filter(Boolean).join(' - ') || 'N/A'}</dd></div>
         <div><dt>Location</dt><dd>{booking.eventLocation}</dd></div>
+        <div><dt>Origin</dt><dd>{booking.bookingOrigin === 'website-form' ? 'Website form' : booking.bookingOrigin === 'admin' ? 'Admin added' : 'Unknown'}{booking.bookingOrigin === 'admin' && booking.source ? ` · ${booking.source}` : ''}</dd></div>
         <div><dt>Quoted</dt><dd>{currency(booking.quotedAmount)}</dd></div>
         <div><dt>Paid</dt><dd>{currency(booking.amountPaid)}</dd></div>
       </dl>
       <div className="admin-detail-controls">
+        <label>Booking origin
+          <select value={booking.bookingOrigin} onChange={(event) => savePatch({ bookingOrigin: event.target.value })}>
+            <option value="website-form">Website form</option>
+            <option value="admin">Admin added</option>
+            <option value="unknown">Unknown</option>
+          </select>
+        </label>
         <label>Event type
           <select value={normalizeEventTypeOption(booking.eventType)} onChange={(event) => savePatch({ eventType: event.target.value, event: event.target.value })}>
             {EVENT_TYPE_OPTIONS.map((status) => <option key={status} value={status}>{status}</option>)}
           </select>
+        </label>
+        <label>Event date
+          <input type="date" value={bookingDateInputValue(booking.eventDate)} onChange={(event) => savePatch(bookingDatePatch(event.target.value))} />
         </label>
         <label>Booking status
           <select value={statusSelectValue(booking.status)} onChange={(event) => savePatch({ status: event.target.value, ...(event.target.value === 'cancelled' ? { cancellationFeePercent: booking.cancellationFeePercent || 0 } : {}) })}>
@@ -1035,6 +1183,9 @@ function Overview({ bookings, invoices, onExplore }) {
   const eventTypes = groupByValue(bookings.filter((b) => b.status !== 'cancelled'), (b) => normalizeEventTypeOption(b.eventType));
   const locations = groupByValue(bookings.filter((b) => b.status !== 'cancelled'), (b) => b.eventLocation);
   const clients = groupByValue(bookings.filter((b) => b.status !== 'cancelled'), (b) => b.clientName);
+  const websiteBookings = bookings.filter((booking) => booking.bookingOrigin === 'website-form' && booking.status !== 'cancelled');
+  const adminBookings = bookings.filter((booking) => booking.bookingOrigin === 'admin' && booking.status !== 'cancelled');
+  const paidFor = (items) => items.reduce((sum, booking) => sum + booking.amountPaid, 0);
   const exploreInvoices = (metric, label, helper) => {
     const metricInvoices = invoiceRowsForMetric(invoices, metric);
     const linkedBookingIds = bookingIdsForInvoices(metricInvoices);
@@ -1063,7 +1214,7 @@ function Overview({ bookings, invoices, onExplore }) {
         <div>
           <p className="admin-kicker">What to look at first</p>
           <h2>Money in, money owed, and upcoming work.</h2>
-          <p>Start here when you want a quick read on the business. Click any chart row, status, client, or month to open the bookings behind that number.</p>
+          <p>Start here when you want a quick read on the business. Click any chart row, status, client, or month to open the bookings behind that number. Origin totals use recorded payments; bookings with unknown origin are excluded.</p>
         </div>
         <div className="admin-focus__metrics">
           <MetricCard label="Total invoiced" value={currency(invoiceTotals.totalInvoiced)} note="See every issued invoice" onClick={() => exploreInvoices('totalInvoiced', 'Total invoiced', 'Every invoice contributing to the invoiced total.')} />
@@ -1075,6 +1226,8 @@ function Overview({ bookings, invoices, onExplore }) {
             onClick={() => exploreInvoices('outstanding', 'Outstanding balances', 'Invoices with an unpaid balance — accepted/completed bookings still due, plus cancelled bookings with a cancellation fee.')}
           />
           <MetricCard label="Upcoming bookings" value={summary.upcomingBookings} note="Future workload" onClick={() => exploreBookings('upcoming', 'Upcoming bookings', 'Future non-cancelled bookings sorted by event date.')} />
+          <MetricCard label="Website form paid" value={currency(paidFor(websiteBookings))} note={`${websiteBookings.length} bookings · recorded payments`} onClick={() => exploreBookings('bookingOrigin', { label: 'Website form paid', value: 'website-form' }, 'Recorded payments from non-cancelled website form bookings.')} />
+          <MetricCard label="Admin added paid" value={currency(paidFor(adminBookings))} note={`${adminBookings.length} bookings · recorded payments`} onClick={() => exploreBookings('bookingOrigin', { label: 'Admin added paid', value: 'admin' }, 'Recorded payments from non-cancelled bookings added in admin.')} />
         </div>
       </section>
       <div className="admin-metrics admin-metrics--compact">
@@ -1337,6 +1490,7 @@ export default function AdminDashboard({
   const { filters, setFilters, filtered } = useFilteredBookings(bookings);
   const [insight, setInsight] = useState(null);
   const [previewInvoiceId, setPreviewInvoiceId] = useState(null);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const selectedBooking = section === 'bookings' ? bookings.find((booking) => booking.id === selectedBookingId) : null;
   const previewInvoice = previewInvoiceId ? invoices.find((inv) => inv.id === previewInvoiceId) : null;
   const eventTypes = EVENT_TYPE_OPTIONS;
@@ -1380,9 +1534,19 @@ export default function AdminDashboard({
 
   return (
     <main className="admin-app">
-      <header className="admin-topbar">
+      <header className={`admin-topbar${mobileNavOpen ? ' is-open' : ''}`}>
         <Link className="admin-brand" href="/admin">PHEE Admin</Link>
-        <nav>{NAV.map(([key, href, label, Icon]) => <Link key={key} className={section === key ? 'is-active' : ''} href={href}><Icon />{label}</Link>)}</nav>
+        <button
+          type="button"
+          className="admin-menu-toggle"
+          aria-expanded={mobileNavOpen}
+          aria-controls="admin-primary-nav"
+          onClick={() => setMobileNavOpen((open) => !open)}
+        >
+          {mobileNavOpen ? <FaTimes /> : <FaBars />}
+          Menu
+        </button>
+        <nav id="admin-primary-nav">{NAV.map(([key, href, label, Icon]) => <Link key={key} className={section === key ? 'is-active' : ''} href={href} onClick={() => setMobileNavOpen(false)}><Icon />{label}</Link>)}</nav>
         <button type="button" onClick={() => signOut(auth)}><FaSignOutAlt />Sign out</button>
       </header>
       <section className="admin-main">

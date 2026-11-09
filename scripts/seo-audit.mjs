@@ -8,13 +8,11 @@ const PUBLIC_ROUTES = [
   '/past-events',
   '/gallery',
   '/booking',
-  '/links',
-  '/privacy',
-  '/cookies',
-  '/terms',
-  '/cancellation'
+  '/wedding-dj-cape-town',
+  '/corporate-dj-cape-town',
+  '/event-dj-cape-town'
 ];
-const NOINDEX_ROUTES = ['/response'];
+const NOINDEX_ROUTES = ['/response', '/links', '/privacy', '/cookies', '/terms', '/cancellation', '/admin', '/admin/bookings', '/admin/clients', '/admin/invoices', '/admin/quotations', '/admin/reports', '/admin/revenue', '/admin/settings'];
 const GLOBAL_KEYWORDS = [
   'dj',
   'book',
@@ -173,7 +171,7 @@ const checkPage = (route, expectNoindex = false) => {
 
   if (!title) failures.push(`${route}: missing <title>`);
   if (!description) failures.push(`${route}: missing meta description`);
-  if (!canonical) failures.push(`${route}: missing canonical URL`);
+  if (!expectNoindex && !canonical) failures.push(`${route}: missing canonical URL`);
 
   const expectedCanonical = getCanonicalForRoute(route);
   if (canonical && canonical !== expectedCanonical) {
@@ -192,7 +190,7 @@ const checkPage = (route, expectNoindex = false) => {
     failures.push(`${route}: very low crawlable text content (${textLength} chars)`);
   }
 
-  if (h1Count !== 1) {
+  if (!expectNoindex && h1Count !== 1) {
     warnings.push(`${route}: expected 1 <h1>, found ${h1Count}`);
   }
 

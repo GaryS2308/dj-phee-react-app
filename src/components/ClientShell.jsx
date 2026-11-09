@@ -1,150 +1,76 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Script from 'next/script';
+import { usePathname } from 'next/navigation';
 import ConsentBanner from './banners/ConsentBanner';
 import { useScrollReveal } from '../utils/useScrollReveal';
-import { initAnalytics } from '../firebase';
-import { loadGTM } from '../utils/loadGTM';
 import { clearConsent, getConsent } from '../utils/consent';
-
-const GTAG_ID = 'G-0FHGPWSFKK';
+import { GA_ID, analyticsAllowed, isPrivateRoute, trackLinkClick } from '../../lib/siteAnalytics';
 
 const ClientShell = () => {
   const [consent, setConsentState] = useState(undefined);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const params = new URLSearchParams(window.location.search);
-    const requestedReset = params.get('consent') === 'reset';
-    if (requestedReset) {
-      clearConsent();
-      setConsentState(null);
-      params.delete('consent');
-      const nextQuery = params.toString();
-      const nextUrl = `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ''}${window.location.hash}`;
-      window.history.replaceState({}, '', nextUrl);
-      return;
-    }
-    setConsentState(getConsent());
-  }, []);
-
+  const [ready, setReady] = useState(false);
+  const pathname = usePathname();
   useScrollReveal();
 
   useEffect(() => {
-    if (consent !== 'granted') return undefined;
-    if (typeof window === 'undefined' || typeof document === 'undefined') return undefined;
-
-    let cancelled = false;
-
-    const configureGtag = () => {
-      if (cancelled) return;
-      window.dataLayer = window.dataLayer || [];
-      if (!window.gtag) {
-        window.gtag = function gtag() {
-          window.dataLayer.push(arguments);
-        };
-      }
-      try {
-        window.gtag('js', new Date());
-        window.gtag('config', GTAG_ID);
-      } catch (error) {
-        console.error('Gtag config failed:', error);
-      }
-    };
-
-    const loadAnalytics = () => {
-      try {
-        const existing = document.getElementById('gtag-js');
-        if (existing) {
-          if (window.gtag) {
-            configureGtag();
-          } else {
-            existing.addEventListener('load', configureGtag, { once: true });
-          }
-          return;
-        }
-
-        const script = document.createElement('script');
-        script.id = 'gtag-js';
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`;
-        script.addEventListener('load', configureGtag);
-        document.head.appendChild(script);
-      } catch (error) {
-        console.error('Analytics script load failed:', error);
-      }
-    };
-
-    const timer =
-      'requestIdleCallback' in window
-        ? window.requestIdleCallback(loadAnalytics, { timeout: 1500 })
-        : window.setTimeout(loadAnalytics, 1200);
-
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('consent') === 'reset') {
+      clearConsent();
+      params.delete('consent');
+      window.history.replaceState({}, '', `${window.location.pathname}${params.size ? `?${params}` : ''}${window.location.hash}`);
+    }
+    setConsentState(getConsent());
+    // Set the disable flag before history-based enhanced measurement sees private navigation.
+    const originals = {};
+    for (const method of ['pushState', 'replaceState']) {
+      originals[method] = window.history[method];
+      window.history[method] = function (state, title, url) {
+        const path = url == null ? window.location.pathname : new URL(url, window.location.href).pathname;
+        window[`ga-disable-${GA_ID}`] = !analyticsAllowed(path);
+        return originals[method].apply(this, arguments);
+      };
+    }
+    const onPop = () => { window[`ga-disable-${GA_ID}`] = !analyticsAllowed(); };
+    window.addEventListener('popstate', onPop);
+    document.addEventListener('click', trackLinkClick);
     return () => {
-      cancelled = true;
-      if (typeof timer === 'number') {
-        window.clearTimeout(timer);
-      } else if (typeof window.cancelIdleCallback === 'function') {
-        window.cancelIdleCallback(timer);
-      }
+      for (const method of Object.keys(originals)) window.history[method] = originals[method];
+      window.removeEventListener('popstate', onPop);
+      document.removeEventListener('click', trackLinkClick);
     };
-  }, [consent]);
+  }, []);
 
   useEffect(() => {
-    if (consent !== 'granted') return undefined;
-    if (typeof window === 'undefined') return undefined;
+    const allowed = consent === 'granted' && !isPrivateRoute(pathname);
+    window[`ga-disable-${GA_ID}`] = !allowed;
+    if (!allowed) {
+      window.gtag?.('consent', 'update', { analytics_storage: 'denied' });
+      return;
+    }
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    if (!window.__pheeAnalyticsConfigured) {
+      window.gtag('consent', 'default', {
+        analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'
+      });
+      window.gtag('consent', 'update', { analytics_storage: 'granted' });
+      window.gtag('js', new Date());
+      window.gtag('config', GA_ID, {
+        ...(new URLSearchParams(window.location.search).get('ga_debug') === '1' ? { debug_mode: true } : {})
+      });
+      window.__pheeAnalyticsConfigured = true;
+    } else {
+      window.gtag('consent', 'update', { analytics_storage: 'granted' });
+    }
+    setReady(true);
+  }, [consent, pathname]);
 
-    const timer = window.setTimeout(() => {
-      try {
-        initAnalytics();
-      } catch (error) {
-        console.error('Analytics init failed:', error);
-      }
-    }, 1500);
-
-    return () => window.clearTimeout(timer);
-  }, [consent]);
-
-  useEffect(() => {
-    if (consent !== 'granted') return undefined;
-    if (typeof window === 'undefined') return undefined;
-
-    let loaded = false;
-    const fireGTM = () => {
-      if (loaded) return;
-      loaded = true;
-      try {
-        loadGTM();
-      } catch (error) {
-        console.error('GTM load failed:', error);
-      }
-    };
-
-    const idleHandle =
-      'requestIdleCallback' in window
-        ? window.requestIdleCallback(() => fireGTM(), { timeout: 2500 })
-        : window.setTimeout(fireGTM, 2500);
-
-    const onInteract = () => fireGTM();
-    window.addEventListener('pointerdown', onInteract, { once: true });
-    window.addEventListener('touchstart', onInteract, { once: true });
-    window.addEventListener('scroll', onInteract, { once: true, passive: true });
-    window.addEventListener('keydown', onInteract, { once: true });
-
-    return () => {
-      if (typeof idleHandle === 'number') {
-        window.clearTimeout(idleHandle);
-      } else if (typeof window.cancelIdleCallback === 'function') {
-        window.cancelIdleCallback(idleHandle);
-      }
-      window.removeEventListener('pointerdown', onInteract);
-      window.removeEventListener('touchstart', onInteract);
-      window.removeEventListener('scroll', onInteract);
-      window.removeEventListener('keydown', onInteract);
-    };
-  }, [consent]);
-
-  return <ConsentBanner consent={consent} onDecision={setConsentState} />;
+  return <>
+    {ready && consent === 'granted' && !isPrivateRoute(pathname) && <Script id="phee-ga" src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />}
+    <ConsentBanner consent={consent} onDecision={setConsentState} />
+  </>;
 };
 
 export default ClientShell;

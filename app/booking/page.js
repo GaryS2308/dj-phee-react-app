@@ -1,5 +1,6 @@
 import HeroBanner from '../../src/components/hero/HeroBanner';
 import BookingForm from '../../src/components/pages/booking-form/BookingForm';
+import { getOpenGraphImages, getShareImageUrl, heroImages } from '../seo';
 
 export const metadata = {
   title: 'Book DJ PHEE | Cape Town Wedding, Corporate & Event DJ',
@@ -13,13 +14,15 @@ export const metadata = {
     description:
       'Book DJ PHEE for private events, brand launches, parties, dances, weddings, clubs and festivals in Cape Town, with travel available by arrangement.',
     url: 'https://phee.co.za/booking',
-    type: 'website'
+    type: 'website',
+    images: getOpenGraphImages(heroImages.primary, 'DJ PHEE booking hero photo')
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Book DJ PHEE | Cape Town Wedding, Corporate & Event DJ',
     description:
-      'Book DJ PHEE for private events, brand launches, parties, dances, weddings, clubs and festivals in Cape Town, with travel available by arrangement.'
+      'Book DJ PHEE for private events, brand launches, parties, dances, weddings, clubs and festivals in Cape Town, with travel available by arrangement.',
+    images: [getShareImageUrl(heroImages.primary)]
   }
 };
 
@@ -107,7 +110,7 @@ export default function BookingPage() {
         title="BOOKING"
         seoTitle="Book DJ PHEE for Your Cape Town Event"
         subtitle="Request availability, rates, and booking details for DJ Phee in Cape Town."
-        image="https://res.cloudinary.com/dea6wzxd8/image/upload/v1768549868/Phee_Hero_photo_rz1dei.jpg"
+        image={heroImages.primary}
       />
       <BookingForm />
     </main>

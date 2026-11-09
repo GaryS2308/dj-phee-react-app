@@ -88,7 +88,7 @@ function ReportTable({ title, rows, onExport }) {
       <div className="admin-table-wrap">
         <table className="admin-table">
           <thead><tr>{headers.map((header) => <th key={header}>{header}</th>)}</tr></thead>
-          <tbody>{rows.map((row, index) => <tr key={index}>{headers.map((header) => <td key={header}>{row[header]}</td>)}</tr>)}</tbody>
+          <tbody>{rows.map((row, index) => <tr key={index}>{headers.map((header) => <td key={header} data-label={header}>{row[header]}</td>)}</tr>)}</tbody>
         </table>
         {!rows.length && <p className="admin-empty">No report rows for the selected filters.</p>}
       </div>
@@ -120,7 +120,7 @@ function RevenueDetailTable({ rows, onExport, onInvoicePreview }) {
                 {displayHeaders.map((header) => {
                   if (header === 'invoice #' && row.invoiceId && onInvoicePreview) {
                     return (
-                      <td key={header}>
+                      <td key={header} data-label={header}>
                         <button
                           type="button"
                           className="admin-link-btn"
@@ -131,7 +131,7 @@ function RevenueDetailTable({ rows, onExport, onInvoicePreview }) {
                       </td>
                     );
                   }
-                  return <td key={header}>{row[header]}</td>;
+                  return <td key={header} data-label={header}>{row[header]}</td>;
                 })}
               </tr>
             ))}

@@ -1,7 +1,7 @@
 // BookingForm.jsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { init, send } from '@emailjs/browser';
 import TimeSliderModal from '../../buttons/slider/slider';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -9,9 +9,13 @@ import { db } from '../../../firebase'; // Adjust if your firebase.js path is di
 import TermsModal from '../../modals/TermsModal';
 import CancellationModal from '../../modals/CancellationModal';
 import { VscPass } from 'react-icons/vsc';
+import { track, eventCategory } from '../../../../lib/siteAnalytics';
 import { BOOKING_FAQS } from '../../shared/bookingFaqData';
 
 const BookingForm = () => {
+  const submitLocked = useRef(false);
+  const lastEstimate = useRef(null);
+  const invalidReported = useRef(false);
   useEffect(() => {
   // Initialize EmailJS once
   init("0fqk3GFHeuZ3SHdGz");
@@ -74,19 +78,14 @@ const BookingForm = () => {
     return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   };
 
-  const pushBookingSubmitEvent = (bookingDetails) => {
-    if (typeof window === 'undefined') return;
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'booking_request_submitted',
-      bookingDetails,
-    });
-  };
-
   useEffect(() => {
     if (formData.duration) {
       const cost = parseDurationToHours(formData.duration) * 2000;
       setCostEstimate(`Estimated Cost: R${cost}`);
+      if (lastEstimate.current !== formData.duration) {
+        track('booking_estimate', { hours: parseDurationToHours(formData.duration), value: cost, currency: 'ZAR' });
+        lastEstimate.current = formData.duration;
+      }
     } else {
       setCostEstimate('Estimated Cost: R0');
     }
@@ -100,13 +99,16 @@ const BookingForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isSubmitting) return; // <-- prevent multiple clicks
+    if (submitLocked.current || formSubmitted) return;
 
     if (!formData.eventDate || !formData.startTime || !formData.duration) {
+      track('booking_form_error', { form_id: 'booking-form', error_type: 'validation' });
       setConfirmationMessage(' Please select date, time and duration before submitting.');
       return;
     }
 
+    submitLocked.current = true;
+    let errorType = 'firestore_failed';
     try {
       setIsSubmitting(true); // lock form immediately on submit start
 
@@ -151,21 +153,17 @@ const BookingForm = () => {
       // Save booking to Firestore
       await addDoc(collection(db, 'bookings'), {
         ...templateParams,
+        bookingOrigin: 'website-form',
+        source: 'Website',
         timestamp: serverTimestamp(),
         createdAt: serverTimestamp(),
       });
 
       // Send to EmailJS (to DJ)
+      errorType = 'emailjs_failed';
       await send('service_qekby5l', 'template_b27p846', templateParams);
 
-      const bookingEventData = {
-        eventType: formData.event || 'unspecified',
-        eventDate: formatDate(formData.eventDate),
-        startTime: formData.startTime,
-        duration: formData.duration,
-        location: formData.location || 'unspecified',
-      };
-      pushBookingSubmitEvent(bookingEventData);
+      track('generate_lead', { form_id: 'booking-form', event_type: eventCategory(formData.event) });
 
       // Success
       setConfirmationMessage('Booking request received. PHEE will get back to you via email promptly');
@@ -181,6 +179,8 @@ const BookingForm = () => {
       setTermsAccepted({ terms: false, cancel: false });
 
     } catch (error) {
+      submitLocked.current = false;
+      track('booking_form_error', { form_id: 'booking-form', error_type: errorType });
       console.error('Booking Error:', error);
       setConfirmationMessage('Booking failed. Please try again.');
     } finally {
@@ -189,6 +189,8 @@ const BookingForm = () => {
   };
 
   const handleNewBookingClick = () => {
+    submitLocked.current = false;
+    lastEstimate.current = null;
     setFormSubmitted(false);
     setIsSubmitting(false);
     setConfirmationMessage('');
@@ -226,7 +228,12 @@ const BookingForm = () => {
           </button>
         </div>
       ) : (
-        <form id="booking-form" onSubmit={handleSubmit} data-reveal data-reveal-order="5">
+        <form id="booking-form" onSubmit={handleSubmit} onInvalid={() => {
+          if (invalidReported.current) return;
+          invalidReported.current = true;
+          track('booking_form_error', { form_id: 'booking-form', error_type: 'validation' });
+          window.setTimeout(() => { invalidReported.current = false; }, 0);
+        }} data-reveal data-reveal-order="5">
           <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required />
           <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required />
           <input type="tel" name="phone" placeholder="Your Phone Number (optional)" value={formData.phone} onChange={handleChange} />

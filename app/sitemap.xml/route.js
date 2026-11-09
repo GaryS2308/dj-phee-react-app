@@ -12,9 +12,7 @@ const getSitemap = () => {
 
   const body = urls
     .map((url) => {
-      const isService = url.includes('wedding-dj') || url.includes('corporate-dj') || url.includes('event-dj');
-      const priority = isService ? '0.9' : '0.7';
-      return `<url><loc>${url}</loc><changefreq>weekly</changefreq><priority>${priority}</priority></url>`;
+      return `<url><loc>${url}</loc></url>`;
     })
     .join('');
 

@@ -1,5 +1,6 @@
 import HeroBanner from '../../src/components/hero/HeroBanner';
 import WeddingDjPage from '../../src/components/pages/wedding-dj/WeddingDjPage';
+import { getOpenGraphImages, getShareImageUrl, heroImages } from '../seo';
 
 export const metadata = {
   title: 'Wedding DJ Cape Town | DJ PHEE',
@@ -13,13 +14,15 @@ export const metadata = {
     description:
       'Hire DJ PHEE as your wedding DJ in Cape Town. Afrotech specialist covering ceremony, cocktail hour and full reception sets across the Western Cape. Rates from R2,000/hr.',
     url: 'https://phee.co.za/wedding-dj-cape-town',
-    type: 'website'
+    type: 'website',
+    images: getOpenGraphImages(heroImages.primary, 'DJ PHEE wedding DJ hero photo')
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Wedding DJ Cape Town | DJ PHEE',
     description:
-      'Hire DJ PHEE as your wedding DJ in Cape Town. Afrotech specialist covering ceremony, cocktail hour and full reception sets across the Western Cape. Rates from R2,000/hr.'
+      'Hire DJ PHEE as your wedding DJ in Cape Town. Afrotech specialist covering ceremony, cocktail hour and full reception sets across the Western Cape. Rates from R2,000/hr.',
+    images: [getShareImageUrl(heroImages.primary)]
   }
 };
 
@@ -31,6 +34,7 @@ export default function WeddingDjRoute() {
     "description": "Professional wedding DJ services in Cape Town and the Western Cape, covering ceremony, cocktail hour and reception sets. Afrotech specialist with all-genre capability.",
     "url": "https://phee.co.za/wedding-dj-cape-town",
     "provider": {
+      "@id": "https://phee.co.za/#person",
       "@type": "Person",
       "name": "PHEE",
       "jobTitle": "DJ",
@@ -61,13 +65,19 @@ export default function WeddingDjRoute() {
     <main>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, {
+          '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://phee.co.za/' },
+            { '@type': 'ListItem', position: 2, name: jsonLd.name, item: jsonLd.url }
+          ]
+        }]) }}
       />
       <HeroBanner
         title="WEDDING DJ"
         seoTitle="Wedding DJ Cape Town | DJ PHEE"
         subtitle="From ceremony to last dance, professional wedding DJ services across Cape Town and the Western Cape."
-        image="https://res.cloudinary.com/dea6wzxd8/image/upload/v1768549868/Phee_Hero_photo_rz1dei.jpg"
+        image={heroImages.primary}
         ctaLabel="GET A QUOTE"
         ctaHref="/booking#booking"
       />
